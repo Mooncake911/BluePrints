@@ -81,7 +81,7 @@ class NodeEditor(QMainWindow):
         help_menu.addAction(github_action)
 
     def visit_github(self):
-        url = QtCore.QUrl("https://github.com/")
+        url = QtCore.QUrl("https://github.com/Mooncake911/BluePrints/blob/master/resources/docs/shortcuts.md")
         QtGui.QDesktopServices.openUrl(url)
 
     def save_project(self):
