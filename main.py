@@ -25,7 +25,6 @@ class NodeEditor(QMainWindow):
         self.imports = None
 
         self.setWindowTitle("Simple Node Editor")
-        settings = QtCore.QSettings("Silk Road", "IoT Editor")
         self.create_menus()
 
         # Layouts
@@ -52,12 +51,6 @@ class NodeEditor(QMainWindow):
         # Add nodes to widgets
         self.example_project_path = Path('node_editor/example')
         self.load_nodes()
-
-        # Restore GUI from last state
-        if settings.contains("geometry"):
-            self.restoreGeometry(settings.value("geometry"))
-            s = settings.value("splitterSize")
-            self.splitter.restoreState(s)
 
     def create_menus(self):
         # "File" menu
@@ -128,9 +121,6 @@ class NodeEditor(QMainWindow):
             return
 
     def closeEvent(self, event):
-        self.settings = QtCore.QSettings("python_node_interface-editor", "NodeEditor")
-        self.settings.setValue("geometry", self.saveGeometry())
-        self.settings.setValue("splitterSize", self.splitter.saveState())
         QWidget.closeEvent(self, event)
 
 

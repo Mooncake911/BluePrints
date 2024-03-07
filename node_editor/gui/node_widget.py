@@ -3,27 +3,13 @@ import uuid
 
 from PySide6 import QtGui, QtWidgets
 
-from .node_editor import NodeEditor
 from .view import View
+from .node_editor import NodeEditor
+from .node_scene import NodeScene
 
 from ..connection import Connection
 from ..node import Node
 from ..pin import Pin
-
-
-class NodeScene(QtWidgets.QGraphicsScene):
-    def dragEnterEvent(self, e):
-        e.acceptProposedAction()
-
-    def dropEvent(self, e):
-        # find item at these coordinates
-        item = self.itemAt(e.scenePos(), QtGui.QTransform())
-        if item.setAcceptDrops:
-            # pass on event to item at the coordinates
-            item.dropEvent(e)
-
-    def dragMoveEvent(self, e):
-        e.acceptProposedAction()
 
 
 class NodeWidget(QtWidgets.QWidget):
@@ -32,17 +18,11 @@ class NodeWidget(QtWidgets.QWidget):
 
     Attributes:
         node_editor (NodeEditor): The python_node_interface editor object.
-        scene (NodeScene): The scene object for the python_node_interface editor.
-        view (View): The view object for the python_node_interface editor.
+        view (View): Отрисовка заднего фона и добавление базового функционала редактора.
+        node_scene (NodeScene): Функционал относящийся к виджету Node.
     """
 
     def __init__(self, parent):
-        """
-        Initializes the NodeWidget object.
-
-        Args:
-            parent (QWidget): The parent widget.
-        """
         super().__init__(parent)
 
         self.node_lookup = {}  # A dictionary of nodes, by uuids for faster looking up. Refactor this in the future
@@ -51,11 +31,11 @@ class NodeWidget(QtWidgets.QWidget):
         self.setLayout(main_layout)
 
         self.node_editor = NodeEditor(self)
-        self.scene = NodeScene()
-        self.scene.setSceneRect(0, 0, 9999, 9999)
+        self.node_scene = NodeScene()
+        self.node_scene.setSceneRect(0, 0, 9999, 9999)
         self.view = View(self)
-        self.view.setScene(self.scene)
-        self.node_editor.install(self.scene)
+        self.view.setScene(self.node_scene)
+        self.node_editor.install(self.node_scene)
 
         main_layout.addWidget(self.view)
 
@@ -64,7 +44,7 @@ class NodeWidget(QtWidgets.QWidget):
     def create_node(self, node: Node):
         node.uuid = uuid.uuid4()
         node.build()
-        self.scene.addItem(node)
+        self.node_scene.addItem(node)
         pos = self.view.mapFromGlobal(QtGui.QCursor.pos())
         node.setPos(self.view.mapToScene(pos))
 
@@ -86,7 +66,7 @@ class NodeWidget(QtWidgets.QWidget):
                 node.uuid = n["uuid"]
                 node.value = n["value"]
                 node.build()
-                self.scene.addItem(node)
+                self.node_scene.addItem(node)
                 node.setPos(n["x"], n["y"])
                 self.node_lookup[node.uuid] = node
 
@@ -96,7 +76,7 @@ class NodeWidget(QtWidgets.QWidget):
                 end_pin = self.node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
 
                 connection = Connection(None)
-                self.scene.addItem(connection)
+                self.node_scene.addItem(connection)
 
                 if start_pin:
                     connection.set_start_pin(start_pin)
@@ -110,7 +90,7 @@ class NodeWidget(QtWidgets.QWidget):
 
         scene = {"nodes": [], "connections": []}
 
-        for item in self.scene.items():
+        for item in self.node_scene.items():
 
             # Nodes
             if isinstance(item, Node):

@@ -1,13 +1,7 @@
 from PySide6 import QtCore, QtGui, QtOpenGLWidgets, QtWidgets
 
-from ..node import Node
-
 
 class View(QtWidgets.QGraphicsView):
-    """
-    View class for python_node_interface editor.
-    """
-
     _background_color = QtGui.QColor(38, 38, 38)
 
     _grid_pen_s = QtGui.QPen(QtGui.QColor(52, 52, 52, 255), 0.5)
@@ -16,9 +10,14 @@ class View(QtWidgets.QGraphicsView):
     _grid_size_fine = 15
     _grid_size_course = 150
 
-    _mouse_wheel_zoom_rate = 0.0015
-
     request_node = QtCore.Signal(object)
+
+    def change_place(self, event, button):
+        if event.button() in button:
+            self._pan = True
+            self._pan_start_x = event.x()
+            self._pan_start_y = event.y()
+            self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -45,56 +44,9 @@ class View(QtWidgets.QGraphicsView):
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
 
-    def wheelEvent(self, event):
-        """
-        Handles the wheel events, e.g. zoom in/out.
-        :param event: Wheel event.
-        """
-        # sometimes you can trigger the wheel when panning, so we disable when panning
-        if self._pan:
-            return
-
-        num_degrees = event.angleDelta() / 8.0
-        num_steps = num_degrees.y() / 5.0
-        self._numScheduledScaling += num_steps
-
-        # If the user moved the wheel another direction, we reset previously scheduled scaling
-        if self._numScheduledScaling * num_steps < 0:
-            self._numScheduledScaling = num_steps
-
-        self.anim = QtCore.QTimeLine()
-        self.anim.setUpdateInterval(20)
-        self.anim.valueChanged.connect(self.scaling_time)
-        self.anim.finished.connect(self.anim_finished)
-        self.anim.start()
-
-    def scaling_time(self, x):
-        """
-        Updates the current scale based on the wheel events.
-        :param x: The value of the current time.
-        """
-        factor = 1.0 + self._numScheduledScaling / 300.0
-        self.currentScale *= factor
-
-        if self.currentScale > 1.2:
-            self.currentScale = 1.2
-        elif self.currentScale < 0.1:
-            self.currentScale = 0.1
-        else:
-            self.scale(factor, factor)
-
-    def anim_finished(self):
-        """
-        Called when the zoom animation is finished.
-        """
-        if self._numScheduledScaling > 0:
-            self._numScheduledScaling -= 1
-        else:
-            self._numScheduledScaling += 1
-
     def drawBackground(self, painter, rect):
         """
-        Draws the background for the python_node_interface editor view.
+        Draws the background for the interface editor view.
 
         :param painter: The painter to draw with.
         :param rect: The rectangle to be drawn.
@@ -128,69 +80,42 @@ class View(QtWidgets.QGraphicsView):
 
         return super().drawBackground(painter, rect)
 
-    def contextMenuEvent(self, event):
+    # ---------------------------------------- Events for Mouse -------------------------------------------------------#
+    def wheelEvent(self, event):
         """
-        This method is called when a context menu event is triggered in the view. It finds the item at the event
-        position and shows a context menu if the item is a Node.
+        Handles the wheel events, e.g. zoom in/out.
+        :param event: Wheel event.
         """
-        cursor = QtGui.QCursor()
-        # origin = self.mapFromGlobal(cursor.pos())
-        pos = self.mapFromGlobal(cursor.pos())
-        item = self.itemAt(event.pos())
+        # Sometimes you can trigger the wheel when panning, so we disable when panning
+        if self._pan:
+            return
 
-        if item:
-            if isinstance(item, Node):
-                print("Found Node", item)
-
-                menu = QtWidgets.QMenu(self)
-
-                hello_action = QtGui.QAction("Hello", self)
-
-                menu.addAction(hello_action)
-                action = menu.exec_(self.mapToGlobal(pos))
-
-                if action == hello_action:
-                    print("Hello")
-
-    def dragEnterEvent(self, e):
-        """
-        This method is called when a drag and drop event enters the view. It checks if the mime data format is
-        "text/plain" and accepts or ignores the event accordingly.
-        """
-        if e.mimeData().hasFormat("text/plain"):
-            e.accept()
-        else:
-            e.ignore()
-
-    def dropEvent(self, e):
-        """
-        This method is called when a drag and drop event is dropped onto the view. It retrieves the name of the dropped
-        python_node_interface from the mime data and emits a signal to request the creation of the corresponding
-        python_node_interface.
-        """
-        node = e.mimeData().item.class_name
-        if node:
-            self.request_node.emit(node())
+        delta = event.angleDelta().y()
+        factor = 1.2 if delta > 0 else 1 / 1.2
+        self.scale(factor, factor)
 
     def mousePressEvent(self, event):
         """
-        This method is called when a mouse press event occurs in the view. It sets the cursor to a closed hand cursor
-        and enables panning if the middle mouse button is pressed.
+        This method is called when a mouse press event occurs in the view.
+        It sets the cursor to a closed hand cursor and enables panning if the middle mouse button is pressed.
         """
-        if event.button() == QtCore.Qt.MouseButton.MiddleButton:
-            self._pan = True
-            self._pan_start_x = event.x()
-            self._pan_start_y = event.y()
-            self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
+        self.change_place(event, button=QtCore.Qt.MouseButton.MiddleButton)
+        return super().mousePressEvent(event)
 
+    def mouseDoubleClickEvent(self, event):
+        """
+        This method is called when a double mouse press event occurs in the view.
+        It sets the cursor to a closed hand cursor and enables panning if the left mouse button is pressed.
+        """
+        self.change_place(event, button=QtCore.Qt.MouseButton.LeftButton)
         return super().mousePressEvent(event)
 
     def mouseReleaseEvent(self, event):
         """
-        This method is called when a mouse release event occurs in the view. It sets the cursor back to the arrow cursor
-        and disables panning if the middle mouse button is released.
+        This method is called when a mouse release event occurs in the view.
+        It sets the cursor back to the arrow cursor and disables panning if the middle mouse button is released.
         """
-        if event.button() == QtCore.Qt.MouseButton.MiddleButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton or event.button() == QtCore.Qt.MouseButton.MiddleButton:
             self._pan = False
             self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
@@ -198,8 +123,8 @@ class View(QtWidgets.QGraphicsView):
 
     def mouseMoveEvent(self, event):
         """
-        This method is called when a mouse move event occurs in the view. It pans the view if the middle mouse button is
-        pressed and moves the mouse.
+        This method is called when a mouse move event occurs in the view.
+        It pans the view if the middle mouse button is pressed and moves the mouse.
         """
         if self._pan:
             self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() - (event.x() - self._pan_start_x))
@@ -210,3 +135,24 @@ class View(QtWidgets.QGraphicsView):
             self._pan_start_y = event.y()
 
         return super().mouseMoveEvent(event)
+
+    # ---------------------------------------- Events for Nodes -------------------------------------------------------#
+    def dragEnterEvent(self, event):
+        """
+        This method is called when a drag and drop event enters the view. It checks if the mime data format is
+        "text/plain" and accepts or ignores the event accordingly.
+        """
+        if event.mimeData().hasFormat("text/plain"):
+            event.accept()
+        else:
+            event.ignore()
+
+    def dropEvent(self, event):
+        """
+        This method is called when a drag and drop event is dropped onto the view.
+        It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
+        corresponding node.
+        """
+        node = event.mimeData().item.class_name
+        if node:
+            self.request_node.emit(node())
