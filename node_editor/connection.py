@@ -15,7 +15,6 @@ class Connection(ConnectionGraphics):
         for pin in (self.start_pin, self.end_pin):
             if pin:
                 pin.connection = None
-            pin = None
 
         self.scene().removeItem(self)
 

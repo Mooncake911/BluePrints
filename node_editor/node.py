@@ -1,12 +1,8 @@
-from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtCore import Qt
-
 from .pin import Pin
-from .gui.node_graphics import Node_Graphics
-from .common import Node_Status
+from .gui.node_graphics import NodeGraphics
 
 
-class Node(Node_Graphics):
+class Node(NodeGraphics):
     def __init__(self):
         super().__init__()
         self.uuid = None  # An identifier that used to saving and loading scene

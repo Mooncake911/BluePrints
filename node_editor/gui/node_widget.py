@@ -26,23 +26,24 @@ class NodeWidget(QtWidgets.QWidget):
         super().__init__(parent)
 
         self.node_lookup = {}  # A dictionary of nodes, by uuids for faster looking up. Refactor this in the future
-        main_layout = QtWidgets.QVBoxLayout()
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(main_layout)
 
         self.node_editor = NodeEditor(self)
         self.node_scene = NodeScene()
         self.node_scene.setSceneRect(0, 0, 9999, 9999)
-        self.view = View(self)
-        self.view.setScene(self.node_scene)
         self.node_editor.install(self.node_scene)
 
-        main_layout.addWidget(self.view)
-
+        self.view = View(self)
+        self.view.setScene(self.node_scene)
         self.view.request_node.connect(self.create_node)
+
+        main_layout = QtWidgets.QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.addWidget(self.view)
+        self.setLayout(main_layout)
 
     def create_node(self, node: Node):
         node.uuid = uuid.uuid4()
+        node.init_widget()
         node.build()
         self.node_scene.addItem(node)
         pos = self.view.mapFromGlobal(QtGui.QCursor.pos())
