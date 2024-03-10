@@ -17,9 +17,9 @@ class NodeWidget(QtWidgets.QWidget):
     Widget for creating and displaying a python_node_interface editor.
 
     Attributes:
-        node_editor (NodeEditor): The python_node_interface editor object.
         view (View): Отрисовка заднего фона и добавление базового функционала редактора.
-        node_scene (NodeScene): Функционал относящийся к виджету Node.
+        node_editor (NodeEditor): Взаимодействие с виджетом Node.
+        node_scene (NodeScene): Постановка сцены.
     """
 
     def __init__(self, parent):
@@ -27,14 +27,15 @@ class NodeWidget(QtWidgets.QWidget):
 
         self.node_lookup = {}  # A dictionary of nodes, by uuids for faster looking up. Refactor this in the future
 
-        self.node_editor = NodeEditor(self)
         self.node_scene = NodeScene()
         self.node_scene.setSceneRect(0, 0, 9999, 9999)
-        self.node_editor.install(self.node_scene)
+        self.node_scene.request_node.connect(self.create_node)
 
         self.view = View(self)
         self.view.setScene(self.node_scene)
-        self.view.request_node.connect(self.create_node)
+
+        self.node_editor = NodeEditor(self)
+        self.node_editor.install(self.node_scene)
 
         main_layout = QtWidgets.QVBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
@@ -66,6 +67,7 @@ class NodeWidget(QtWidgets.QWidget):
                 node = info["class"]()
                 node.uuid = n["uuid"]
                 node.value = n["value"]
+                node.init_widget()
                 node.build()
                 self.node_scene.addItem(node)
                 node.setPos(n["x"], n["y"])

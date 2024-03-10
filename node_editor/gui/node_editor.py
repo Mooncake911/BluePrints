@@ -61,9 +61,15 @@ class NodeEditor(QtCore.QObject):
         elif event.type() == QtCore.QEvent.Type.KeyPress:
             if event.key() == QtCore.Qt.Key.Key_Delete:
                 for item in self.scene.selectedItems():
-                    if isinstance(item, (Connection, Node)):
-                        item.delete()
-                return True
+                    item.delete()
+
+            if event.key() == QtCore.Qt.Key.Key_A:
+                node_items = [item for item in self.scene.items() if isinstance(item, Node)]
+                all_selected = len(self.scene.selectedItems()) == len(node_items)
+                for item in node_items:
+                    item.setSelected(not all_selected)
+
+            return True
 
         elif event.type() == QtCore.QEvent.Type.GraphicsSceneMouseMove:
             if self.connection:

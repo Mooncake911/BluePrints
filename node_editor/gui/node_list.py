@@ -1,3 +1,7 @@
+from pathlib import Path
+import importlib.util
+import inspect
+
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
@@ -6,6 +10,28 @@ class NodeList(QtWidgets.QTreeWidget):
         super().__init__(parent)
         self.setHeaderHidden(True)
         self.setDragEnabled(True)
+
+        self.nodes_path = Path('node_editor/example')
+        self.imports = {}
+
+        for f in self.nodes_path.rglob("*.py"):
+            self.load_module(f)
+
+        self.update_project()
+
+    def load_module(self, file):
+        try:
+            spec = importlib.util.spec_from_file_location(file.stem, file)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            for name, obj in inspect.getmembers(module):
+                if not name.endswith('_Node'):
+                    continue
+                if inspect.isclass(obj):
+                    # print(file.parts[1:-1])
+                    self.imports[obj.__name__] = {"parent": file.parent.name, "class": obj, "module": module}
+        except Exception as e:
+            print(f"Error loading module {file}: {e}")
 
     def find_item_by_text(self, text):
         # Поиск элемента по тексту в дереве
@@ -19,15 +45,15 @@ class NodeList(QtWidgets.QTreeWidget):
         item.class_name = None
         return item
 
-    def update_project(self, imports, example_project_path):
+    def update_project(self):
         temp_list = []
 
-        for name, data in imports.items():
+        for name, data in self.imports.items():
             name = name.replace("_Node", "")
             parent_name = data["parent"].replace("_", " ")
             parent_item = None
 
-            if parent_name == example_project_path.stem:
+            if parent_name == self.nodes_path.stem:
                 item = QtWidgets.QTreeWidgetItem([name])
                 temp_list.append(item)
             else:

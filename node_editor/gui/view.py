@@ -10,8 +10,6 @@ class View(QtWidgets.QGraphicsView):
     _grid_size_fine = 15
     _grid_size_course = 150
 
-    request_node = QtCore.Signal(object)
-
     def change_place(self, event, button):
         if event.button() in button:
             self._pan = True
@@ -21,28 +19,28 @@ class View(QtWidgets.QGraphicsView):
 
     def __init__(self, parent):
         super().__init__(parent)
-        self.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-        self._manipulationMode = 0
 
+        self._pan = False
+        self._pan_start_x = 0
+        self._pan_start_y = 0
+        self.lastMousePos = QtCore.QPoint()
+
+        # Graphic settings
+        self.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
         gl_format = QtGui.QSurfaceFormat()
         gl_format.setSamples(10)
         QtGui.QSurfaceFormat.setDefaultFormat(gl_format)
         gl_widget = QtOpenGLWidgets.QOpenGLWidget()
-
-        self.currentScale = 1
-        self._pan = False
-        self._pan_start_x = 0
-        self._pan_start_y = 0
-        self._numScheduledScaling = 0
-        self.lastMousePos = QtCore.QPoint()
-
         self.setViewport(gl_widget)
 
+        # Location settings
         self.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+
+        #
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        # self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
 
     def drawBackground(self, painter, rect):
         """
@@ -135,24 +133,3 @@ class View(QtWidgets.QGraphicsView):
             self._pan_start_y = event.y()
 
         return super().mouseMoveEvent(event)
-
-    # ---------------------------------------- Events for Nodes -------------------------------------------------------#
-    def dragEnterEvent(self, event):
-        """
-        This method is called when a drag and drop event enters the view. It checks if the mime data format is
-        "text/plain" and accepts or ignores the event accordingly.
-        """
-        if event.mimeData().hasFormat("text/plain"):
-            event.accept()
-        else:
-            event.ignore()
-
-    def dropEvent(self, event):
-        """
-        This method is called when a drag and drop event is dropped onto the view.
-        It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
-        corresponding node.
-        """
-        node = event.mimeData().item.class_name
-        if node:
-            self.request_node.emit(node())

@@ -1,20 +1,33 @@
-from PySide6 import QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from ..node import Node
 
 
 class NodeScene(QtWidgets.QGraphicsScene):
+    request_node = QtCore.Signal(object)
+
     def dragEnterEvent(self, e):
-        e.acceptProposedAction()
+        pass
+        # e.acceptProposedAction()
 
-    def dropEvent(self, e):
-        # find item at these coordinates
-        item = self.itemAt(e.scenePos(), QtGui.QTransform())
-        if item.setAcceptDrops:
-            # pass on event to item at the coordinates
-            item.dropEvent(e)
+    def dragMoveEvent(self, event):
+        """
+        This method is called when a drag and drop event enters the view. It checks if the mime data format is
+        "text/plain" and accepts or ignores the event accordingly.
+        """
+        if event.mimeData().hasFormat("text/plain"):
+            event.accept()
+        else:
+            event.ignore()
 
-    def dragMoveEvent(self, e):
-        e.acceptProposedAction()
+    def dropEvent(self, event):
+        """
+        This method is called when a drag and drop event is dropped onto the view.
+        It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
+        corresponding node.
+        """
+        node = event.mimeData().item.class_name
+        if node:
+            self.request_node.emit(node())
 
     def contextMenuEvent(self, event):
         # TODO contex menu for Nodes
