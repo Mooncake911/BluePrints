@@ -1,8 +1,13 @@
+import json
 from pathlib import Path
 import importlib.util
 import inspect
 
 from PySide6 import QtCore, QtGui, QtWidgets
+
+from ..connection import Connection
+from ..node import Node
+from ..pin import Pin
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -30,8 +35,8 @@ class NodeList(QtWidgets.QTreeWidget):
                 if inspect.isclass(obj):
                     # print(file.parts[1:-1])
                     self.imports[obj.__name__] = {"parent": file.parent.name, "class": obj, "module": module}
-        except Exception as e:
-            print(f"Error loading module {file}: {e}")
+        except ModuleNotFoundError as e:
+            print(e)
 
     def find_item_by_text(self, text):
         # Поиск элемента по тексту в дереве
@@ -88,3 +93,87 @@ class NodeList(QtWidgets.QTreeWidget):
             drag.exec_()
 
             super().mousePressEvent(event)
+
+    def load_scene(self, scene, json_path):
+        """ Load the scene from the json file """
+
+        with open(json_path) as f:
+            data = json.load(f)
+
+        if data:
+            node_lookup = {}  # A dictionary of nodes, by uuids
+
+            # Add the nodes
+            for n in data["nodes"]:
+                if n["type"] in self.imports.keys():
+                    info = self.imports[n["type"]]
+                    node = info["class"]()
+                    node.uuid = n["uuid"]
+                    node.value = n["value"]
+                    pos = QtCore.QPointF(n["x"], n["y"])
+
+                    scene.create_node(node, pos)
+
+                    node_lookup[node.uuid] = node
+
+                else:
+                    print(f"{n['type']} module is not found.")
+                    return
+
+            # Add the connections
+            for c in data["connections"]:
+                if node_lookup:
+                    start_pin = node_lookup[c["start_uuid"]].get_pin(c["start_pin"])
+                    end_pin = node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
+
+                    connection = Connection(None)
+                    scene.addItem(connection)
+
+                    if start_pin:
+                        connection.set_start_pin(start_pin)
+                    if end_pin:
+                        connection.set_end_pin(end_pin)
+
+                    connection.update_start_and_end_pos()
+
+    @staticmethod
+    def save_scene(scene, json_path):
+        """ Save the scene to the json file """
+
+        json_scene = {"nodes": [], "connections": []}
+
+        for item in scene.items():
+
+            # Nodes
+            if isinstance(item, Node):
+                pos = item.pos().toPoint()
+                obj_type = type(item).__name__
+
+                node = {
+                    "type": obj_type,
+                    "x": pos.x(),
+                    "y": pos.y(),
+                    "uuid": str(item.uuid),
+                    "value": item.value,
+                }
+
+                json_scene["nodes"].append(node)
+
+            # Connections
+            if isinstance(item, Connection):
+                connection = {
+                    "start_uuid": str(item.start_pin.node.uuid),
+                    "end_uuid": str(item.end_pin.node.uuid),
+                    "start_pin": item.start_pin.name,
+                    "end_pin": item.end_pin.name,
+                }
+
+                json_scene["connections"].append(connection)
+
+            # Pins
+            if isinstance(item, Pin):
+                # Future code
+                continue
+
+        with open(json_path, "w") as f:
+            json.dump(json_scene, f, indent=4)

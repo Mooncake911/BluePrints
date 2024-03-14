@@ -8,7 +8,6 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QFileDial
 
 from node_editor.gui.node_list import NodeList
 from node_editor.gui.view import View
-from node_editor.save_load import save_scene, load_scene
 
 
 class Launcher(QMainWindow):
@@ -90,14 +89,14 @@ class Launcher(QMainWindow):
             project_path, _ = file_dialog.getSaveFileName(self, f"{mode.capitalize()} json file", default_filename,
                                                           "Json Files (*.json)")
             if project_path:
-                save_scene(self.view.node_scene, project_path)
+                self.node_list.save_scene(self.view.node_scene, project_path)
 
         if mode.lower() == "open":
             file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
             project_path, _ = file_dialog.getOpenFileName(self, f"{mode.capitalize()} json file", default_filename,
                                                           "Json Files (*.json)")
             if project_path:
-                load_scene(self.view.node_scene, project_path, self.node_list.imports)
+                self.node_list.load_scene(self.view.node_scene, project_path)
 
     def closeEvent(self, event):
         QWidget.closeEvent(self, event)

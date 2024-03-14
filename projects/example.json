@@ -1,4 +1,58 @@
 {
-    "nodes": [],
-    "connections": []
+    "nodes": [
+        {
+            "type": "Lamp_Node",
+            "x": 5028,
+            "y": 5027,
+            "uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
+            "value": null
+        },
+        {
+            "type": "Add_Node",
+            "x": 4856,
+            "y": 5068,
+            "uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
+            "value": null
+        },
+        {
+            "type": "Print_Node",
+            "x": 5122,
+            "y": 4887,
+            "uuid": "b7200e77-ef00-4664-b20a-80bbe2db11b0",
+            "value": null
+        },
+        {
+            "type": "Event_Node",
+            "x": 4682,
+            "y": 4960,
+            "uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
+            "value": null
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
+            "end_uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
+            "start_pin": "output",
+            "end_pin": "mode"
+        },
+        {
+            "start_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
+            "end_uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
+            "end_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
+            "start_pin": "value",
+            "end_pin": "input A"
+        },
+        {
+            "start_uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
+            "end_uuid": "b7200e77-ef00-4664-b20a-80bbe2db11b0",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
 }

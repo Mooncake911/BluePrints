@@ -1,9 +1,17 @@
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6 import QtGui, QtWidgets
 from ..node import Node
 
 
 class NodeScene(QtWidgets.QGraphicsScene):
-    request_node = QtCore.Signal(object)
+    def __init__(self):
+        super().__init__()
+        self.setSceneRect(0, 0, 9999, 9999)
+
+    def create_node(self, node, pos):
+        self.addItem(node)
+        node.init_widget()
+        node.build()
+        node.setPos(pos)
 
     def dragEnterEvent(self, e):
         pass
@@ -25,10 +33,10 @@ class NodeScene(QtWidgets.QGraphicsScene):
         It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
         corresponding node.
         """
-        print(event.scenePos())
-        node = event.mimeData().item.class_name
+        # TODO тут добавить условие обработки перетягивания
+        node = event.mimeData().item.class_name()
         if node:
-            self.request_node.emit(node())
+            self.create_node(node, event.scenePos())
 
     def contextMenuEvent(self, event):
         # TODO contex menu for Nodes

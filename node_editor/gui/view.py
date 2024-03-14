@@ -12,17 +12,6 @@ class View(QtWidgets.QGraphicsView):
     _grid_size_fine = 15
     _grid_size_course = 150
 
-    def pos(self):
-        pos = self.mapFromGlobal(QtGui.QCursor.pos())
-        print(f'a == {pos}')
-        return self.mapToScene(pos)
-
-    def create_node(self, node, pos=None):
-        self.node_scene.addItem(node)
-        node.init_widget()
-        node.build()
-        node.setPos(self.pos() if pos is None else pos)
-
     def change_place(self, event, button):
         if event.button() in button:
             self._pan = True
@@ -39,8 +28,6 @@ class View(QtWidgets.QGraphicsView):
 
         # Create scene
         self.node_scene = NodeScene()
-        self.node_scene.setSceneRect(0, 0, 9999, 9999)
-        self.node_scene.request_node.connect(self.create_node)
         # Set node editor
         self.node_editor = NodeEditor()
 
