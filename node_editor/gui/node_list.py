@@ -5,9 +5,7 @@ import inspect
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from ..connection import Connection
-from ..node import Node
-from ..pin import Pin
+from node_editor.attributes import Node, Connection, Pin
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -126,7 +124,7 @@ class NodeList(QtWidgets.QTreeWidget):
                     start_pin = node_lookup[c["start_uuid"]].get_pin(c["start_pin"])
                     end_pin = node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
 
-                    connection = Connection(None)
+                    connection = Connection()
                     scene.addItem(connection)
 
                     if start_pin:

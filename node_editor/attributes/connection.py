@@ -1,13 +1,7 @@
-from .gui.connection_graphics import ConnectionGraphics
+from .connection_graphics import ConnectionGraphics
 
 
 class Connection(ConnectionGraphics):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.start_pin = None
-        self.end_pin = None
-
     def delete(self):
         """
         Deletes the connection and removes it from the scene and any connected pins.

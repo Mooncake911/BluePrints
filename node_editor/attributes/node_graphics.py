@@ -1,7 +1,13 @@
+from enum import Enum
+
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import Qt
 
-from ..common import NodeStatus
+
+class NodeStatus(Enum):
+    CLEAN = 1
+    DIRTY = 2
+    ERROR = 3
 
 
 class NodeGraphics(QtWidgets.QGraphicsItem):
@@ -93,8 +99,9 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
             painter.drawPath(self.main_bg_path.simplified())
 
     def build(self):
-        """ Builds the node interface by constructing its graphical representation. """
-
+        """
+        Builds the node interface by constructing its graphical representation.
+        """
         # Configure the widget side of things.
         self.widget.setStyleSheet("background-color: " + self.main_bg_color.name() + ";")
 

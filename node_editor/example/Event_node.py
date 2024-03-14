@@ -1,6 +1,6 @@
 from PySide6 import QtWidgets
 
-from node_editor.node import Node
+from node_editor.attributes import Node
 
 
 class Event_Node(Node):
@@ -12,7 +12,7 @@ class Event_Node(Node):
         self.type_text = "Event Nodes"
         self.set_color(title_color=(128, 0, 0))
 
-        self.add_pin(name="::Ex Out", is_output=True, execution=True)
+        self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
         self.add_pin(name="value", is_output=True)
 
     def init_widget(self):

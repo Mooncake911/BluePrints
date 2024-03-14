@@ -1,5 +1,5 @@
 from PySide6 import QtGui, QtWidgets
-from ..node import Node
+from node_editor.attributes import Node
 
 
 class NodeScene(QtWidgets.QGraphicsScene):

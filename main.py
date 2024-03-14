@@ -6,8 +6,7 @@ from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QFileDialog, QApplication)
 
 
-from node_editor.gui.node_list import NodeList
-from node_editor.gui.view import View
+from node_editor.gui import NodeList, View
 
 
 class Launcher(QMainWindow):

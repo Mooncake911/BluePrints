@@ -2,9 +2,7 @@ from contextlib import suppress
 
 from PySide6 import QtCore
 
-from ..connection import Connection
-from ..node import Node
-from ..pin import Pin
+from node_editor.attributes import Node, Connection, Pin
 
 
 class NodeEditor(QtCore.QObject):
@@ -33,7 +31,7 @@ class NodeEditor(QtCore.QObject):
                 self.port = self.item_at(event.scenePos())
 
                 if isinstance(self.port, Pin):
-                    self.connection = Connection(None)
+                    self.connection = Connection()
                     self.scene.addItem(self.connection)
                     self.connection.start_pos = self.port.scenePos()
                     self.connection.end_pos = self.port.scenePos()

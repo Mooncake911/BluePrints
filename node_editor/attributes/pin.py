@@ -2,18 +2,20 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class Pin(QtWidgets.QGraphicsPathItem):
-    def __init__(self, parent, node, name, is_output, execution):
+    _radius = 5
+    _margin = 2
+
+    def __init__(self, parent, node, name, is_output, execution, visible=True):
         super().__init__(parent)
+
+        self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemSendsScenePositionChanges)
 
         self.node = node
         self.name = name
         self.is_output = is_output
         self.execution = execution
+        self.visible = visible
         self.connection = None
-
-        self.radius_ = 5
-        self.margin = 2
-        self.invisible_name_starts = "::"
 
     def clear_connection(self):
         if self.connection:
@@ -39,7 +41,7 @@ class Pin(QtWidgets.QGraphicsPathItem):
             painter.setPen(QtCore.Qt.GlobalColor.white)
         else:
             # Determine circle (connection)
-            path.addEllipse(-self.radius_, -self.radius_, 2 * self.radius_, 2 * self.radius_)
+            path.addEllipse(-self._radius, -self._radius, 2 * self._radius, 2 * self._radius)
             painter.setPen(QtCore.Qt.GlobalColor.green)
         self.setPath(path)
 
@@ -54,24 +56,22 @@ class Pin(QtWidgets.QGraphicsPathItem):
 
     def set_pin_name(self, painter):
         path = QtGui.QPainterPath()
-        self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemSendsScenePositionChanges)
+
         font = QtGui.QFont()
         font_metrics = QtGui.QFontMetrics(font)
         pin_text_height = font_metrics.height()
         pin_text_width = font_metrics.horizontalAdvance(self.name)
 
         if self.is_output:
-            x = -self.radius_ - self.margin - pin_text_width
+            x = -self._radius - self._margin - pin_text_width
         else:
-            x = self.radius_ + self.margin
+            x = self._radius + self._margin
 
         y = pin_text_height / 4
 
         path.addText(x, y, font, self.name)
 
-        if self.name[:2] == self.invisible_name_starts:
-            pass
-        else:
+        if self.visible:
             painter.setPen(QtCore.Qt.PenStyle.NoPen)
             painter.setBrush(QtCore.Qt.GlobalColor.white)
             painter.drawPath(path)

@@ -1,7 +1,7 @@
 from PySide6 import QtWidgets
 from PySide6.QtGui import QDoubleValidator
 
-from node_editor.node import Node
+from node_editor.attributes import Node
 
 
 class Float_Node(Node):

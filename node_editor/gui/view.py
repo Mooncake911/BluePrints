@@ -63,25 +63,22 @@ class View(QtWidgets.QGraphicsView):
         """
 
         def fill_grid(grid_size, grid_pen):
-            left = int(rect.left()) - (int(rect.left()) % grid_size)
-            top = int(rect.top()) - (int(rect.top()) % grid_size)
+            y = float(int(rect.left()) - (int(rect.left()) % grid_size))
+            x = float(int(rect.top()) - (int(rect.top()) % grid_size))
 
-            # Draw horizontal lines
             grid_lines = []
             painter.setPen(grid_pen)
-            y = float(top)
-            while y < float(rect.bottom()):
-                grid_lines.append(QtCore.QLineF(rect.left(), y, rect.right(), y))
-                y += grid_size
+
+            # Draw horizontal lines
+            while x < float(rect.bottom()):
+                grid_lines.append(QtCore.QLineF(rect.left(), x, rect.right(), x))
+                x += grid_size
             painter.drawLines(grid_lines)
 
             # Draw vertical lines
-            grid_lines = []
-            painter.setPen(grid_pen)
-            x = float(left)
-            while x < float(rect.right()):
-                grid_lines.append(QtCore.QLineF(x, rect.top(), x, rect.bottom()))
-                x += grid_size
+            while y < float(rect.right()):
+                grid_lines.append(QtCore.QLineF(y, rect.top(), y, rect.bottom()))
+                y += grid_size
             painter.drawLines(grid_lines)
 
         painter.fillRect(rect, self._background_color)

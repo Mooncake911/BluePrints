@@ -1,13 +1,13 @@
 import uuid
 from .pin import Pin
-from .gui.node_graphics import NodeGraphics
+from .node_graphics import NodeGraphics
 
 
 class Node(NodeGraphics):
     def __init__(self):
         super().__init__()
-        self.uuid = uuid.uuid4()  # An identifier that used to saving and loading scene
-        self.value = None  # An input value that has been set by the user
+        self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
+        self.value = None         # An input value that has been set by the user
 
     def init_widget(self):
         """ Initialize the node widget [Your_node.py]."""
@@ -55,17 +55,17 @@ class Node(NodeGraphics):
             if pin.name == name:
                 return pin
 
-    def add_pin(self, name, is_output=False, execution=False):
-        pin = Pin(self, node=self, name=name, is_output=is_output, execution=execution)
+    def add_pin(self, name, is_output, execution=False, visible=True):
+        pin = Pin(self, node=self, name=name, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
 
     def select_connections(self, value):
         """
         Sets the highlighting of all connected pins to the specified value.
 
-        This method takes a boolean value `value` as input and sets the `_do_highlight` attribute of all connected pins
+        This method takes a boolean value `value` as input and sets the `_do_highlight` attributes of all connected pins
         to this value. If a pin is not connected, this method does nothing for that pin. After setting the
-        `_do_highlight` attribute for all connected pins, the `update_path` method is called for each connection.
+        `_do_highlight` attributes for all connected pins, the `update_path` method is called for each connection.
 
         Args:
             value: A boolean value indicating whether to highlight the connected pins or not.

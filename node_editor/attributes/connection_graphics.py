@@ -2,32 +2,8 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
-    """
-    A Connection represents a graphical connection between two NodePorts in a PySide6 application.
-
-    Attributes:
-    start_pin (NodePort): The NodePort where the connection starts.
-    end_pin (NodePort): The NodePort where the connection ends.
-    start_pos (QPointF): The starting position of the connection.
-    end_pos (QPointF): The ending position of the connection.
-
-    Methods:
-    delete(): Deletes the connection.
-    nodes(): Returns a tuple of the two connected nodes.
-    update_start_and_end_pos(): Updates the starting and ending positions of the connection.
-    update_path(): Draws a smooth cubic curve from the starting to ending position of the connection.
-    paint(painter, option=None, widget=None): Override the default paint method depending on if the object is selected.
-
-    Example:
-    conn = Connection(parent)
-    conn.start_pin = start_pin
-    conn.end_pin = end_pin
-    conn.update_start_and_end_pos()
-    conn.update_path()
-    """
-
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
 
         self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemIsSelectable)
 
@@ -61,13 +37,7 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
     def paint(self, painter, option=None, widget=None):
         """
         Override the default paint method depending on if the object is selected.
-
-        Args:
-        painter (QPainter): The QPainter object used to paint the Connection.
-        option (QStyleOptionGraphicsItem): The style options for the Connection.
-        widget (QWidget): The widget used to paint the Connection.
         """
-
         thickness = 4
         color = QtGui.QColor(0, 128, 255, 200)
         
