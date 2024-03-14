@@ -1,3 +1,4 @@
+import uuid
 from .pin import Pin
 from .gui.node_graphics import NodeGraphics
 
@@ -5,7 +6,7 @@ from .gui.node_graphics import NodeGraphics
 class Node(NodeGraphics):
     def __init__(self):
         super().__init__()
-        self.uuid = None  # An identifier that used to saving and loading scene
+        self.uuid = uuid.uuid4()  # An identifier that used to saving and loading scene
         self.value = None  # An input value that has been set by the user
 
     def init_widget(self):

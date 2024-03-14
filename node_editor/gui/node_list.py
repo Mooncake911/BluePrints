@@ -6,8 +6,8 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 class NodeList(QtWidgets.QTreeWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.setHeaderHidden(True)
         self.setDragEnabled(True)
 

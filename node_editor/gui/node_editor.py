@@ -9,14 +9,14 @@ from ..pin import Pin
 
 class NodeEditor(QtCore.QObject):
     """ Constructor for NodeEditor. """
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
         self.connection = None
         self.port = None
         self.scene = None
         self._last_selected = None
 
-    def install(self, scene):
+    def setScene(self, scene):
         """ Installs the NodeEditor into a QGraphicsScene. """
         self.scene = scene
         self.scene.installEventFilter(self)

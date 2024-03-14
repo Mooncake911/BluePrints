@@ -1,4 +1,6 @@
 from PySide6 import QtCore, QtGui, QtOpenGLWidgets, QtWidgets
+from .node_editor import NodeEditor
+from .node_scene import NodeScene
 
 
 class View(QtWidgets.QGraphicsView):
@@ -10,6 +12,17 @@ class View(QtWidgets.QGraphicsView):
     _grid_size_fine = 15
     _grid_size_course = 150
 
+    def pos(self):
+        pos = self.mapFromGlobal(QtGui.QCursor.pos())
+        print(f'a == {pos}')
+        return self.mapToScene(pos)
+
+    def create_node(self, node, pos=None):
+        self.node_scene.addItem(node)
+        node.init_widget()
+        node.build()
+        node.setPos(self.pos() if pos is None else pos)
+
     def change_place(self, event, button):
         if event.button() in button:
             self._pan = True
@@ -17,13 +30,19 @@ class View(QtWidgets.QGraphicsView):
             self._pan_start_y = event.y()
             self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
 
-    def __init__(self, parent):
-        super().__init__(parent)
-
+    def __init__(self):
+        super().__init__()
         self._pan = False
         self._pan_start_x = 0
         self._pan_start_y = 0
         self.lastMousePos = QtCore.QPoint()
+
+        # Create scene
+        self.node_scene = NodeScene()
+        self.node_scene.setSceneRect(0, 0, 9999, 9999)
+        self.node_scene.request_node.connect(self.create_node)
+        # Set node editor
+        self.node_editor = NodeEditor()
 
         # Graphic settings
         self.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -37,10 +56,16 @@ class View(QtWidgets.QGraphicsView):
         self.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
 
-        #
-        self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        # Other
+        # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        # self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         # self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+
+        self.setScene(self.node_scene)
+
+    def setScene(self, scene):
+        self.node_editor.setScene(scene)
+        super().setScene(scene)
 
     def drawBackground(self, painter, rect):
         """
@@ -91,6 +116,7 @@ class View(QtWidgets.QGraphicsView):
         delta = event.angleDelta().y()
         factor = 1.2 if delta > 0 else 1 / 1.2
         self.scale(factor, factor)
+        return super().wheelEvent(event)
 
     def mousePressEvent(self, event):
         """
