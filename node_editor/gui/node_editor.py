@@ -24,30 +24,6 @@ class NodeEditor(QtCore.QObject):
         items = self.scene.items(QtCore.QRectF(position - QtCore.QPointF(1, 1), QtCore.QSizeF(3, 3)))
         return items[0] if items else None
 
-    def keyPressEvent(self, event):
-        # Process finished with exit code -1073741819 (0xC0000005)
-        # Описание: все Nodes которые содержат в себе QtWidgets.QWidget() при 3-х разовом удалении
-        if event.key() == QtCore.Qt.Key.Key_Delete:
-            for item in self.scene.selectedItems():
-                item.delete()
-            return True
-
-        if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
-
-            if event.key() == QtCore.Qt.Key.Key_A:
-                node_items = [item for item in self.scene.items() if isinstance(item, Node)]
-                all_selected = len(self.scene.selectedItems()) == len(node_items)
-                for item in node_items:
-                    item.setSelected(not all_selected)
-                return True
-
-            if event.key() == QtCore.Qt.Key.Key_N:
-                # TODO сделать предупреждающее сообщение о потере результата
-                node_items = [item for item in self.scene.items() if isinstance(item, Node)]
-                for item in node_items:
-                    item.delete()
-                return True
-
     def eventFilter(self, watched, event):
         """ Filters events from the QGraphicsScene."""
         if event.type() == QtCore.QEvent.Type.GraphicsSceneMousePress:
@@ -73,13 +49,6 @@ class NodeEditor(QtCore.QObject):
 
                 else:
                     self._last_selected = None
-
-            elif event.button() == QtCore.Qt.MouseButton.RightButton:
-                # context menu
-                pass
-
-        elif event.type() == QtCore.QEvent.Type.KeyPress:
-            self.keyPressEvent(event)
 
         elif event.type() == QtCore.QEvent.Type.GraphicsSceneMouseMove:
             if self.connection:

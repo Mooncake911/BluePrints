@@ -3,10 +3,11 @@ import qdarktheme
 from functools import partial
 
 from PySide6 import QtCore, QtGui
-from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QFileDialog, QApplication)
+from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QApplication, QFileDialog)
 
 
 from node_editor.gui import NodeList, View
+from node_editor.utils import file_message
 
 
 class Launcher(QMainWindow):
@@ -35,12 +36,14 @@ class Launcher(QMainWindow):
         menu.addMenu(file_menu)
 
         save_action = QtGui.QAction("Save Project", file_menu)
-        save_action.triggered.connect(lambda: self.json_project(mode="save"))
+        save_action.triggered.connect(lambda: file_message(self.view.node_scene,
+                                                           mode=QFileDialog.AcceptMode.AcceptSave))
         save_action.setShortcut("Ctrl+S")
         file_menu.addAction(save_action)
 
         load_action = QtGui.QAction("Open Project", file_menu)
-        load_action.triggered.connect(lambda: self.json_project(mode="open"))
+        load_action.triggered.connect(lambda: file_message(self.view.node_scene,
+                                                           mode=QFileDialog.AcceptMode.AcceptOpen))
         load_action.setShortcut("Ctrl+O")
         file_menu.addAction(load_action)
 
@@ -77,28 +80,6 @@ class Launcher(QMainWindow):
         splitter.addWidget(self.view)
         splitter.setContentsMargins(7, 7, 7, 7)
         self.setCentralWidget(splitter)
-
-    def json_project(self, mode: str = None):
-        """ Save/Load the project to .json """
-        file_dialog = QFileDialog(self)
-        file_dialog.setDefaultSuffix("json")
-        file_dialog.setNameFilter("JSON files (*.json)")
-
-        default_filename = "projects"
-
-        if mode.lower() == "save":
-            file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
-            project_path, _ = file_dialog.getSaveFileName(self, f"{mode.capitalize()} json file", default_filename,
-                                                          "Json Files (*.json)")
-            if project_path:
-                self.node_list.save_scene(self.view.node_scene, project_path)
-
-        if mode.lower() == "open":
-            file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptOpen)
-            project_path, _ = file_dialog.getOpenFileName(self, f"{mode.capitalize()} json file", default_filename,
-                                                          "Json Files (*.json)")
-            if project_path:
-                self.node_list.load_scene(self.view.node_scene, project_path)
 
     def closeEvent(self, event):
         QWidget.closeEvent(self, event)

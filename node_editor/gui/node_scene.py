@@ -1,5 +1,6 @@
-from PySide6 import QtGui, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from node_editor.attributes import Node
+from node_editor.utils import file_message, extra_message
 
 
 class NodeScene(QtWidgets.QGraphicsScene):
@@ -12,10 +13,6 @@ class NodeScene(QtWidgets.QGraphicsScene):
         node.init_widget()
         node.build()
         node.setPos(pos)
-
-    def dragEnterEvent(self, e):
-        pass
-        # e.acceptProposedAction()
 
     def dragMoveEvent(self, event):
         """
@@ -33,10 +30,9 @@ class NodeScene(QtWidgets.QGraphicsScene):
         It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
         corresponding node.
         """
-        # TODO тут добавить условие обработки перетягивания
-        node = event.mimeData().item.class_name()
+        node = event.mimeData().item.class_name
         if node:
-            self.create_node(node, event.scenePos())
+            self.create_node(node(), event.scenePos())
 
     def contextMenuEvent(self, event):
         # TODO contex menu for Nodes
@@ -51,3 +47,44 @@ class NodeScene(QtWidgets.QGraphicsScene):
 
                 if action == hello_action:
                     print("Hello")
+
+    def keyPressEvent(self, event):
+        """
+        This method is called when happened any press key event.
+        It checks the key's relevant shortcuts.
+        """
+
+        # Delete selected elements
+        if event.key() == QtCore.Qt.Key.Key_Delete:
+            for item in self.selectedItems():
+                item.delete()
+            # TODO Process finished with exit code -1073741819 (0xC0000005)
+            # Описание: все Nodes которые содержат в себе QtWidgets.QWidget() при 3-х разовом удалении
+            return True
+
+        if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
+            node_items = [item for item in self.items() if isinstance(item, Node)]
+
+            # [Ctrl + A]
+            if event.key() == QtCore.Qt.Key.Key_A:
+                all_selected = len(self.selectedItems()) == len(node_items)
+                for item in node_items:
+                    item.setSelected(not all_selected)
+                return True
+
+            # [Ctrl + N]
+            if event.key() == QtCore.Qt.Key.Key_N:
+
+                match extra_message():
+
+                    case QtWidgets.QMessageBox.StandardButton.Save:
+                        file_message(scene=self, mode=QtWidgets.QFileDialog.AcceptMode.AcceptSave)
+
+                    case QtWidgets.QMessageBox.StandardButton.Discard:
+                        for item in node_items:
+                            item.delete()
+
+                    case QtWidgets.QMessageBox.StandardButton.Cancel:
+                        pass
+
+                return True
