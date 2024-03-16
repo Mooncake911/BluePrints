@@ -4,7 +4,7 @@ from .node_scene import NodeScene
 
 
 class View(QtWidgets.QGraphicsView):
-    _background_color = QtGui.QColor(38, 38, 38)
+    _scaler = 1.1
 
     _grid_pen_s = QtGui.QPen(QtGui.QColor(52, 52, 52, 255), 0.5)
     _grid_pen_l = QtGui.QPen(QtGui.QColor(22, 22, 22, 255), 1.0)
@@ -56,7 +56,7 @@ class View(QtWidgets.QGraphicsView):
 
     def drawBackground(self, painter, rect):
         """
-        Draws the background for the interface editor view.
+        Draws the background for the interface editor view. [draw in live: because of zoom in/out]
 
         :param painter: The painter to draw with.
         :param rect: The rectangle to be drawn.
@@ -81,7 +81,7 @@ class View(QtWidgets.QGraphicsView):
                 y += grid_size
             painter.drawLines(grid_lines)
 
-        painter.fillRect(rect, self._background_color)
+        painter.fillRect(rect, self.palette().color(QtGui.QPalette.ColorRole.Base))
         fill_grid(self._grid_size_fine, self._grid_pen_s)  # fine squares
         fill_grid(self._grid_size_course, self._grid_pen_l)  # course squares
 
@@ -98,9 +98,21 @@ class View(QtWidgets.QGraphicsView):
             return
 
         delta = event.angleDelta().y()
-        factor = 1.2 if delta > 0 else 1 / 1.2
-        self.scale(factor, factor)
+        factor = self._scaler if delta > 0 else 1 / self._scaler
+
+        if (0.1 < self.transform().m11() * factor < 2) and (0.1 < self.transform().m22() * factor < 2):
+            # print(self.transform().m11(), self.transform().m22())
+            self.scale(factor, factor)
+
         return super().wheelEvent(event)
+
+    def keyPressEvent(self, event):
+        if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier and event.key() == QtCore.Qt.Key.Key_Minus:
+            print('-')
+        if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier and event.key() == QtCore.Qt.Key.Key_Plus:
+            print('+')
+        else:
+            super().keyPressEvent(event)
 
     def mousePressEvent(self, event):
         """

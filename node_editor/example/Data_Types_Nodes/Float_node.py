@@ -1,13 +1,10 @@
-from PySide6 import QtWidgets
-from PySide6.QtGui import QDoubleValidator
-
+from PySide6 import QtWidgets, QtGui
 from node_editor.attributes import Node
 
 
 class Float_Node(Node):
     def __init__(self):
         super().__init__()
-        self.widget = QtWidgets.QWidget()
 
         self.title_text = "Float"
         self.type_text = "Data Types"
@@ -15,26 +12,25 @@ class Float_Node(Node):
 
         self.add_pin(name="Value", is_output=True)
 
+    def user_input(self, text):
+        self.value = text
+
     def init_widget(self):
         line_edit = QtWidgets.QLineEdit()
+        line_edit.textChanged.connect(self.user_input)
+        line_edit.setFixedWidth(100)
 
-        # Устанавливаем валидатор для ограничения ввода только целых чисел
-        double_validator = QDoubleValidator()
+        # Set float validator
+        double_validator = QtGui.QDoubleValidator()
         line_edit.setValidator(double_validator)
         double_validator.setDecimals(5)
 
-        # Устанавливаем текст по умолчанию
-        line_edit.setPlaceholderText("Enter")
+        # Set default text
+        if self.value:
+            line_edit.setText(self.value)
+        else:
+            line_edit.setPlaceholderText("Enter")
 
-        # Устанавливаем геометрию
-        self.widget.setFixedWidth(100)
-        layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(line_edit)
-        self.widget.setLayout(layout)
-
-        proxy = QtWidgets.QGraphicsProxyWidget()
-        proxy.setWidget(self.widget)
-        proxy.setParentItem(self)
+        self.inner_widget = line_edit
 
         super().init_widget()

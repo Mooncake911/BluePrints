@@ -1,12 +1,10 @@
 from PySide6 import QtWidgets
-
 from node_editor.attributes import Node
 
 
 class Boolean_Node(Node):
     def __init__(self):
         super().__init__()
-        self.widget = QtWidgets.QWidget()
 
         self.title_text = "Boolean"
         self.type_text = "Data Types"
@@ -15,19 +13,10 @@ class Boolean_Node(Node):
         self.add_pin(name="Value", is_output=True)
 
     def init_widget(self):
-        self.widget.setFixedWidth(100)
-        layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
-
         combo_box = QtWidgets.QComboBox()
-        geek_list = ["True", "False"]
-        combo_box.setGeometry(200, 150, 120, 30)
-        combo_box.addItems(geek_list)
-        layout.addWidget(combo_box)
-        self.widget.setLayout(layout)
+        combo_box.addItems(["True", "False"])
+        combo_box.setFixedWidth(100)
 
-        proxy = QtWidgets.QGraphicsProxyWidget()
-        proxy.setWidget(self.widget)
-        proxy.setParentItem(self)
+        self.inner_widget = combo_box
 
         super().init_widget()

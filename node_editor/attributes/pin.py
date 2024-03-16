@@ -5,17 +5,17 @@ class Pin(QtWidgets.QGraphicsPathItem):
     _radius = 5
     _margin = 2
 
-    def __init__(self, parent, node, name, is_output, execution, visible=True):
+    def __init__(self, parent, name, is_output, execution, visible=True):
         super().__init__(parent)
 
-        self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemSendsScenePositionChanges)
-
-        self.node = node
+        self.connection = None
+        self.node = parent
         self.name = name
         self.is_output = is_output
         self.execution = execution
         self.visible = visible
-        self.connection = None
+
+        self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemSendsScenePositionChanges)
 
     def clear_connection(self):
         if self.connection:
@@ -24,12 +24,9 @@ class Pin(QtWidgets.QGraphicsPathItem):
     def can_connect_to(self, pin):
         if not pin:
             return False
-        if pin.node == self.node:
+        if pin.node == self.node:   # TODO I don't like it
             return False
         return self.is_output != pin.is_output and pin.execution == self.execution
-
-    def is_connected(self):
-        return bool(self.connection)
 
     def set_pin(self, painter):
         path = QtGui.QPainterPath()
@@ -45,7 +42,7 @@ class Pin(QtWidgets.QGraphicsPathItem):
             painter.setPen(QtCore.Qt.GlobalColor.green)
         self.setPath(path)
 
-        if self.is_connected():
+        if bool(self.connection):
             if self.execution:
                 painter.setBrush(QtCore.Qt.GlobalColor.white)
             else:
@@ -82,6 +79,6 @@ class Pin(QtWidgets.QGraphicsPathItem):
         self.set_pin_name(painter)
 
     def itemChange(self, change, value):
-        if change == QtWidgets.QGraphicsItem.GraphicsItemChange.ItemScenePositionHasChanged and self.connection:
+        if self.connection:
             self.connection.update_start_and_end_pos()
-        return value
+        return super().itemChange(change, value)

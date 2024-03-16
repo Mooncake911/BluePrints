@@ -36,10 +36,12 @@ class Launcher(QMainWindow):
 
         save_action = QtGui.QAction("Save Project", file_menu)
         save_action.triggered.connect(lambda: self.json_project(mode="save"))
+        save_action.setShortcut("Ctrl+S")
         file_menu.addAction(save_action)
 
         load_action = QtGui.QAction("Open Project", file_menu)
         load_action.triggered.connect(lambda: self.json_project(mode="open"))
+        load_action.setShortcut("Ctrl+O")
         file_menu.addAction(load_action)
 
         # def theme_action_triggered(theme_):
@@ -65,6 +67,7 @@ class Launcher(QMainWindow):
 
         github_action = QtGui.QAction("Visit GitHub", help_menu)
         github_action.triggered.connect(visit_github)
+        github_action.setShortcut("Ctrl+F1")
         help_menu.addAction(github_action)
 
     def create_editor(self):
@@ -104,7 +107,7 @@ class Launcher(QMainWindow):
 if __name__ == "__main__":
     app = QApplication()
     app.setWindowIcon(QtGui.QIcon("resources/img/app.ico"))
-    qdarktheme.setup_theme('dark', corner_shape="rounded")  # default
+    qdarktheme.setup_theme('dark', corner_shape="rounded")  # Adefault
 
     launcher = Launcher()
     launcher.show()

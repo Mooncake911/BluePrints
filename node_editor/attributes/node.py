@@ -1,17 +1,27 @@
 import uuid
 from .pin import Pin
 from .node_graphics import NodeGraphics
-
+from PySide6 import QtWidgets
 
 class Node(NodeGraphics):
     def __init__(self):
         super().__init__()
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
         self.value = None         # An input value that has been set by the user
+        self.inner_widget = None
 
     def init_widget(self):
-        """ Initialize the node widget [Your_node.py]."""
-        pass
+        # TODO мне не нравиться надо переделать
+        if self.inner_widget:
+
+            layout = QtWidgets.QVBoxLayout()
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.addWidget(self.inner_widget)
+            self.widget.setLayout(layout)
+
+            proxy = QtWidgets.QGraphicsProxyWidget()
+            proxy.setWidget(self.widget)
+            proxy.setParentItem(self)
 
     def compute(self):
         raise NotImplementedError("compute is not implemented")
@@ -33,7 +43,8 @@ class Node(NodeGraphics):
         pass
 
     def delete(self):
-        """Deletes the connection.
+        """
+        Deletes the connection.
 
         This function removes any connected pins by calling :any:`Port.remove_connection` for each pin
         connected to this connection. After all connections have been removed, the stored :any:`Port`
@@ -56,25 +67,14 @@ class Node(NodeGraphics):
                 return pin
 
     def add_pin(self, name, is_output, execution=False, visible=True):
-        pin = Pin(self, node=self, name=name, is_output=is_output, execution=execution, visible=visible)
+        pin = Pin(self, name=name, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
 
-    def select_connections(self, value):
+    def select_connections(self, selected: bool):
         """
         Sets the highlighting of all connected pins to the specified value.
-
-        This method takes a boolean value `value` as input and sets the `_do_highlight` attributes of all connected pins
-        to this value. If a pin is not connected, this method does nothing for that pin. After setting the
-        `_do_highlight` attributes for all connected pins, the `update_path` method is called for each connection.
-
-        Args:
-            value: A boolean value indicating whether to highlight the connected pins or not.
-
-        Returns:
-            None.
         """
 
         for pin in self._pins:
             if pin.connection:
-                pin.connection._do_highlight = value
-                pin.connection.update_path()
+                pin.connection._do_highlight = selected

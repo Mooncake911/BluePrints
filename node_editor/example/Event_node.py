@@ -1,12 +1,10 @@
 from PySide6 import QtWidgets
-
 from node_editor.attributes import Node
 
 
 class Event_Node(Node):
     def __init__(self):
         super().__init__()
-        self.widget = QtWidgets.QWidget()
 
         self.title_text = "Event"
         self.type_text = "Event Nodes"
@@ -15,22 +13,16 @@ class Event_Node(Node):
         self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
         self.add_pin(name="value", is_output=True)
 
+    @staticmethod
+    def button_cmd(self):
+        print("btn command")
+        # self.execute()
+
     def init_widget(self):
-        self.widget.setFixedWidth(100)
-        layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        button = QtWidgets.QPushButton("Button test")
+        button.clicked.connect(self.button_cmd)
+        button.setFixedWidth(100)
 
-        btn = QtWidgets.QPushButton("Button test")
-        btn.clicked.connect(self.btn_cmd)
-        # layout.addWidget(btn)
-        self.widget.setLayout(layout)
-
-        proxy = QtWidgets.QGraphicsProxyWidget()
-        proxy.setWidget(self.widget)
-        proxy.setParentItem(self)
+        self.inner_widget = button
 
         super().init_widget()
-
-    def btn_cmd(self):
-        print("btn command")
-        self.execute()

@@ -1,12 +1,10 @@
 from PySide6 import QtWidgets
-
 from node_editor.attributes import Node
 
 
 class Timer_Node(Node):
     def __init__(self):
         super().__init__()
-        self.widget = QtWidgets.QWidget()
 
         self.title_text = "Timer"
         self.type_text = "Data Types"
@@ -16,17 +14,10 @@ class Timer_Node(Node):
         self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
 
     def init_widget(self):
-        self.widget.setFixedWidth(100)
-        layout = QtWidgets.QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+        time_edit = QtWidgets.QTimeEdit()
+        time_edit.setDisplayFormat("hh:mm:ss")
+        time_edit.setFixedWidth(100)
 
-        tmr = QtWidgets.QTimeEdit()
-        tmr.setDisplayFormat("hh:mm:ss")
-        layout.addWidget(tmr)
-        self.widget.setLayout(layout)
-
-        proxy = QtWidgets.QGraphicsProxyWidget()
-        proxy.setWidget(self.widget)
-        proxy.setParentItem(self)
+        self.inner_widget = time_edit
 
         super().init_widget()

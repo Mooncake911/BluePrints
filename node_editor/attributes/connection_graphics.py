@@ -36,7 +36,7 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
 
     def paint(self, painter, option=None, widget=None):
         """
-        Override the default paint method depending on if the object is selected.
+        Override the Adefault paint method depending on if the object is selected.
         """
         thickness = 4
         color = QtGui.QColor(0, 128, 255, 200)
