@@ -1,6 +1,5 @@
 from PySide6 import QtCore, QtGui, QtOpenGLWidgets, QtWidgets
 from .node_editor import NodeEditor
-from .node_scene import NodeScene
 
 
 class View(QtWidgets.QGraphicsView):
@@ -33,8 +32,6 @@ class View(QtWidgets.QGraphicsView):
         self._pan_start_x = 0
         self._pan_start_y = 0
 
-        # Create scene
-        self.node_scene = NodeScene()
         # Set node editor
         self.node_editor = NodeEditor()
 
@@ -54,8 +51,6 @@ class View(QtWidgets.QGraphicsView):
         # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         # self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         # self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-
-        self.setScene(self.node_scene)
 
     def setScene(self, scene):
         self.node_editor.setScene(scene)

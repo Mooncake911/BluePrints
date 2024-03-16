@@ -3,7 +3,7 @@ from node_editor.attributes import Node
 from node_editor.utils import file_message, extra_message
 
 
-class NodeScene(QtWidgets.QGraphicsScene):
+class ViewScene(QtWidgets.QGraphicsScene):
     def __init__(self):
         super().__init__()
         self.setSceneRect(0, 0, 9999, 9999)
@@ -53,7 +53,6 @@ class NodeScene(QtWidgets.QGraphicsScene):
         This method is called when happened any press key event.
         It checks the key's relevant shortcuts.
         """
-
         # Delete selected elements
         if event.key() == QtCore.Qt.Key.Key_Delete:
             for item in self.selectedItems():

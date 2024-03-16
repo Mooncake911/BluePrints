@@ -16,10 +16,10 @@ def extra_message():
     msg_box = QMessageBox()
     msg_box.setText("The project has been modified.")
     msg_box.setInformativeText("Do you want to save your changes?")
-    msg_box.setStandardButtons(msg_box.StandardButton.Save
-                               | msg_box.StandardButton.Discard
-                               | msg_box.StandardButton.Cancel)
-    msg_box.setDefaultButton(msg_box.StandardButton.Save)
+    msg_box.setStandardButtons(QMessageBox.StandardButton.Save
+                               | QMessageBox.StandardButton.Discard
+                               | QMessageBox.StandardButton.Cancel)
+    msg_box.setDefaultButton(QMessageBox.StandardButton.Save)
     return msg_box.exec_()
 
 
@@ -27,7 +27,7 @@ def file_message(scene, mode) -> None:
     """
     Calls when want to save/open the scene to .json file.
 
-    :param scene: The NodeScene() from node_scene.py
+    :param scene: The ViewScene() from view_scene.py
     :param mode: QFileDialog.AcceptMode.AcceptSave or QFileDialog.AcceptMode.AcceptOpen
     """
     global _default_folder
@@ -55,7 +55,7 @@ def load_scene(scene, imports, json_path: str) -> None:
     """
     Load the scene from the .json file.
 
-    :param scene: The NodeScene() from node_scene.py
+    :param scene: The ViewScene() from view_scene.py
     :param imports: The NodeList().imports from node_list.py
     :param json_path: The json file path
     """
@@ -104,7 +104,7 @@ def save_scene(scene, json_path: str) -> None:
     """
     Save the scene to the .json file.
 
-    :param scene: The NodeScene() from node_scene.py
+    :param scene: The ViewScene() from view_scene.py
     :param json_path: The json file path
     """
 

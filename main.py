@@ -6,7 +6,7 @@ from PySide6 import QtCore, QtGui
 from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QApplication, QFileDialog)
 
 
-from node_editor.gui import NodeList, View
+from node_editor.gui import NodeList, View, ViewScene
 from node_editor.utils import file_message
 
 
@@ -17,8 +17,11 @@ class Launcher(QMainWindow):
 
         # Left widget
         self.node_list = NodeList()
+
         # Main widget
         self.view = View()
+        self.view_scene = ViewScene()  # Create scene
+        self.view.setScene(self.view_scene)
 
         self.create_menus()
         self.create_editor()
@@ -36,13 +39,13 @@ class Launcher(QMainWindow):
         menu.addMenu(file_menu)
 
         save_action = QtGui.QAction("Save Project", file_menu)
-        save_action.triggered.connect(lambda: file_message(self.view.node_scene,
+        save_action.triggered.connect(lambda: file_message(self.view_scene,
                                                            mode=QFileDialog.AcceptMode.AcceptSave))
         save_action.setShortcut("Ctrl+S")
         file_menu.addAction(save_action)
 
         load_action = QtGui.QAction("Open Project", file_menu)
-        load_action.triggered.connect(lambda: file_message(self.view.node_scene,
+        load_action.triggered.connect(lambda: file_message(self.view_scene,
                                                            mode=QFileDialog.AcceptMode.AcceptOpen))
         load_action.setShortcut("Ctrl+O")
         file_menu.addAction(load_action)
@@ -88,7 +91,7 @@ class Launcher(QMainWindow):
 if __name__ == "__main__":
     app = QApplication()
     app.setWindowIcon(QtGui.QIcon("resources/img/app.ico"))
-    qdarktheme.setup_theme('dark', corner_shape="rounded")  # Adefault
+    qdarktheme.setup_theme('dark', corner_shape="rounded")  # default
 
     launcher = Launcher()
     launcher.show()
