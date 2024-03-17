@@ -7,7 +7,7 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
 
         self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemIsSelectable)
 
-        self.setPen(QtGui.QPen(QtGui.QColor(200, 200, 200), 2))
+        self.setPen(QtGui.QPen(QtGui.QColor(200, 200, 200), 25))
         self.setBrush(QtCore.Qt.BrushStyle.NoBrush)
         self.setZValue(-1)
 
@@ -16,7 +16,16 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         self.start_pin = None
         self.end_pin = None
 
-        self._do_highlight = False
+        self.setAcceptHoverEvents(True)
+        self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+
+    def hoverEnterEvent(self, event):
+        self.setSelected(True)
+        super().hoverEnterEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        self.setSelected(False)
+        super().hoverLeaveEvent(event)
 
     def update_path(self):
         """
@@ -36,18 +45,24 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
 
     def paint(self, painter, option=None, widget=None):
         """
-        Override the Adefault paint method depending on if the object is selected.
+        Override the default paint method depending on if the object is selected.
         """
+        palette = self.scene().views()[0].palette()  # Get a palette from any of the scene views
+        base_color = palette.color(QtGui.QPalette.ColorRole.Base)
+
         thickness = 4
-        color = QtGui.QColor(0, 128, 255, 200)
-        
+        color = QtGui.QColor(255 - base_color.red(), 255 - base_color.green(), 255 - base_color.blue(), 200)
+
         if self.start_pin:
             if self.start_pin.execution:
-                thickness = 6
-                color = QtGui.QColor(255, 255, 255, 150)
+                thickness = 6  # change thickness for execution pin
+            else:
+                color = QtGui.QColor(0, 128, 255, 200)  # change color for non-execution pin
 
-        if self.isSelected() or self._do_highlight:
-            painter.setPen(QtGui.QPen(color.lighter(), thickness + 4))
+            if self.isSelected():
+                painter.setPen(QtGui.QPen(color.lighter(), thickness + 4))
+            else:
+                painter.setPen(QtGui.QPen(color, thickness))
         else:
             painter.setPen(QtGui.QPen(color, thickness))
 

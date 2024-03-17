@@ -1,7 +1,11 @@
 import uuid
+
+from PySide6 import QtWidgets
+
+
 from .pin import Pin
 from .node_graphics import NodeGraphics
-from PySide6 import QtWidgets
+
 
 class Node(NodeGraphics):
     def __init__(self):

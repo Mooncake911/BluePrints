@@ -40,6 +40,17 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         self.horizontal_margin = 15  # horizontal margin
         self.vertical_margin = 15  # vertical margin
 
+        self.setAcceptHoverEvents(True)
+        self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+
+    def hoverEnterEvent(self, event):
+        self.setSelected(True)
+        super().hoverEnterEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        self.setSelected(False)
+        super().hoverLeaveEvent(event)
+
     def get_status_color(self):
         if self.status == NodeStatus.CLEAN:
             return QtGui.QColor(0, 100, 0)

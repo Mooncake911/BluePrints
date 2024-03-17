@@ -13,7 +13,6 @@ class Event_Node(Node):
         self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
         self.add_pin(name="value", is_output=True)
 
-    @staticmethod
     def button_cmd(self):
         print("btn command")
         # self.execute()

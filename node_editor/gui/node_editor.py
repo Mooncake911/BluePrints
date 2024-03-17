@@ -2,6 +2,7 @@ from contextlib import suppress
 
 from PySide6 import QtCore
 
+
 from node_editor.attributes import Node, Connection, Pin
 
 
