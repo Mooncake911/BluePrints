@@ -20,17 +20,16 @@ class View(QtWidgets.QGraphicsView):
     def _change_place(self, event, button):
         if event.button() in button:
             self._pan = True
-            self._pan_start_x = event.x()
-            self._pan_start_y = event.y()
+            self._start_pos = event.pos()
             self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
 
     def __init__(self):
         super().__init__()
         self.setMouseTracking(True)
+        self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
 
         self._pan = False
-        self._pan_start_x = 0
-        self._pan_start_y = 0
+        self._start_pos = QtCore.QRectF()
 
         # Set node editor
         self.node_editor = NodeEditor()
@@ -46,6 +45,18 @@ class View(QtWidgets.QGraphicsView):
         # Location settings
         self.setTransformationAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setResizeAnchor(QtWidgets.QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+
+        # Set Buttons
+        # self.zoom_in_button = QtWidgets.QPushButton("+")
+        # self.zoom_out_button = QtWidgets.QPushButton("-")
+        # self.zoom_in_button.clicked.connect(lambda: self._zoom(1))
+        # self.zoom_out_button.clicked.connect(lambda: self._zoom(-1))
+        #
+        # layout = QtWidgets.QHBoxLayout()
+        # layout.addWidget(self.zoom_in_button)
+        # layout.addWidget(self.zoom_out_button)
+        # layout.setContentsMargins(10, 10, 10, 10)
+        # self.setLayout(layout)
 
         # Other add settings of View
         # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -116,7 +127,6 @@ class View(QtWidgets.QGraphicsView):
                 self._zoom(-1)
             if event.key() == QtCore.Qt.Key.Key_Plus or event.key() == QtCore.Qt.Key.Key_Equal:
                 self._zoom(1)
-
         return super().keyPressEvent(event)
 
     def mousePressEvent(self, event):
@@ -152,11 +162,9 @@ class View(QtWidgets.QGraphicsView):
         It pans the view if the middle mouse button is pressed and moves the mouse.
         """
         if self._pan:
-            self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() - (event.x() - self._pan_start_x))
-
-            self.verticalScrollBar().setValue(self.verticalScrollBar().value() - (event.y() - self._pan_start_y))
-
-            self._pan_start_x = event.x()
-            self._pan_start_y = event.y()
+            delta = event.pos() - self._start_pos
+            self._start_pos = event.pos()
+            self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() - delta.x())
+            self.verticalScrollBar().setValue(self.verticalScrollBar().value() - delta.y())
 
         return super().mouseMoveEvent(event)

@@ -1,7 +1,15 @@
+import os
+
 from PySide6.QtWidgets import QMessageBox, QFileDialog
 
 
 _default_folder = "projects"
+
+
+def get_name(file):
+    script_path = os.path.abspath(file)
+    file_name = os.path.splitext(os.path.basename(script_path))[0]
+    return file_name.split("_")[0]
 
 
 def extra_message():

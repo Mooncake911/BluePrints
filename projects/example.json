@@ -1,71 +1,91 @@
 {
     "nodes": [
         {
-            "type": "Lamp_Node",
-            "x": 5016,
-            "y": 5009,
-            "uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
+            "type": "Integer",
+            "x": 4921,
+            "y": 4977,
+            "uuid": "6ab5ca2b-0f6e-43fe-ad8f-aacae79d0b8c",
+            "value": "100"
+        },
+        {
+            "type": "Integer",
+            "x": 4633,
+            "y": 4973,
+            "uuid": "cf51213f-039e-4f94-80da-5ba82e1c9fba",
+            "value": "2"
+        },
+        {
+            "type": "Timer",
+            "x": 4933,
+            "y": 4821,
+            "uuid": "12026906-c4de-4784-a683-303691b439c7",
             "value": null
         },
         {
-            "type": "Add_Node",
-            "x": 4844,
-            "y": 5050,
-            "uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
+            "type": "Teapot",
+            "x": 5079,
+            "y": 4884,
+            "uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
             "value": null
         },
         {
-            "type": "Print_Node",
-            "x": 5110,
-            "y": 4869,
-            "uuid": "b7200e77-ef00-4664-b20a-80bbe2db11b0",
+            "type": "Lamp",
+            "x": 4786,
+            "y": 4872,
+            "uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
             "value": null
         },
         {
-            "type": "Event_Node",
-            "x": 4673,
-            "y": 4875,
-            "uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
+            "type": "Print",
+            "x": 5248,
+            "y": 4953,
+            "uuid": "1f16426d-1ffc-4914-98f6-ae1ab860e6ff",
             "value": null
         },
         {
-            "type": "Integer_Node",
-            "x": 4682,
-            "y": 5071,
-            "uuid": "4d3f3edd-352c-41ae-9edf-f219a8941ede",
-            "value": "777"
+            "type": "Event",
+            "x": 4642,
+            "y": 4816,
+            "uuid": "03d3df07-c404-45fe-b92c-a12e42ee0842",
+            "value": null
         }
     ],
     "connections": [
         {
-            "start_uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
-            "end_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
-            "start_pin": "value",
-            "end_pin": "input A"
+            "start_uuid": "6ab5ca2b-0f6e-43fe-ad8f-aacae79d0b8c",
+            "end_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
+            "start_pin": "Value",
+            "end_pin": "brightness"
         },
         {
-            "start_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
-            "end_uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
-            "start_pin": "output",
+            "start_uuid": "cf51213f-039e-4f94-80da-5ba82e1c9fba",
+            "end_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
+            "start_pin": "Value",
             "end_pin": "mode"
         },
         {
-            "start_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
-            "end_uuid": "d07950a9-577c-4f70-ab7a-033a76360a3b",
+            "start_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
+            "end_uuid": "1f16426d-1ffc-4914-98f6-ae1ab860e6ff",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
         },
         {
-            "start_uuid": "83effe22-ae1f-46f0-a429-8b6608d83b50",
-            "end_uuid": "b7200e77-ef00-4664-b20a-80bbe2db11b0",
+            "start_uuid": "12026906-c4de-4784-a683-303691b439c7",
+            "end_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
         },
         {
-            "start_uuid": "4d3f3edd-352c-41ae-9edf-f219a8941ede",
-            "end_uuid": "9eda4183-a661-4ea8-bc7f-f96f089cf3e9",
-            "start_pin": "Value",
-            "end_pin": "input B"
+            "start_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
+            "end_uuid": "12026906-c4de-4784-a683-303691b439c7",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "03d3df07-c404-45fe-b92c-a12e42ee0842",
+            "end_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
         }
     ]
 }

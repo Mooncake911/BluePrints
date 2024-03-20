@@ -5,7 +5,10 @@ import inspect
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
+from node_editor.example.Device_Nodes.Device_node import Device_Node
+
 GLOBAL_IMPORTS = {}
+DEVICE_NODES = ("Lamp", "Teapot")
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -32,14 +35,19 @@ class NodeList(QtWidgets.QTreeWidget):
             spec.loader.exec_module(module)
 
             for name, obj in inspect.getmembers(module):
-                if inspect.isclass(obj) and name.endswith('_Node'):
-                    # print(file.parts[1:-1])
-                    GLOBAL_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj, "module": module}
+                if inspect.isclass(obj) and name != 'Node':  # ignore parent Node class from node.py
+                    if file.parent.name == "Device_Nodes":
+                        GLOBAL_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
+                                               for i in DEVICE_NODES})
+                    else:
+                        # print(spec.name, obj.__name__)
+                        GLOBAL_IMPORTS[obj.__name__.split('_')[0]] = {"parent": file.parent.name, "class": obj}
 
         except ModuleNotFoundError as e:
             print(e)
 
     def find_item_by_text(self, text):
+        text = text.replace("_", " ")
         # Searching for an item by text in the tree
         for item_index in range(self.topLevelItemCount()):
             item = self.topLevelItem(item_index)
@@ -47,50 +55,38 @@ class NodeList(QtWidgets.QTreeWidget):
                 return item
         # Create, if it's absent
         item = QtWidgets.QTreeWidgetItem([text])
-        item.module = None
-        item.class_name = None
+        item.name = None
         return item
 
     def update_project(self):
-        temp_list = []
-
         for name, data in GLOBAL_IMPORTS.items():
-            name = name.replace("_Node", "")
-            parent_name = data["parent"].replace("_", " ")
-            parent_item = None
 
-            if parent_name == data["parent"]:
+            if data["parent"] == self.nodes_path.name:
                 item = QtWidgets.QTreeWidgetItem([name])
-                temp_list.append(item)
+                self.addTopLevelItem(item)
+
             else:
-                parent_item = self.find_item_by_text(parent_name)
+                parent_item = self.find_item_by_text(data["parent"])
                 item = QtWidgets.QTreeWidgetItem(parent_item, [name])
                 parent_item.addChild(item)
-
-            item.module = data["module"]
-            item.class_name = data["class"]
-
-            if parent_item:
                 self.addTopLevelItem(parent_item)
 
-        for item in temp_list:
-            self.addTopLevelItem(item)
+            item.name = name
+            item.parent_name = data["parent"]  # parent_name is a custom variable
+            item.class_name = data["class"]  # class_name is a custom variable
 
     def mousePressEvent(self, event):
         item = self.itemAt(event.pos())
-        if item and item.text(0):
-            name = item.text(0)
 
-            drag = QtGui.QDrag(self)
-            mime_data = QtCore.QMimeData()
-            mime_data.setText(name)
-            mime_data.item = item
-            drag.setMimeData(mime_data)
+        drag = QtGui.QDrag(self)
+        mime_data = QtCore.QMimeData()
+        mime_data.item = item
+        drag.setMimeData(mime_data)
 
-            pixmap = QtGui.QPixmap(16, 16)
-            pixmap.fill(QtGui.QColor("darkgray"))
+        pixmap = QtGui.QPixmap(16, 16)
+        pixmap.fill(QtGui.QColor("darkgray"))
 
-            drag.setPixmap(pixmap)
-            drag.exec_()
+        drag.setPixmap(pixmap)
+        drag.exec_()
 
         super().mousePressEvent(event)

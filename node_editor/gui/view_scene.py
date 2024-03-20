@@ -2,9 +2,8 @@ import json
 
 from PySide6 import QtCore, QtGui, QtWidgets
 
-
 from node_editor.attributes import Node, Connection
-from node_editor.gui import GLOBAL_IMPORTS
+from node_editor.gui import GLOBAL_IMPORTS, DEVICE_NODES
 from node_editor.utils import file_message, extra_message
 
 
@@ -19,15 +18,25 @@ class ViewScene(QtWidgets.QGraphicsScene):
         node.build()
         node.setPos(pos)
 
+    @staticmethod
+    def call_node_class(name, class_name):
+        if name in DEVICE_NODES:
+            # Device Nodes from database
+            node = class_name(
+                name=name,
+                pins={"is_output": [], "is_input": ["brightness", "mode"]}
+            )
+        else:
+            # Default Nodes: Logic, Arithmetic, Data Types and etc.
+            node = class_name()
+        return node
+
     def dragMoveEvent(self, event):
         """
         This method is called when a drag and drop event enters the view.
         It checks if the mime data format is "text/plain" and accepts or ignores the event accordingly.
         """
-        if event.mimeData().hasFormat("text/plain"):
-            event.accept()
-        else:
-            event.ignore()
+        pass
 
     def dropEvent(self, event):
         """
@@ -35,9 +44,14 @@ class ViewScene(QtWidgets.QGraphicsScene):
         It retrieves the name of the dropped node from the mime data and emits a signal to request the creation of the
         corresponding node.
         """
-        node = event.mimeData().item.class_name
-        if node:
-            self.create_node(node(), event.scenePos())
+        mime_data = event.mimeData()
+        item = mime_data.item
+        pos = event.scenePos()
+
+        if item.name:
+            node = self.call_node_class(name=item.name, class_name=item.class_name)
+            self.create_node(node, pos)
+        return super().dropEvent(event)
 
     def contextMenuEvent(self, event):
         # TODO contex menu for Nodes
@@ -53,6 +67,8 @@ class ViewScene(QtWidgets.QGraphicsScene):
                 if action == hello_action:
                     print("Hello")
 
+        return super().contextMenuEvent(event)
+
     def keyPressEvent(self, event):
         """
         This method is called when happened any press key event.
@@ -64,7 +80,6 @@ class ViewScene(QtWidgets.QGraphicsScene):
                 item.delete()
             # TODO Process finished with exit code -1073741819 (0xC0000005)
             # Описание: все Nodes которые содержат в себе QtWidgets.QWidget() при 3-х разовом удалении
-            return True
 
         if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
             node_items = [item for item in self.items() if isinstance(item, Node)]
@@ -74,7 +89,6 @@ class ViewScene(QtWidgets.QGraphicsScene):
                 all_selected = len(self.selectedItems()) == len(node_items)
                 for item in node_items:
                     item.setSelected(not all_selected)
-                return True
 
             # [Ctrl + N]
             if event.key() == QtCore.Qt.Key.Key_N:
@@ -91,9 +105,9 @@ class ViewScene(QtWidgets.QGraphicsScene):
                     case QtWidgets.QMessageBox.StandardButton.Cancel:
                         pass
 
-                return True
+        return super().keyPressEvent(event)
 
-# ---------------------------------------------------------------------------------------------------------------------#
+    # ---------------------------------------------------------------------------------------------------------------------#
     def load_scene(self, json_path: str) -> None:
         """
         Load the scene from the .json file.
@@ -109,7 +123,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
             for n in data["nodes"]:
                 if n["type"] in GLOBAL_IMPORTS.keys():
                     info = GLOBAL_IMPORTS[n["type"]]
-                    node = info["class"]()
+                    node = self.call_node_class(name=n["type"], class_name=info["class"])
                     node.uuid = n["uuid"]
                     node.value = n["value"]
                     pos = QtCore.QPointF(n["x"], n["y"])
@@ -150,10 +164,9 @@ class ViewScene(QtWidgets.QGraphicsScene):
             # Nodes
             if isinstance(item, Node):
                 pos = item.pos().toPoint()
-                obj_type = type(item).__name__
 
                 node = {
-                    "type": obj_type,
+                    "type": item.title_text,
                     "x": pos.x(),
                     "y": pos.y(),
                     "uuid": str(item.uuid),
