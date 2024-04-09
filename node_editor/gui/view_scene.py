@@ -143,14 +143,10 @@ class ViewScene(QtWidgets.QGraphicsScene):
                     end_pin = node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
 
                     connection = Connection()
-                    self.addItem(connection)
-
-                    if start_pin:
-                        connection.set_start_pin(start_pin)
-                    if end_pin:
-                        connection.set_end_pin(end_pin)
-
+                    connection.set_start_pin(start_pin)
+                    connection.set_end_pin(end_pin)
                     connection.update_start_and_end_pos()
+                    self.addItem(connection)
 
     def save_scene(self, json_path: str) -> None:
         """
@@ -166,7 +162,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
                 pos = item.pos().toPoint()
 
                 node = {
-                    "type": item.title_text,
+                    "type": type(item).__name__,
                     "x": pos.x(),
                     "y": pos.y(),
                     "uuid": str(item.uuid),

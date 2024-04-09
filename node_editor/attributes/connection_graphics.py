@@ -6,9 +6,6 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         super().__init__()
 
         self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemIsSelectable)
-
-        self.setPen(QtGui.QPen(QtGui.QColor(200, 200, 200), 25))
-        self.setBrush(QtCore.Qt.BrushStyle.NoBrush)
         self.setZValue(-1)
 
         self.start_pos = QtCore.QPointF()
@@ -47,7 +44,8 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         """
         Override the default paint method depending on if the object is selected.
         """
-        palette = self.scene().views()[0].palette()  # Get a palette from any of the scene views
+        # Get a palette from any of the scene views
+        palette = self.scene().views()[0].palette()
         base_color = palette.color(QtGui.QPalette.ColorRole.Base)
 
         thickness = 4
@@ -55,14 +53,12 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
 
         if self.start_pin:
             if self.start_pin.execution:
-                thickness = 6  # change thickness for execution pin
+                thickness = 6  # Change thickness for execution pin
             else:
-                color = QtGui.QColor(0, 128, 255, 200)  # change color for non-execution pin
+                color = QtGui.QColor(0, 128, 255, 200)  # Change color for non-execution pin
 
-            if self.isSelected():
-                painter.setPen(QtGui.QPen(color.lighter(), thickness + 4))
-            else:
-                painter.setPen(QtGui.QPen(color, thickness))
+        if self.isSelected():
+            painter.setPen(QtGui.QPen(color.lighter(), thickness + 4))
         else:
             painter.setPen(QtGui.QPen(color, thickness))
 

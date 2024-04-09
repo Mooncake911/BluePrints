@@ -5,12 +5,12 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
     _radius = 5
     _margin = 3
 
-    def __init__(self, parent, pin_text: str, is_output: bool, execution: bool, visible: bool = True):
+    def __init__(self, parent, name: str, is_output: bool, execution: bool, visible: bool = True):
         super().__init__(parent)
 
         self.connection = None
         self.node = parent
-        self.pin_text = pin_text
+        self.name = name
         self.is_output = is_output
         self.execution = execution
         self.visible = visible
@@ -20,7 +20,7 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
 
         self.pin_font = QtGui.QFont("Lucida Sans Unicode", pointSize=8)
         self.pin_dim = {
-            "w": QtGui.QFontMetrics(self.pin_font).horizontalAdvance(self.pin_text),
+            "w": QtGui.QFontMetrics(self.pin_font).horizontalAdvance(self.name),
             "h": QtGui.QFontMetrics(self.pin_font).height(),
         }
 
@@ -74,7 +74,7 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
         else:
             x = icon_pin_size
         y = self.pin_dim["h"] / 4
-        self.title_pin_path.addText(x, y, self.pin_font, self.pin_text)
+        self.title_pin_path.addText(x, y, self.pin_font, self.name)
 
     def itemChange(self, change, value):
         if self.connection:

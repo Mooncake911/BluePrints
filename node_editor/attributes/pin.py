@@ -2,8 +2,8 @@ from .pin_graphics import PinGraphics
 
 
 class Pin(PinGraphics):
-    def __init__(self, parent, pin_text: str, is_output: bool, execution: bool, visible: bool = True):
-        super().__init__(parent, pin_text, is_output, execution, visible)
+    def __init__(self, parent, name: str, is_output: bool, execution: bool, visible: bool = True):
+        super().__init__(parent, name, is_output, execution, visible)
 
     def clear_connection(self):
         if self.connection:

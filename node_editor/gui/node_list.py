@@ -41,13 +41,12 @@ class NodeList(QtWidgets.QTreeWidget):
                                                for i in DEVICE_NODES})
                     else:
                         # print(spec.name, obj.__name__)
-                        GLOBAL_IMPORTS[obj.__name__.split('_')[0]] = {"parent": file.parent.name, "class": obj}
+                        GLOBAL_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
 
         except ModuleNotFoundError as e:
             print(e)
 
     def find_item_by_text(self, text):
-        text = text.replace("_", " ")
         # Searching for an item by text in the tree
         for item_index in range(self.topLevelItemCount()):
             item = self.topLevelItem(item_index)

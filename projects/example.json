@@ -1,91 +1,39 @@
 {
     "nodes": [
         {
-            "type": "Integer",
-            "x": 4921,
-            "y": 4977,
-            "uuid": "6ab5ca2b-0f6e-43fe-ad8f-aacae79d0b8c",
-            "value": "100"
-        },
-        {
-            "type": "Integer",
-            "x": 4633,
-            "y": 4973,
-            "uuid": "cf51213f-039e-4f94-80da-5ba82e1c9fba",
-            "value": "2"
-        },
-        {
-            "type": "Timer",
-            "x": 4933,
-            "y": 4821,
-            "uuid": "12026906-c4de-4784-a683-303691b439c7",
+            "type": "Event_Node",
+            "x": 4785,
+            "y": 4876,
+            "uuid": "e66e324c-5269-4110-b980-d2112e6d2ad3",
             "value": null
         },
         {
-            "type": "Teapot",
-            "x": 5079,
-            "y": 4884,
-            "uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
+            "type": "Plus_Node",
+            "x": 4716,
+            "y": 5059,
+            "uuid": "363dafd7-51e2-42c6-8a3c-45fcab429a22",
             "value": null
         },
         {
-            "type": "Lamp",
-            "x": 4786,
-            "y": 4872,
-            "uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
-            "value": null
-        },
-        {
-            "type": "Print",
-            "x": 5248,
-            "y": 4953,
-            "uuid": "1f16426d-1ffc-4914-98f6-ae1ab860e6ff",
-            "value": null
-        },
-        {
-            "type": "Event",
-            "x": 4642,
-            "y": 4816,
-            "uuid": "03d3df07-c404-45fe-b92c-a12e42ee0842",
+            "type": "Speed_Node",
+            "x": 5111,
+            "y": 4951,
+            "uuid": "da61e158-3476-47b0-a875-16b20350d723",
             "value": null
         }
     ],
     "connections": [
         {
-            "start_uuid": "6ab5ca2b-0f6e-43fe-ad8f-aacae79d0b8c",
-            "end_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
-            "start_pin": "Value",
-            "end_pin": "brightness"
-        },
-        {
-            "start_uuid": "cf51213f-039e-4f94-80da-5ba82e1c9fba",
-            "end_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
-            "start_pin": "Value",
-            "end_pin": "mode"
-        },
-        {
-            "start_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
-            "end_uuid": "1f16426d-1ffc-4914-98f6-ae1ab860e6ff",
+            "start_uuid": "e66e324c-5269-4110-b980-d2112e6d2ad3",
+            "end_uuid": "da61e158-3476-47b0-a875-16b20350d723",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
         },
         {
-            "start_uuid": "12026906-c4de-4784-a683-303691b439c7",
-            "end_uuid": "cadc9162-a7f3-4f5f-b2bc-69fb1b5e482f",
+            "start_uuid": "363dafd7-51e2-42c6-8a3c-45fcab429a22",
+            "end_uuid": "da61e158-3476-47b0-a875-16b20350d723",
             "start_pin": "::Ex Out",
-            "end_pin": "::Ex In"
-        },
-        {
-            "start_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
-            "end_uuid": "12026906-c4de-4784-a683-303691b439c7",
-            "start_pin": "::Ex Out",
-            "end_pin": "::Ex In"
-        },
-        {
-            "start_uuid": "03d3df07-c404-45fe-b92c-a12e42ee0842",
-            "end_uuid": "2b94f8e4-08f3-4980-9937-29bfce1e2e04",
-            "start_pin": "::Ex Out",
-            "end_pin": "::Ex In"
+            "end_pin": "Get"
         }
     ]
 }
