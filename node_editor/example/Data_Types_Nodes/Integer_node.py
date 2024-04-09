@@ -10,7 +10,7 @@ class Integer_Node(Node):
         self.type_text = "Data Types"
         self.set_color(title_color=(0, 255, 255))
 
-        self.add_pin(name="Value", is_output=True)
+        self.add_pin(pin_text="Value", is_output=True)
 
     def user_input(self, text):
         self.value = text

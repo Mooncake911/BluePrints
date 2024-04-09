@@ -10,7 +10,7 @@ class Boolean_Node(Node):
         self.type_text = "Data Types"
         self.set_color(title_color=(255, 69, 0))
 
-        self.add_pin(name="Value", is_output=True)
+        self.add_pin(pin_text="Value", is_output=True)
 
     def init_widget(self):
         combo_box = QtWidgets.QComboBox()

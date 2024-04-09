@@ -9,7 +9,7 @@ class Branch_Node(Node):
         self.type_text = "Logic Nodes"
         self.set_color(title_color=(0, 0, 128))
 
-        self.add_pin(name="::Ex In", is_output=False, execution=True, visible=False)
-        self.add_pin(name="True", is_output=True, execution=True)
-        self.add_pin(name="False", is_output=True, execution=True)
-        self.add_pin(name="Condition", is_output=False)
+        self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
+        self.add_pin(pin_text="True", is_output=True, execution=True)
+        self.add_pin(pin_text="False", is_output=True, execution=True)
+        self.add_pin(pin_text="Condition", is_output=False)

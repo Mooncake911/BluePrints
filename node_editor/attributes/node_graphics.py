@@ -38,10 +38,10 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
 
         self.title_bg_height = 35  # background title height
         self.horizontal_margin = 15  # horizontal margin
-        self.vertical_margin = 15  # vertical margin
+        self.vertical_margin = 10  # vertical margin
 
         self.setAcceptHoverEvents(True)
-        self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
+        self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
     def hoverEnterEvent(self, event):
         self.setSelected(True)
@@ -117,13 +117,12 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         self.widget.setStyleSheet("background-color: " + self.main_bg_color.name() + ";")
 
         # Node width and height
+        total_height = self.widget.height()
         total_width = self.widget.width()
-        total_height = self.title_bg_height + self.widget.height()
 
         # The fonts what will be used
         title_font = QtGui.QFont("Lucida Sans Unicode", pointSize=12)
         type_font = QtGui.QFont("Lucida Sans Unicode", pointSize=8)
-        pin_font = QtGui.QFont("Lucida Sans Unicode")
 
         # Get the dimensions of the title and type
         title_dim = {
@@ -136,64 +135,59 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
             "h": QtGui.QFontMetrics(type_font).height(),
         }
 
-        # Get the max width
+        total_height += (title_dim["h"] + type_dim["h"])
         total_width = max(title_dim["w"], type_dim["w"], total_width)
 
-        pin_dim = None
         # Add the height for each of the pins
         for pin in self._pins:
-            pin_dim = {
-                "w": QtGui.QFontMetrics(pin_font).horizontalAdvance(pin.name),
-                "h": QtGui.QFontMetrics(pin_font).height(),
-            }
+            pin_dim = pin.pin_dim
             total_height += pin_dim["h"]
+            total_width = max(pin_dim["w"], total_width)
 
         # Add the margin to the total_width
         total_width += self.horizontal_margin
         total_height += self.vertical_margin
 
+        # The Node size
         self.size = QtCore.QRectF(-total_width / 2, -total_height / 2, total_width, total_height)
 
         # Draw the background rectangle
-        self.main_bg_path.setFillRule(Qt.WindingFill)
+        self.main_bg_path.setFillRule(Qt.FillRule.WindingFill)
         self.main_bg_path.addRoundedRect(-total_width / 2, -total_height / 2, total_width, total_height, 5, 5)
 
         # Draw the title rectangle
-        self.title_bg_path.setFillRule(Qt.WindingFill)
+        self.title_bg_path.setFillRule(Qt.FillRule.WindingFill)
         self.title_bg_path.addRoundedRect(-total_width / 2, -total_height / 2, total_width, self.title_bg_height, 2, 2)
 
         # Draw the status rectangle
-        self.status_path.setFillRule(Qt.WindingFill)
+        self.status_path.setFillRule(Qt.FillRule.WindingFill)
         self.status_path.addRoundedRect(total_width / 2 - 12, -total_height / 2 + 2, 10, 10, 2, 2)
 
         # Draw the title
         self.title_path.addText(
-            -total_width / 2 + 5,
-            (-total_height / 2) + title_dim["h"] / 2 + 5,
+            (-total_width + self.horizontal_margin) / 2,
+            (-total_height + title_dim["h"] + self.vertical_margin) / 2,
             title_font,
             self.title_text,
         )
 
         # Draw the type
         self.type_path.addText(
-            -total_width / 2 + 5,
-            (-total_height / 2) + title_dim["h"] + 5,
+            (-total_width + self.horizontal_margin) / 2,
+            (-total_height + title_dim["h"] + title_dim["h"] + self.vertical_margin) / 2,
             type_font,
             self.type_text,
         )
 
-        # Position the pins. Execution pins stay on the same row
-        if pin_dim:
-            y = self.title_bg_height - total_height / 2 - 10
-
-            # Do the execution pins
-            for pin in self._pins:
-                y += pin_dim["h"]
-
-                if pin.is_output:
-                    pin.setPos(total_width / 2 - 10, y)
-                else:
-                    pin.setPos(-total_width / 2 + 10, y)
+        # Draw the pins
+        y = (-total_height + title_dim["h"] + title_dim["h"] + self.vertical_margin) / 2
+        for pin in self._pins:
+            pin.build()
+            y += pin.pin_dim["h"]
+            if pin.is_output:
+                pin.setPos(total_width / 2 - self.horizontal_margin, y)
+            else:
+                pin.setPos(-total_width / 2 + self.horizontal_margin, y)
 
         # move the widget to the bottom
-        self.widget.move(int(-self.widget.width() / 2), int(total_height / 2 - self.widget.height() - 10))
+        self.widget.move(-self.widget.width() // 2, total_height // 2 - self.widget.height() - self.vertical_margin)

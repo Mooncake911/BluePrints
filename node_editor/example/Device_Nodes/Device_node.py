@@ -14,10 +14,10 @@ class Device_Node(Node):
         self.type_text = "Device Node"
         self.set_color(title_color=(170, 90, 10))
 
-        self.add_pin(name="::Ex In", is_output=False, execution=True, visible=False)
-        self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
+        self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
+        self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
 
         for pin_name in pins["is_output"]:
-            self.add_pin(name=pin_name, is_output=True)
+            self.add_pin(pin_text=pin_name, is_output=True)
         for pin_name in pins["is_input"]:
-            self.add_pin(name=pin_name, is_output=False)
+            self.add_pin(pin_text=pin_name, is_output=False)

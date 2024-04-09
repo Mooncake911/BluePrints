@@ -10,8 +10,8 @@ class Event_Node(Node):
         self.type_text = "Event Nodes"
         self.set_color(title_color=(128, 0, 0))
 
-        self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
-        self.add_pin(name="value", is_output=True)
+        self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
+        self.add_pin(pin_text="value", is_output=True)
 
     def button_cmd(self):
         print("btn command")

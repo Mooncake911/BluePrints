@@ -10,8 +10,8 @@ class Timer_Node(Node):
         self.type_text = "Data Types"
         self.set_color(title_color=(255, 165, 0))
 
-        self.add_pin(name="::Ex In", is_output=False, execution=True, visible=False)
-        self.add_pin(name="::Ex Out", is_output=True, execution=True, visible=False)
+        self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
+        self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
 
     def init_widget(self):
         time_edit = QtWidgets.QTimeEdit()
