@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QApplicat
 
 
 from node_editor.gui import NodeList, View, ViewScene
-from node_editor.utils import file_message
+from node_editor.utils import file_message, extra_message
 
 
 class Launcher(QMainWindow):
@@ -15,13 +15,14 @@ class Launcher(QMainWindow):
         super().__init__()
         self.setWindowTitle("IoT Node Editor")
 
+        # Create scene
+        self.scene = ViewScene()
+
         # Left widget
         self.node_list = NodeList()
 
         # Main widget
-        self.view = View()
-        self.view_scene = ViewScene()  # Create scene
-        self.view.setScene(self.view_scene)
+        self.view = View(self.scene)
 
         self.create_menus()
         self.create_editor()
@@ -39,22 +40,16 @@ class Launcher(QMainWindow):
         menu.addMenu(file_menu)
 
         save_action = QtGui.QAction("Save Project", file_menu)
-        save_action.triggered.connect(lambda: file_message(self.view_scene,
+        save_action.triggered.connect(lambda: file_message(scene=self.scene,
                                                            mode=QFileDialog.AcceptMode.AcceptSave))
         save_action.setShortcut("Ctrl+S")
         file_menu.addAction(save_action)
 
         load_action = QtGui.QAction("Open Project", file_menu)
-        load_action.triggered.connect(lambda: file_message(self.view_scene,
+        load_action.triggered.connect(lambda: file_message(scene=self.scene,
                                                            mode=QFileDialog.AcceptMode.AcceptOpen))
         load_action.setShortcut("Ctrl+O")
         file_menu.addAction(load_action)
-
-        # def theme_action_triggered(theme_):
-        #     def on_triggered():
-        #         qdarktheme.setup_theme(theme_)
-        #
-        #     return on_triggered
 
         # ~ View menu
         view_menu = QMenu("View")
@@ -64,7 +59,7 @@ class Launcher(QMainWindow):
         themes = ["auto", "light", "dark"]
         for theme in themes:
             action = QtGui.QAction(theme.capitalize(), view_submenu)
-            action.triggered.connect(partial(qdarktheme.setup_theme, theme))  # theme_action_triggered(theme_)
+            action.triggered.connect(partial(qdarktheme.setup_theme, theme))
             view_submenu.addAction(action)
 
         # ~ Help menu
@@ -85,6 +80,8 @@ class Launcher(QMainWindow):
         self.setCentralWidget(splitter)
 
     def closeEvent(self, event):
+        if self.scene.items():
+            extra_message(self.scene)
         QWidget.closeEvent(self, event)
 
 

@@ -1,16 +1,19 @@
-import json
-
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from node_editor.attributes import Node, Connection
-from node_editor.gui import GLOBAL_IMPORTS, DEVICE_NODES
-from node_editor.utils import file_message, extra_message
+from node_editor.attributes import Node
+from node_editor.utils import extra_message
+
+from .node_connection import NodeConnection
+from .node_list import DEVICE_NODES
 
 
 class ViewScene(QtWidgets.QGraphicsScene):
     def __init__(self):
         super().__init__()
         self.setSceneRect(0, 0, 9999, 9999)
+        # Set the node connection editor
+        self.node_connection = NodeConnection(self)
+        self.installEventFilter(self.node_connection)
 
     def create_node(self, node, pos):
         self.addItem(node)
@@ -92,95 +95,6 @@ class ViewScene(QtWidgets.QGraphicsScene):
 
             # [Ctrl + N]
             if event.key() == QtCore.Qt.Key.Key_N:
-
-                match extra_message():
-
-                    case QtWidgets.QMessageBox.StandardButton.Save:
-                        file_message(scene=self, mode=QtWidgets.QFileDialog.AcceptMode.AcceptSave)
-
-                    case QtWidgets.QMessageBox.StandardButton.Discard:
-                        for item in node_items:
-                            item.delete()
-
-                    case QtWidgets.QMessageBox.StandardButton.Cancel:
-                        pass
+                extra_message(self)
 
         return super().keyPressEvent(event)
-
-    # ---------------------------------------------------------------------------------------------------------------------#
-    def load_scene(self, json_path: str) -> None:
-        """
-        Load the scene from the .json file.
-        """
-
-        with open(json_path) as f:
-            data = json.load(f)
-
-        if data:
-            node_lookup = {}  # A dictionary of nodes, by uuids
-
-            # Add the nodes
-            for n in data["nodes"]:
-                if n["type"] in GLOBAL_IMPORTS.keys():
-                    info = GLOBAL_IMPORTS[n["type"]]
-                    node = self.call_node_class(name=n["type"], class_name=info["class"])
-                    node.uuid = n["uuid"]
-                    node.value = n["value"]
-                    pos = QtCore.QPointF(n["x"], n["y"])
-
-                    self.create_node(node, pos)
-
-                    node_lookup[node.uuid] = node
-
-                else:
-                    print(f"{n['type']} module is not found.")
-                    return
-
-            # Add the connections
-            for c in data["connections"]:
-                if node_lookup:
-                    start_pin = node_lookup[c["start_uuid"]].get_pin(c["start_pin"])
-                    end_pin = node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
-
-                    connection = Connection()
-                    connection.set_start_pin(start_pin)
-                    connection.set_end_pin(end_pin)
-                    connection.update_start_and_end_pos()
-                    self.addItem(connection)
-
-    def save_scene(self, json_path: str) -> None:
-        """
-        Save the scene to the .json file.
-        """
-
-        json_scene = {"nodes": [], "connections": []}
-
-        for item in self.items():
-
-            # Nodes
-            if isinstance(item, Node):
-                pos = item.pos().toPoint()
-
-                node = {
-                    "type": type(item).__name__,
-                    "x": pos.x(),
-                    "y": pos.y(),
-                    "uuid": str(item.uuid),
-                    "value": item.value,
-                }
-
-                json_scene["nodes"].append(node)
-
-            # Connections
-            if isinstance(item, Connection):
-                connection = {
-                    "start_uuid": str(item.start_pin.node.uuid),
-                    "end_uuid": str(item.end_pin.node.uuid),
-                    "start_pin": item.start_pin.name,
-                    "end_pin": item.end_pin.name,
-                }
-
-                json_scene["connections"].append(connection)
-
-        with open(json_path, "w") as f:
-            json.dump(json_scene, f, indent=4)

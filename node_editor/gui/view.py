@@ -1,5 +1,4 @@
 from PySide6 import QtCore, QtGui, QtOpenGLWidgets, QtWidgets
-from .node_editor import NodeEditor
 
 
 class View(QtWidgets.QGraphicsView):
@@ -23,16 +22,14 @@ class View(QtWidgets.QGraphicsView):
             self._start_pos = event.pos()
             self.setCursor(QtCore.Qt.CursorShape.ClosedHandCursor)
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, scene):
+        super().__init__(scene)
+
         self.setMouseTracking(True)
-        self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
+        # self.setDragMode(QtWidgets.QGraphicsView.DragMode.RubberBandDrag)
 
         self._pan = False
         self._start_pos = QtCore.QRectF()
-
-        # Set node editor
-        self.node_editor = NodeEditor()
 
         # Graphic settings
         self.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
@@ -62,10 +59,6 @@ class View(QtWidgets.QGraphicsView):
         # self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         # self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         # self.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-
-    def setScene(self, scene):
-        self.node_editor.setScene(scene)
-        super().setScene(scene)
 
     def drawBackground(self, painter, rect):
         """
@@ -152,7 +145,6 @@ class View(QtWidgets.QGraphicsView):
         """
         if event.button() == QtCore.Qt.MouseButton.LeftButton or event.button() == QtCore.Qt.MouseButton.MiddleButton:
             self._pan = False
-            self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
 
         return super().mouseReleaseEvent(event)
 

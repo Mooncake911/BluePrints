@@ -48,7 +48,8 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         super().hoverEnterEvent(event)
 
     def hoverLeaveEvent(self, event):
-        self.setSelected(False)
+        if event.modifiers() != QtCore.Qt.KeyboardModifier.ControlModifier:
+            self.setSelected(False)
         super().hoverLeaveEvent(event)
 
     def get_status_color(self):
