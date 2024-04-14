@@ -21,7 +21,6 @@ class Event_Node(Node):
         button = QtWidgets.QPushButton("Button test")
         button.clicked.connect(self.button_cmd)
         button.setFixedWidth(100)
-
-        self.inner_widget = button
+        self.layout.addWidget(button)
 
         super().init_widget()

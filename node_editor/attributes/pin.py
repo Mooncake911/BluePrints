@@ -14,4 +14,4 @@ class Pin(PinGraphics):
             return False
         if pin.node == self.node:
             return False
-        return self.is_output != pin.is_output and pin.execution == self.execution
+        return pin.is_output != self.is_output and pin.execution == self.execution

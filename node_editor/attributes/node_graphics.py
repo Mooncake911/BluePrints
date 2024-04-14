@@ -1,7 +1,6 @@
 from enum import Enum
 
 from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtCore import Qt
 
 
 class NodeStatus(Enum):
@@ -11,12 +10,18 @@ class NodeStatus(Enum):
 
 
 class NodeGraphics(QtWidgets.QGraphicsItem):
+
+    _title_bg_height = 35  # background title height
+    _horizontal_margin = 15  # horizontal margin
+    _vertical_margin = 10  # vertical margin
+
     def __init__(self):
         super().__init__()
 
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
         self.setFlag(QtWidgets.QGraphicsItem.GraphicsItemFlag.ItemIsSelectable)
 
+        # Initialize widget (skeleton)
         self.widget = QtWidgets.QWidget()
         self.widget.resize(0, 0)
 
@@ -35,10 +40,6 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         self.title_path = QtGui.QPainterPath()  # The title path
         self.type_path = QtGui.QPainterPath()  # The type path
         self.status_path = QtGui.QPainterPath()  # The status path
-
-        self.title_bg_height = 35  # background title height
-        self.horizontal_margin = 15  # horizontal margin
-        self.vertical_margin = 10  # vertical margin
 
         self.setAcceptHoverEvents(True)
         self.setCursor(QtCore.Qt.CursorShape.ArrowCursor)
@@ -106,7 +107,7 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
 
         # The highlight around Main background
         if self.isSelected():
-            painter.setBrush(Qt.NoBrush)
+            painter.setBrush(QtCore.Qt.BrushStyle.NoBrush)
             painter.setPen(QtGui.QPen(self.title_bg_color.lighter(), 2))
             painter.drawPath(self.main_bg_path.simplified())
 
@@ -115,7 +116,7 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         Builds the node interface by constructing its graphical representation.
         """
         # Configure the widget side of things.
-        self.widget.setStyleSheet("background-color: " + self.main_bg_color.name() + ";")
+        # self.widget.setStyleSheet("background-color: " + self.main_bg_color.name() + ";")
 
         # Node width and height
         total_height = self.widget.height()
@@ -146,49 +147,51 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
             total_width = max(pin_dim["w"], total_width)
 
         # Add the margin to the total_width
-        total_width += self.horizontal_margin
-        total_height += self.vertical_margin
+        total_width += self._horizontal_margin
+        total_height += self._vertical_margin
 
         # The Node size
         self.size = QtCore.QRectF(-total_width / 2, -total_height / 2, total_width, total_height)
 
         # Draw the background rectangle
-        self.main_bg_path.setFillRule(Qt.FillRule.WindingFill)
+        self.main_bg_path.setFillRule(QtCore.Qt.FillRule.WindingFill)
         self.main_bg_path.addRoundedRect(-total_width / 2, -total_height / 2, total_width, total_height, 5, 5)
 
         # Draw the title rectangle
-        self.title_bg_path.setFillRule(Qt.FillRule.WindingFill)
-        self.title_bg_path.addRoundedRect(-total_width / 2, -total_height / 2, total_width, self.title_bg_height, 2, 2)
+        self.title_bg_path.setFillRule(QtCore.Qt.FillRule.WindingFill)
+        self.title_bg_path.addRoundedRect(-total_width / 2, -total_height / 2, total_width, self._title_bg_height, 2, 2)
 
         # Draw the status rectangle
-        self.status_path.setFillRule(Qt.FillRule.WindingFill)
+        self.status_path.setFillRule(QtCore.Qt.FillRule.WindingFill)
         self.status_path.addRoundedRect(total_width / 2 - 12, -total_height / 2 + 2, 10, 10, 2, 2)
 
         # Draw the title
         self.title_path.addText(
-            (-total_width + self.horizontal_margin) / 2,
-            (-total_height + title_dim["h"] + self.vertical_margin) / 2,
+            (-total_width + self._horizontal_margin) / 2,
+            (-total_height + title_dim["h"] + self._vertical_margin) / 2,
             title_font,
             self.title_text,
         )
 
         # Draw the type
         self.type_path.addText(
-            (-total_width + self.horizontal_margin) / 2,
-            (-total_height + title_dim["h"] + title_dim["h"] + self.vertical_margin) / 2,
+            (-total_width + self._horizontal_margin) / 2,
+            (-total_height + title_dim["h"] + title_dim["h"] + self._vertical_margin) / 2,
             type_font,
             self.type_text,
         )
+        # Should be (-total_height + title_dim["h"] + type_dim["h"] + self._vertical_margin) / 2,
+        # but we need an indent between tittle and type.
 
         # Draw the pins
-        y = (-total_height + title_dim["h"] + title_dim["h"] + self.vertical_margin) / 2
+        y = (-total_height + title_dim["h"] + title_dim["h"] + self._vertical_margin) / 2
         for pin in self._pins:
-            pin.build()
             y += pin.pin_dim["h"]
             if pin.is_output:
-                pin.setPos(total_width / 2 - self.horizontal_margin, y)
+                pin.setPos(total_width / 2 - self._horizontal_margin, y)
             else:
-                pin.setPos(-total_width / 2 + self.horizontal_margin, y)
+                pin.setPos(-total_width / 2 + self._horizontal_margin, y)
+            pin.build()
 
         # move the widget to the bottom
-        self.widget.move(-self.widget.width() // 2, total_height // 2 - self.widget.height() - self.vertical_margin)
+        self.widget.move(-self.widget.width() // 2, total_height // 2 - self.widget.height() - self._vertical_margin)

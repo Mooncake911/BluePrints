@@ -73,8 +73,7 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
             x = -icon_pin_size - self.pin_dim["w"]
         else:
             x = icon_pin_size
-        y = self.pin_dim["h"] / 4
-        self.title_pin_path.addText(x, y, self.pin_font, self.name)
+        self.title_pin_path.addText(x, self._radius, self.pin_font, self.name)
 
     def itemChange(self, change, value):
         if self.connection:

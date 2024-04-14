@@ -17,7 +17,6 @@ class Timer_Node(Node):
         time_edit = QtWidgets.QTimeEdit()
         time_edit.setDisplayFormat("hh:mm:ss")
         time_edit.setFixedWidth(100)
-
-        self.inner_widget = time_edit
+        self.layout.addWidget(time_edit)
 
         super().init_widget()

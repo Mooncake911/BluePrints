@@ -46,15 +46,17 @@ class NodeList(QtWidgets.QTreeWidget):
         except ModuleNotFoundError as e:
             print(e)
 
-    def find_item_by_text(self, text):
-        # Searching for an item by text in the tree
+    def find_item_by_text(self, name):
+        # Searching for an item by name in the tree
         for item_index in range(self.topLevelItemCount()):
             item = self.topLevelItem(item_index)
-            if item.text(0) == text:
+            if item.name == name:
                 return item
         # Create, if it's absent
-        item = QtWidgets.QTreeWidgetItem([text])
-        item.name = None
+        item = QtWidgets.QTreeWidgetItem([name])
+        item.name = name
+        item.parent_name = self.nodes_path.name
+        item.class_name = None
         return item
 
     def update_project(self):

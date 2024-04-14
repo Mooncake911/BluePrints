@@ -16,7 +16,6 @@ class Boolean_Node(Node):
         combo_box = QtWidgets.QComboBox()
         combo_box.addItems(["True", "False"])
         combo_box.setFixedWidth(100)
-
-        self.inner_widget = combo_box
+        self.layout.addWidget(combo_box)
 
         super().init_widget()

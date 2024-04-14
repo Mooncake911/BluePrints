@@ -16,10 +16,9 @@ class ViewScene(QtWidgets.QGraphicsScene):
         self.installEventFilter(self.node_connection)
 
     def create_node(self, node, pos):
-        self.addItem(node)
         node.init_widget()
-        node.build()
         node.setPos(pos)
+        self.addItem(node)
 
     @staticmethod
     def call_node_class(name, class_name):
@@ -51,7 +50,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
         item = mime_data.item
         pos = event.scenePos()
 
-        if item.name:
+        if item.name and item.class_name:
             node = self.call_node_class(name=item.name, class_name=item.class_name)
             self.create_node(node, pos)
         return super().dropEvent(event)
@@ -81,8 +80,6 @@ class ViewScene(QtWidgets.QGraphicsScene):
         if event.key() == QtCore.Qt.Key.Key_Delete:
             for item in self.selectedItems():
                 item.delete()
-            # TODO Process finished with exit code -1073741819 (0xC0000005)
-            # Описание: все Nodes которые содержат в себе QtWidgets.QWidget() при 3-х разовом удалении
 
         if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
             node_items = [item for item in self.items() if isinstance(item, Node)]

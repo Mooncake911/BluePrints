@@ -30,7 +30,6 @@ class Integer_Node(Node):
             line_edit.setText(self.value)
         else:
             line_edit.setPlaceholderText("Enter")
-
-        self.inner_widget = line_edit
+        self.layout.addWidget(line_edit)
 
         super().init_widget()
