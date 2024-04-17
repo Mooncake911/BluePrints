@@ -1,18 +1,18 @@
 import os
 import json
 
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtGui, QtCore, QtWidgets
 
-from node_editor.attributes import Node, Connection
+from node_editor.attributes import Node, Connection, NodeStatus
 from node_editor.gui.node_list import GLOBAL_IMPORTS
 
 _default_folder = "projects"
 
 
-def get_name(file):
-    script_path = os.path.abspath(file)
-    file_name = os.path.splitext(os.path.basename(script_path))[0]
-    return file_name.split("_")[0]
+@QtCore.Slot()
+def visit_github():
+    url = QtCore.QUrl("https://github.com/Mooncake911/BluePrints/blob/master/resources/docs/shortcuts.md")
+    QtGui.QDesktopServices.openUrl(url)
 
 
 def extra_message(scene):
@@ -131,6 +131,11 @@ def save_scene(scene, json_path: str) -> None:
             }
 
             json_scene["nodes"].append(node)
+
+            if item.status == NodeStatus.ERROR:
+                print('NODE ERROR WAS FOUND')
+            if item.status == NodeStatus.WARNING:
+                print('NODE WARNING WAS FOUND')
 
         # Connections
         if isinstance(item, Connection):

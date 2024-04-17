@@ -1,12 +1,6 @@
-from enum import Enum
-
 from PySide6 import QtCore, QtGui, QtWidgets
 
-
-class NodeStatus(Enum):
-    CLEAN = 1
-    DIRTY = 2
-    ERROR = 3
+from .status import NodeStatus
 
 
 class NodeGraphics(QtWidgets.QGraphicsItem):
@@ -26,7 +20,7 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         self.widget.resize(0, 0)
 
         self.size = QtCore.QRectF()  # Size of Node
-        self.status = NodeStatus.CLEAN  # Status of Node
+        self.status = NodeStatus.ERROR  # Status of Node
         self._pins = []  # A list of pins
 
         self.title_text = "Title"
@@ -54,12 +48,15 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         super().hoverLeaveEvent(event)
 
     def get_status_color(self):
-        if self.status == NodeStatus.CLEAN:
-            return QtGui.QColor(0, 100, 0)
-        elif self.status == NodeStatus.DIRTY:
-            return QtGui.QColor(255, 165, 0)
-        elif self.status == NodeStatus.ERROR:
-            return QtGui.QColor(139, 0, 0)
+        if all(pin.connection is None for pin in self._pins):
+            self.status = NodeStatus.ERROR
+            return QtGui.QColor(255, 0, 0)
+        elif any(pin.connection is None for pin in self._pins):
+            self.status = NodeStatus.WARNING
+            return QtGui.QColor(255, 255, 0)
+        else:
+            self.status = NodeStatus.CLEAN
+            return QtGui.QColor(0, 255, 0)
 
     def boundingRect(self):
         return self.size

@@ -83,15 +83,23 @@ class ViewScene(QtWidgets.QGraphicsScene):
 
         if event.modifiers() == QtCore.Qt.KeyboardModifier.ControlModifier:
             node_items = [item for item in self.items() if isinstance(item, Node)]
+            all_selected = len(self.selectedItems()) == len(node_items)
 
             # [Ctrl + A]
             if event.key() == QtCore.Qt.Key.Key_A:
-                all_selected = len(self.selectedItems()) == len(node_items)
                 for item in node_items:
                     item.setSelected(not all_selected)
 
             # [Ctrl + N]
             if event.key() == QtCore.Qt.Key.Key_N:
                 extra_message(self)
+
+            # [Ctrl + C]
+            if event.key() == QtCore.Qt.Key.Key_C:
+                pass
+
+            # [Ctrl + V]
+            if event.key() == QtCore.Qt.Key.Key_V:
+                pass
 
         return super().keyPressEvent(event)

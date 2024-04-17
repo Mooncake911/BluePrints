@@ -28,13 +28,12 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
         self.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
 
     def paint_pin_icon(self, painter):
+        painter.setPen(QtCore.Qt.GlobalColor.white) if self.execution \
+            else painter.setPen(QtCore.Qt.GlobalColor.green)
+
         if bool(self.connection):
-            if self.execution:
-                painter.setPen(QtCore.Qt.GlobalColor.white)
-                painter.setBrush(QtCore.Qt.GlobalColor.white)
-            else:
-                painter.setPen(QtCore.Qt.GlobalColor.green)
-                painter.setBrush(QtCore.Qt.GlobalColor.green)
+            painter.setBrush(QtCore.Qt.GlobalColor.white) if self.execution \
+                else painter.setBrush(QtCore.Qt.GlobalColor.green)
         else:
             painter.setBrush(QtCore.Qt.BrushStyle.NoBrush)
 
