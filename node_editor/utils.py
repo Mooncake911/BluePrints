@@ -1,10 +1,9 @@
-import os
 import json
 
 from PySide6 import QtGui, QtCore, QtWidgets
 
 from node_editor.attributes import Node, Connection, NodeStatus
-from node_editor.gui.node_list import GLOBAL_IMPORTS
+from node_editor.gui.node_list import NODE_IMPORTS
 
 _default_folder = "projects"
 
@@ -81,8 +80,8 @@ def load_scene(scene, json_path: str) -> None:
 
         # Add the nodes
         for n in data["nodes"]:
-            if n["type"] in GLOBAL_IMPORTS.keys():
-                info = GLOBAL_IMPORTS[n["type"]]
+            if n["type"] in NODE_IMPORTS.keys():
+                info = NODE_IMPORTS[n["type"]]
                 node = scene.call_node_class(name=n["type"], class_name=info["class"])
                 node.uuid = n["uuid"]
                 node.value = n["value"]

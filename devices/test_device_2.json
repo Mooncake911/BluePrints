@@ -1,0 +1,25 @@
+{
+  "id": 2,
+  "name": "Lobby Lamp",
+  "description": "Philips Lamp",
+  "attributes": [
+    {
+      "name": "brightness",
+      "variable": true,
+      "var_type": "float",
+      "upper_limit": 100,
+      "lower_limit": 10,
+      "is_input": true,
+      "is_output": true
+    },
+    {
+      "name": "mode",
+      "variable": true,
+      "var_type": "int",
+      "upper_limit": 5,
+      "lower_limit": 0,
+      "is_input": true,
+      "is_output": false
+    }
+  ]
+}

@@ -3,8 +3,10 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from node_editor.attributes import Node
 from node_editor.utils import extra_message
 
+from node_editor.devices import DEVICES_NAMES
+from node_editor.example.Device_Nodes.Device_node import Device_Node
+
 from .node_connection import NodeConnection
-from .node_list import DEVICE_NODES
 
 
 class ViewScene(QtWidgets.QGraphicsScene):
@@ -22,12 +24,9 @@ class ViewScene(QtWidgets.QGraphicsScene):
 
     @staticmethod
     def call_node_class(name, class_name):
-        if name in DEVICE_NODES:
-            # Device Nodes from database
-            node = class_name(
-                name=name,
-                pins={"is_output": [], "is_input": ["brightness", "mode"]}
-            )
+        if class_name == Device_Node:
+            # Device Nodes
+            node = class_name(data=DEVICES_NAMES[name])
         else:
             # Default Nodes: Logic, Arithmetic, Data Types and etc.
             node = class_name()
@@ -56,18 +55,21 @@ class ViewScene(QtWidgets.QGraphicsScene):
         return super().dropEvent(event)
 
     def contextMenuEvent(self, event):
-        # TODO contex menu for Nodes
         item = self.itemAt(event.scenePos(), QtGui.QTransform())
 
         if item:
             if isinstance(item, Node):
                 menu = QtWidgets.QMenu()
-                hello_action = QtGui.QAction("Contex menu", self)
-                menu.addAction(hello_action)
-                action = menu.exec_(event.screenPos())
 
-                if action == hello_action:
-                    print("Hello")
+                info_action = QtGui.QAction("ℹ️ Info")
+                info_action.triggered.connect(item.get_description)
+                menu.addAction(info_action)
+
+                delete_action = QtGui.QAction("❌ Delete")
+                delete_action.triggered.connect(item.delete)
+                menu.addAction(delete_action)
+
+                menu.exec_(event.screenPos())
 
         return super().contextMenuEvent(event)
 
@@ -76,7 +78,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
         This method is called when happened any press key event.
         It checks the key's relevant shortcuts.
         """
-        # Delete selected elements
+        # Delete selected elements [Del]
         if event.key() == QtCore.Qt.Key.Key_Delete:
             for item in self.selectedItems():
                 item.delete()

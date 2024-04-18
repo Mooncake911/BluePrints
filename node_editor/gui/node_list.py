@@ -6,9 +6,9 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 from node_editor.example.Device_Nodes.Device_node import Device_Node
+from node_editor.devices import DEVICES_NAMES
 
-GLOBAL_IMPORTS = {}
-DEVICE_NODES = ("Lamp", "Teapot")
+NODE_IMPORTS = {}
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -17,7 +17,7 @@ class NodeList(QtWidgets.QTreeWidget):
     def __init__(self):
         super().__init__()
 
-        global GLOBAL_IMPORTS
+        global NODE_IMPORTS
 
         self.setHeaderHidden(True)
         self.setDragEnabled(True)
@@ -37,11 +37,11 @@ class NodeList(QtWidgets.QTreeWidget):
             for name, obj in inspect.getmembers(module):
                 if inspect.isclass(obj) and name != 'Node':  # ignore parent Node class from node.py
                     if file.parent.name == "Device_Nodes":
-                        GLOBAL_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
-                                               for i in DEVICE_NODES})
+                        NODE_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
+                                             for i in DEVICES_NAMES.keys()})
                     else:
                         # print(spec.name, obj.__name__)
-                        GLOBAL_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
+                        NODE_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
 
         except ModuleNotFoundError as e:
             print(e)
@@ -60,7 +60,7 @@ class NodeList(QtWidgets.QTreeWidget):
         return item
 
     def update_project(self):
-        for name, data in GLOBAL_IMPORTS.items():
+        for name, data in NODE_IMPORTS.items():
 
             if data["parent"] == self.nodes_path.name:
                 item = QtWidgets.QTreeWidgetItem([name])

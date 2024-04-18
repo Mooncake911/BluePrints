@@ -39,3 +39,7 @@ class Node(NodeGraphics):
     def add_pin(self, pin_text, is_output, execution=False, visible=True):
         pin = Pin(self, name=pin_text, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
+
+    @staticmethod
+    def get_description():
+        print("description")
