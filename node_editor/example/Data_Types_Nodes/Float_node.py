@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets, QtGui
-from node_editor.attributes import Node
+from node_editor.gui.attributes import Node
 
 
 class Float_Node(Node):

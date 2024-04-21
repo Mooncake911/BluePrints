@@ -1,0 +1,30 @@
+from PySide6.QtWidgets import QSplitter, QFileDialog
+
+from .gui import NodeList, View, ViewScene
+
+
+class NodeEditor(QSplitter):
+    def __init__(self):
+        super().__init__()
+
+        # Create scene
+        self.scene = ViewScene()
+        # Create left widget
+        self.node_list = NodeList()
+        # Create window widget
+        self.view = View(self.scene)
+
+        self.addWidget(self.node_list)
+        self.addWidget(self.view)
+        self.setContentsMargins(7, 7, 7, 7)
+
+    def save_project(self):
+        self.scene.utils.file_message(mode=QFileDialog.AcceptMode.AcceptSave)
+
+    def load_project(self):
+        self.scene.utils.file_message(mode=QFileDialog.AcceptMode.AcceptOpen)
+
+    def closeEvent(self, event):
+        if self.scene.items():
+            self.scene.utils.extra_message()
+        super().closeEvent(event)

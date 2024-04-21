@@ -1,7 +1,7 @@
 from PySide6 import QtCore
 
 
-from node_editor.attributes import Connection, Pin
+from .attributes import Connection, Pin
 
 
 class NodeConnection(QtCore.QObject):

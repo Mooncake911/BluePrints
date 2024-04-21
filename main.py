@@ -1,12 +1,10 @@
 import sys
 import qdarktheme
-from functools import partial
 
-from PySide6 import QtGui
-from PySide6.QtWidgets import (QMainWindow, QWidget, QSplitter, QMenu, QApplication, QFileDialog)
+from PySide6 import QtGui, QtCore
+from PySide6.QtWidgets import (QMainWindow, QMenu, QApplication)
 
-from node_editor.gui import NodeList, View, ViewScene
-from node_editor.utils import visit_github, file_message, extra_message
+from windows import Windows
 
 
 class Launcher(QMainWindow):
@@ -14,17 +12,19 @@ class Launcher(QMainWindow):
         super().__init__()
         self.setWindowTitle("IoT Node Editor")
 
-        # Create scene
-        self.scene = ViewScene()
-
-        # Left widget
-        self.node_list = NodeList()
-
-        # Main widget
-        self.view = View(self.scene)
+        self.windows = Windows()
+        self.setCentralWidget(self.windows)
 
         self.create_menus()
-        self.create_editor()
+
+    @QtCore.Slot()
+    def visit_github(self):
+        url = QtCore.QUrl("https://github.com/Mooncake911/BluePrints/blob/master/resources/docs/shortcuts.md")
+        QtGui.QDesktopServices.openUrl(url)
+
+    @QtCore.Slot()
+    def change_theme(self, theme):
+        qdarktheme.setup_theme(theme=theme, corner_shape="rounded")
 
     def create_menus(self):
         """ Create the menu for editor """
@@ -45,13 +45,11 @@ class Launcher(QMainWindow):
         file_menu = QMenu("File")
         menu.addMenu(file_menu)
 
-        create_action(_text_="Save Project", _menu_=file_menu,
-                      _slot_=partial(file_message, scene=self.scene, mode=QFileDialog.AcceptMode.AcceptSave),
-                      _key_="Ctrl+S")
+        create_action(_text_="Save Project", _menu_=file_menu, _key_="Ctrl+S",
+                      _slot_=self.windows.node_editor.save_project)
 
-        create_action(_text_="Open Project", _menu_=file_menu,
-                      _slot_=partial(file_message, scene=self.scene, mode=QFileDialog.AcceptMode.AcceptOpen),
-                      _key_="Ctrl+O")
+        create_action(_text_="Open Project", _menu_=file_menu, _key_="Ctrl+O",
+                      _slot_=self.windows.node_editor.load_project)
 
         file_menu.addSeparator()
 
@@ -64,27 +62,17 @@ class Launcher(QMainWindow):
 
         themes = ["auto", "light", "dark"]
         for theme in themes:
-            create_action(_text_=theme.capitalize(), _menu_=view_submenu,
-                          _slot_=partial(qdarktheme.setup_theme, theme=theme, corner_shape="rounded"))
+            create_action(_text_=theme.capitalize(), _menu_=view_submenu, _slot_=self.change_theme)
 
         # ~ Help menu
         help_menu = QMenu("Help")
         menu.addMenu(help_menu)
 
-        create_action(_text_="Visit GitHub", _menu_=help_menu, _slot_=visit_github, _key_="Ctrl+F1")
-
-    def create_editor(self):
-        """ Create the editor """
-        splitter = QSplitter()
-        splitter.addWidget(self.node_list)
-        splitter.addWidget(self.view)
-        splitter.setContentsMargins(7, 7, 7, 7)
-        self.setCentralWidget(splitter)
+        create_action(_text_="Visit GitHub", _menu_=help_menu, _slot_=self.visit_github, _key_="Ctrl+F1")
 
     def closeEvent(self, event):
-        if self.scene.items():
-            extra_message(self.scene)
-        QWidget.closeEvent(self, event)
+        self.windows.closeEvent(event)
+        super().closeEvent(event)
 
 
 if __name__ == "__main__":

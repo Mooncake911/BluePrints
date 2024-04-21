@@ -1,5 +1,5 @@
 from PySide6 import QtWidgets
-from node_editor.attributes import Node
+from node_editor.gui.attributes import Node
 
 
 class Event_Node(Node):

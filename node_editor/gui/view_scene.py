@@ -1,36 +1,21 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-from node_editor.attributes import Node
-from node_editor.utils import extra_message
-
-from node_editor.devices import DEVICES_NAMES
-from node_editor.example.Device_Nodes.Device_node import Device_Node
-
+from .attributes import Node
 from .node_connection import NodeConnection
+
+from node_editor.gui.utils import Utils
 
 
 class ViewScene(QtWidgets.QGraphicsScene):
     def __init__(self):
         super().__init__()
         self.setSceneRect(0, 0, 9999, 9999)
-        # Set the node connection editor
+
+        # Set the node connection event filter
         self.node_connection = NodeConnection(self)
         self.installEventFilter(self.node_connection)
 
-    def create_node(self, node, pos):
-        node.init_widget()
-        node.setPos(pos)
-        self.addItem(node)
-
-    @staticmethod
-    def call_node_class(name, class_name):
-        if class_name == Device_Node:
-            # Device Nodes
-            node = class_name(data=DEVICES_NAMES[name])
-        else:
-            # Default Nodes: Logic, Arithmetic, Data Types and etc.
-            node = class_name()
-        return node
+        self.utils = Utils(self)
 
     def dragMoveEvent(self, event):
         """
@@ -50,8 +35,8 @@ class ViewScene(QtWidgets.QGraphicsScene):
         pos = event.scenePos()
 
         if item.name and item.class_name:
-            node = self.call_node_class(name=item.name, class_name=item.class_name)
-            self.create_node(node, pos)
+            node = self.utils.call_node_class(name=item.name, class_name=item.class_name)
+            self.utils.create_node(node, pos)
         return super().dropEvent(event)
 
     def contextMenuEvent(self, event):
@@ -94,7 +79,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
 
             # [Ctrl + N]
             if event.key() == QtCore.Qt.Key.Key_N:
-                extra_message(self)
+                self.utils.extra_message()
 
             # [Ctrl + C]
             if event.key() == QtCore.Qt.Key.Key_C:

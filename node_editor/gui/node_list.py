@@ -6,7 +6,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 from node_editor.example.Device_Nodes.Device_node import Device_Node
-from node_editor.devices import DEVICES_NAMES
+from devices import DEVICES_NAMES
 
 NODE_IMPORTS = {}
 

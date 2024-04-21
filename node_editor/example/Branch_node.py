@@ -1,4 +1,4 @@
-from node_editor.attributes import Node
+from node_editor.gui.attributes import Node
 
 
 class Branch_Node(Node):
