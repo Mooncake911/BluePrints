@@ -91,3 +91,7 @@ class NodeList(QtWidgets.QTreeWidget):
         drag.exec_()
 
         super().mousePressEvent(event)
+
+    def mouseDoubleClickEvent(self, event):
+        self.mousePressEvent(event)
+        super().mouseDoubleClickEvent(event)

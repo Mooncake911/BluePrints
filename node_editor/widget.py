@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QSplitter, QFileDialog
+from PySide6.QtGui import Qt
 
 from .gui import NodeList, View, ViewScene
 
@@ -6,12 +7,13 @@ from .gui import NodeList, View, ViewScene
 class NodeEditor(QSplitter):
     def __init__(self):
         super().__init__()
+        self.setOrientation(Qt.Orientation.Horizontal)
 
         # Create scene
         self.scene = ViewScene()
         # Create left widget
         self.node_list = NodeList()
-        # Create window widget
+        # Create right widget
         self.view = View(self.scene)
 
         self.addWidget(self.node_list)

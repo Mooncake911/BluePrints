@@ -22,7 +22,8 @@ class ViewScene(QtWidgets.QGraphicsScene):
         This method is called when a drag and drop event enters the view.
         It checks if the mime data format is "text/plain" and accepts or ignores the event accordingly.
         """
-        pass
+        event.acceptProposedAction()
+        event.accept()
 
     def dropEvent(self, event):
         """

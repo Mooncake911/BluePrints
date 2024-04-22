@@ -1,5 +1,6 @@
 import sys
 import qdarktheme
+from functools import partial
 
 from PySide6 import QtGui, QtCore
 from PySide6.QtWidgets import (QMainWindow, QMenu, QApplication)
@@ -22,7 +23,7 @@ class Launcher(QMainWindow):
         url = QtCore.QUrl("https://github.com/Mooncake911/BluePrints/blob/master/resources/docs/shortcuts.md")
         QtGui.QDesktopServices.openUrl(url)
 
-    @QtCore.Slot()
+    @QtCore.Slot(str)
     def change_theme(self, theme):
         qdarktheme.setup_theme(theme=theme, corner_shape="rounded")
 
@@ -62,7 +63,8 @@ class Launcher(QMainWindow):
 
         themes = ["auto", "light", "dark"]
         for theme in themes:
-            create_action(_text_=theme.capitalize(), _menu_=view_submenu, _slot_=self.change_theme)
+            create_action(_text_=theme.capitalize(), _menu_=view_submenu,
+                          _slot_=partial(self.change_theme, theme))
 
         # ~ Help menu
         help_menu = QMenu("Help")
