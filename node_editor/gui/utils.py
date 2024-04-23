@@ -5,8 +5,6 @@ from PySide6 import QtCore, QtWidgets
 from .attributes import Node, Connection, NodeStatus
 from .node_list import NODE_IMPORTS
 
-from devices import DEVICES_NAMES
-from node_editor.example.Device_Nodes.Device_node import Device_Node
 
 _default_folder = "projects"
 
@@ -14,16 +12,6 @@ _default_folder = "projects"
 class Utils:
     def __init__(self, scene):
         self.scene = scene
-
-    @staticmethod
-    def call_node_class(name, class_name):
-        if class_name == Device_Node:
-            # Device Nodes
-            node = class_name(data=DEVICES_NAMES[name])
-        else:
-            # Default Nodes: Logic, Arithmetic, Data Types and etc.
-            node = class_name()
-        return node
 
     def create_node(self, node, pos):
         node.init_widget()
@@ -92,8 +80,8 @@ class Utils:
             # Add the nodes
             for n in data["nodes"]:
                 if n["type"] in NODE_IMPORTS.keys():
-                    info = NODE_IMPORTS[n["type"]]
-                    node = self.call_node_class(name=n["type"], class_name=info["class"])
+                    class_name = NODE_IMPORTS[n["type"]]
+                    node = class_name["class"](name=n["type"])
                     node.uuid = n["uuid"]
                     node.value = n["value"]
                     pos = QtCore.QPointF(n["x"], n["y"])
@@ -132,7 +120,7 @@ class Utils:
                 pos = item.pos().toPoint()
 
                 node = {
-                    "type": type(item).__name__,
+                    "type": item.name,
                     "x": pos.x(),
                     "y": pos.y(),
                     "uuid": str(item.uuid),

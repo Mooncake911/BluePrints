@@ -8,8 +8,9 @@ from .node_graphics import NodeGraphics
 
 
 class Node(NodeGraphics):
-    def __init__(self):
+    def __init__(self, name=__name__):
         super().__init__()
+        self.name = name
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
         self.value = None         # An input value that has been set by the user
 

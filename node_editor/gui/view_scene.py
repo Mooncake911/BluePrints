@@ -36,7 +36,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
         pos = event.scenePos()
 
         if item.name and item.class_name:
-            node = self.utils.call_node_class(name=item.name, class_name=item.class_name)
+            node = item.class_name(name=item.name)
             self.utils.create_node(node, pos)
         return super().dropEvent(event)
 

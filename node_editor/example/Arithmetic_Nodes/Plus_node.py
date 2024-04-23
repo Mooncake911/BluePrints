@@ -2,8 +2,8 @@ from node_editor.gui.attributes import Node
 
 
 class Plus_Node(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
         self.title_text = "+"
         self.type_text = "Arithmetic Node"

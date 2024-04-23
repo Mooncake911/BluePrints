@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Integer_Node(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
         self.title_text = "Integer"
         self.type_text = "Data Types"

@@ -5,21 +5,23 @@
   "attributes": [
     {
       "name": "brightness",
-      "variable": true,
+      "description": "It is brightness",
+      "show_attribute": true,
       "var_type": "float",
       "upper_limit": 50,
       "lower_limit": 10,
-      "is_input": true,
-      "is_output": true
+      "has_input": true,
+      "has_output": true
     },
     {
       "name": "mode",
-      "variable": true,
+      "description": "It is mode",
+      "show_attribute": true,
       "var_type": "int",
       "upper_limit": 1,
       "lower_limit": 0,
-      "is_input": true,
-      "is_output": false
+      "has_input": true,
+      "has_output": false
     }
   ]
 }

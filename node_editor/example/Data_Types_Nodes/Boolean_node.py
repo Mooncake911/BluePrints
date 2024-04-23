@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Boolean_Node(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
         self.title_text = "Boolean"
         self.type_text = "Data Types"

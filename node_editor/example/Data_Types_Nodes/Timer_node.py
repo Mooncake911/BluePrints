@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Timer_Node(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
         self.title_text = "Timer"
         self.type_text = "Data Types"
@@ -15,7 +15,7 @@ class Timer_Node(Node):
 
     def init_widget(self):
         time_edit = QtWidgets.QTimeEdit()
-        time_edit.setDisplayFormat("hh:mm:ss")
+        time_edit.setDisplayFormat("hh:mm:ss:zzz")
         time_edit.setFixedWidth(100)
         self.layout.addWidget(time_edit)
 

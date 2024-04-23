@@ -2,8 +2,8 @@ from node_editor.gui.attributes import Node
 
 
 class Speed_Node(Node):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
         self.title_text = "Speed"
         self.type_text = "Logic Nodes"
