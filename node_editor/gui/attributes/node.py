@@ -2,7 +2,6 @@ import uuid
 
 from PySide6 import QtWidgets
 
-
 from .pin import Pin
 from .node_graphics import NodeGraphics
 
@@ -12,7 +11,7 @@ class Node(NodeGraphics):
         super().__init__()
         self.name = name
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
-        self.value = None         # An input value that has been set by the user
+        self.value = None  # An input value that has been set by the user
 
         self.proxy = QtWidgets.QGraphicsProxyWidget()
         self.proxy.setParentItem(self)
@@ -32,12 +31,17 @@ class Node(NodeGraphics):
         self.scene().removeItem(self.proxy)
         self.scene().removeItem(self)
 
-    def get_pin(self, name):
+    def get_start_pin(self, name):
         for pin in self._pins:
-            if pin.name == name:
+            if pin.is_output and pin.name == name:
                 return pin
 
-    def add_pin(self, pin_text, is_output, execution=False, visible=True):
+    def get_end_pin(self, name):
+        for pin in self._pins:
+            if not pin.is_output and pin.name == name:
+                return pin
+
+    def add_pin(self, pin_text: str = "PIN NAME", is_output: bool = False, execution: bool = False, visible: bool = True):
         pin = Pin(self, name=pin_text, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
 

@@ -97,8 +97,8 @@ class Utils:
             # Add the connections
             for c in data["connections"]:
                 if node_lookup:
-                    start_pin = node_lookup[c["start_uuid"]].get_pin(c["start_pin"])
-                    end_pin = node_lookup[c["end_uuid"]].get_pin(c["end_pin"])
+                    start_pin = node_lookup[c["start_uuid"]].get_start_pin(c["start_pin"])
+                    end_pin = node_lookup[c["end_uuid"]].get_end_pin(c["end_pin"])
 
                     connection = Connection()
                     connection.set_start_pin(start_pin)
