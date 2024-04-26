@@ -1,9 +1,10 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
-                               QPushButton, QTextEdit, QCompleter)
-from PySide6.QtGui import Qt, QColor, QFont
+                               QPushButton, QCompleter)
+from PySide6.QtGui import Qt, QColor, QFont, QIntValidator
 from PySide6.QtCore import QStringListModel
 
 import serial.tools.list_ports as find_ports
+from serial.tools.list_ports_common import ListPortInfo
 
 
 class InnerHLayout(QHBoxLayout):
@@ -11,7 +12,8 @@ class InnerHLayout(QHBoxLayout):
     _button_width = 100
     _layout_space = 20
 
-    def __init__(self, label_text: str, button_labels: list[str], button_funcs, suggestions: set):
+    def __init__(self, label_text: str, button_labels: list[str], button_funcs,
+                 suggestions: set, validator=None):
         super().__init__()
         self.setSpacing(self._layout_space)
 
@@ -19,28 +21,36 @@ class InnerHLayout(QHBoxLayout):
         self.button_labels = button_labels
         self.button_funcs = button_funcs
         self.suggestions = suggestions
+        self.validator = validator
 
         self.label = QLabel()
         self.completer = QCompleter()
         self.line_edit = QLineEdit()
         self.button = QPushButton()
-        self.ui()
+        self.init_ui()
 
         self.addWidget(self.label)
         self.addWidget(self.line_edit)
         self.addWidget(self.button)
 
-    def ui(self):
+    def init_ui(self):
         self.label.setText(self.label_text)
         self.label.setFixedWidth(self._label_width)
 
         self.completer.setModel(QStringListModel(self.suggestions))
         self.completer.setFilterMode(Qt.MatchFlag.MatchContains)
         self.line_edit.setCompleter(self.completer)
+        self.line_edit.setValidator(self.validator)
+        self.line_edit.textChanged.connect(self.check_button_state)
 
+        self.button.setEnabled(False)
         self.button.setText(self.button_labels[0])
         self.button.setFixedWidth(self._button_width)
         self.button.clicked.connect(self.execute)
+
+    def check_button_state(self, text):
+        if bool(text):
+            self.button.setEnabled(True)
 
     def execute(self):
         new_input = self.line_edit.text()
@@ -64,45 +74,54 @@ class InputLogWidget(QWidget):
 
         self.layout = QVBoxLayout()
 
-        self.layout.addLayout(InnerHLayout(label_text="Port:",
-                                           button_labels=["Connect", "Disconnect"],
-                                           button_funcs=[self.connect_to_port, self.disconnected_from_port],
-                                           suggestions=self.list_serial_ports()))
+        self.layout.addLayout(
+            InnerHLayout(label_text="Port:",
+                         button_labels=["Connect", "Disconnect"],
+                         button_funcs=[self.connect_to_port, self.disconnected_from_port],
+                         suggestions=self.ports_history(),
+                         validator=self.port_validator())
+        )
 
-        self.layout.addLayout(InnerHLayout(label_text="Topic:",
-                                           button_labels=["Subscribe", "Unsubscribe"],
-                                           button_funcs=[self.subscribe_to_topic, self.unsubscribe_from_topic],
-                                           suggestions=self.list_serial_ports()))
+        self.layout.addLayout(
+            InnerHLayout(label_text="Topic:",
+                         button_labels=["Subscribe", "Unsubscribe"],
+                         button_funcs=[self.subscribe_to_topic, self.unsubscribe_from_topic],
+                         suggestions=self.topics_history())
+        )
 
-        self.layout.addLayout(InnerHLayout(label_text="Message:",
-                                           button_labels=["Publish"],
-                                           button_funcs=[self.publish_message],
-                                           suggestions=self.message_history()))
+        self.layout.addLayout(
+            InnerHLayout(label_text="Message:",
+                         button_labels=["Publish"],
+                         button_funcs=[self.publish_message],
+                         suggestions=self.message_history())
+        )
 
         self.setLayout(self.layout)
 
-    def connect_to_port(self, port):
+    # /// --- ~ Buttons functions ~ --- \\\ #
+    def connect_to_port(self, port) -> None:
         self.logger.setTextColor(QColor(0, 255, 0))
         self.logger.append(f"Connected: {port}\n")
 
-    def disconnected_from_port(self, port):
+    def disconnected_from_port(self, port) -> None:
         self.logger.setTextColor(QColor(255, 0, 0))
         self.logger.append(f"Disconnected: {port}\n")
 
-    def subscribe_to_topic(self, topic):
+    def subscribe_to_topic(self, topic) -> None:
         self.logger.setTextColor(QColor(0, 255, 0))
         self.logger.append(f"Subscribe: {topic}\n")
 
-    def unsubscribe_from_topic(self, topic):
+    def unsubscribe_from_topic(self, topic) -> None:
         self.logger.setTextColor(QColor(255, 0, 0))
         self.logger.append(f"Unsubscribe: {topic}\n")
 
-    def publish_message(self, message):
+    def publish_message(self, message) -> None:
         self.logger.setTextColor(QColor(255, 255, 255))
         self.logger.append(f"Published: {message}\n")
 
+    # /// --- ~ Histories ~ --- \\\ #
     @staticmethod
-    def list_serial_ports():
+    def ports_history() -> set[ListPortInfo]:
         ports = find_ports.comports()
         # if ports:
         #     for port, desc, hwid in sorted(ports):
@@ -112,27 +131,16 @@ class InputLogWidget(QWidget):
         return set(ports)
 
     @staticmethod
-    def list_serial_topics():
-        return {}
+    def topics_history():
+        return set()
 
     @staticmethod
-    def message_history():
+    def message_history() -> set[str]:
         return {"привет", "пока"}
 
-
-class OutputLogWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.layout = QVBoxLayout()
-
-        self.logger = QTextEdit()
-        self.logger.setFont(QFont("Arial", 10))
-        self.logger.setReadOnly(True)
-        self.logger.setPlaceholderText('Log Message')
-        self.layout.addWidget(self.logger)
-
-        self.button = QPushButton('Clear')
-        self.button.clicked.connect(self.logger.clear)
-        self.layout.addWidget(self.button)
-
-        self.setLayout(self.layout)
+    # /// --- ~ Validators ~ --- \\\ #
+    @staticmethod
+    def port_validator():
+        validator = QIntValidator()
+        validator.setRange(0, 65535)
+        return validator

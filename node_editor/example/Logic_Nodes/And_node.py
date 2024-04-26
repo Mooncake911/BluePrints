@@ -2,8 +2,8 @@ from node_editor.gui.attributes import Node
 
 
 class And_Node(Node):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, scene):
+        super().__init__(name, scene)
 
         self.title_text = "AND"
         self.type_text = "Logic Node"

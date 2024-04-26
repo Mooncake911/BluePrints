@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from PySide6 import QtCore, QtWidgets
 
@@ -75,20 +76,20 @@ class Utils:
             data = json.load(f)
 
         if data:
-            node_lookup = {}  # A dictionary of nodes, by uuids
+            node_list = {}  # A dictionary of nodes, by uuids
 
             # Add the nodes
             for n in data["nodes"]:
                 if n["type"] in NODE_IMPORTS.keys():
                     class_name = NODE_IMPORTS[n["type"]]
-                    node = class_name["class"](name=n["type"])
-                    node.uuid = n["uuid"]
+                    node = class_name["class"](name=n["type"], scene=self.scene)
+                    node.uuid = uuid.uuid4()  # set new uuid
                     node.value = n["value"]
+                    node.index = n["index"]
                     pos = QtCore.QPointF(n["x"], n["y"])
 
+                    node_list[n["uuid"]] = node
                     self.create_node(node, pos)
-
-                    node_lookup[node.uuid] = node
 
                 else:
                     print(f"{n['type']} module is not found.")
@@ -96,9 +97,9 @@ class Utils:
 
             # Add the connections
             for c in data["connections"]:
-                if node_lookup:
-                    start_pin = node_lookup[c["start_uuid"]].get_start_pin(c["start_pin"])
-                    end_pin = node_lookup[c["end_uuid"]].get_end_pin(c["end_pin"])
+                if node_list:
+                    start_pin = node_list[c["start_uuid"]].get_start_pin(c["start_pin"])
+                    end_pin = node_list[c["end_uuid"]].get_end_pin(c["end_pin"])
 
                     connection = Connection()
                     connection.set_start_pin(start_pin)
@@ -125,6 +126,7 @@ class Utils:
                     "y": pos.y(),
                     "uuid": str(item.uuid),
                     "value": item.value,
+                    "index": item.index,
                 }
 
                 json_scene["nodes"].append(node)

@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Event_Node(Node):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, scene):
+        super().__init__(name, scene)
 
         self.title_text = "Event"
         self.type_text = "Event Nodes"

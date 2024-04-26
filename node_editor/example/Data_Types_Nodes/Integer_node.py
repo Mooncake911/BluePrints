@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Integer_Node(Node):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, scene):
+        super().__init__(name, scene)
 
         self.title_text = "Integer"
         self.type_text = "Data Types"
@@ -30,6 +30,7 @@ class Integer_Node(Node):
             line_edit.setText(self.value)
         else:
             line_edit.setPlaceholderText("Enter")
+
         self.layout.addWidget(line_edit)
 
         super().init_widget()

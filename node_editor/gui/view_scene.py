@@ -33,10 +33,10 @@ class ViewScene(QtWidgets.QGraphicsScene):
         """
         mime_data = event.mimeData()
         item = mime_data.item
-        pos = event.scenePos()
 
         if item.name and item.class_name:
-            node = item.class_name(name=item.name)
+            node = item.class_name(name=item.name, scene=self)
+            pos = event.scenePos()
             self.utils.create_node(node, pos)
         return super().dropEvent(event)
 

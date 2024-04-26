@@ -8,6 +8,7 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         self.setFlag(QtWidgets.QGraphicsPathItem.GraphicsItemFlag.ItemIsSelectable)
         self.setZValue(-1)
 
+        self.connection_path = QtGui.QPainterPath()
         self.start_pos = QtCore.QPointF()
         self.end_pos = QtCore.QPointF()
         self.start_pin = None
@@ -28,17 +29,17 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         """
         Draws a smooth cubic curve from the start to end pins.
         """
-        path = QtGui.QPainterPath()
-        path.moveTo(self.start_pos)
-
         dx = self.end_pos.x() - self.start_pos.x()
         dy = self.end_pos.y() - self.start_pos.y()
 
         ctr1 = QtCore.QPointF(self.start_pos.x() + dx * 0.5, self.start_pos.y())
         ctr2 = QtCore.QPointF(self.start_pos.x() + dx * 0.5, self.start_pos.y() + dy)
-        path.cubicTo(ctr1, ctr2, self.end_pos)
 
-        self.setPath(path)
+        self.connection_path.clear()
+        self.connection_path.moveTo(self.start_pos)
+        self.connection_path.cubicTo(ctr1, ctr2, self.end_pos)
+
+        self.setPath(self.connection_path)
 
     def paint(self, painter, option=None, widget=None):
         """
@@ -62,4 +63,4 @@ class ConnectionGraphics(QtWidgets.QGraphicsPathItem):
         else:
             painter.setPen(QtGui.QPen(color, thickness))
 
-        painter.drawPath(self.path())
+        painter.drawPath(self.connection_path)

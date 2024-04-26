@@ -6,8 +6,8 @@ class Device_Node(Node):
     """
     A node that describes any device.
     """
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, scene):
+        super().__init__(name, scene)
         data = DEVICES_NAMES[name]
 
         self.title_text = data["name"]

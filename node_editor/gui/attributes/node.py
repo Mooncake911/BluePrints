@@ -7,11 +7,14 @@ from .node_graphics import NodeGraphics
 
 
 class Node(NodeGraphics):
-    def __init__(self, name=__name__):
+    def __init__(self, name=__name__, scene=None):
         super().__init__()
-        self.name = name
+
+        self.scene = scene  # Global node editor scene
+        self.name = name  # A name of widget from NodeList
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
         self.value = None  # An input value that has been set by the user
+        self.index = None  # An index that has been set by the user
 
         self.proxy = QtWidgets.QGraphicsProxyWidget()
         self.proxy.setParentItem(self)
@@ -28,8 +31,8 @@ class Node(NodeGraphics):
         for pin in self._pins:
             pin.clear_connection()
 
-        self.scene().removeItem(self.proxy)
-        self.scene().removeItem(self)
+        self.scene.removeItem(self.proxy)
+        self.scene.removeItem(self)
 
     def get_start_pin(self, name):
         for pin in self._pins:

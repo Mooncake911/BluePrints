@@ -5,21 +5,24 @@
             "x": 4705,
             "y": 4940,
             "uuid": "6f62104c-0dce-448c-a09a-88d33f26c9fd",
-            "value": null
+            "value": null,
+            "index": null
         },
         {
             "type": "Print_Node",
             "x": 5067,
             "y": 5002,
             "uuid": "422234b7-a6c3-41ff-a946-4620d27cdfe1",
-            "value": null
+            "value": null,
+            "index": null
         },
         {
             "type": "Speed_Node",
             "x": 4892,
             "y": 4872,
             "uuid": "64481bf4-50e2-4bfe-aca3-80fa934aba74",
-            "value": null
+            "value": null,
+            "index": null
         }
     ],
     "connections": [
