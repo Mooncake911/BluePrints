@@ -22,7 +22,7 @@ class Device_Node(Node):
 
         for attribute in self.attributes:
             if attribute['show_attribute']:
-                if attribute['has_output']:
-                    self.add_pin(pin_text=attribute["name"], is_output=attribute['has_output'])
-                if attribute['has_input']:
-                    self.add_pin(pin_text=attribute["name"], is_output=not attribute['has_input'])
+                if attribute['readable']:
+                    self.add_pin(pin_text=attribute["readable"], is_output=attribute['readable'])
+                if attribute['writable']:
+                    self.add_pin(pin_text=attribute["writable"], is_output=not attribute['writable'])
