@@ -83,10 +83,15 @@ class Utils:
                 if n["type"] in NODE_IMPORTS.keys():
                     class_name = NODE_IMPORTS[n["type"]]
                     node = class_name["class"](name=n["type"], scene=self.scene)
+
                     node.uuid = uuid.uuid4()  # set new uuid
-                    node.value = n["value"]
-                    node.index = n["index"]
                     pos = QtCore.QPointF(n["x"], n["y"])
+
+                    for key in ["value", "index"]:
+                        try:
+                            setattr(node, key, n[key])
+                        except KeyError:
+                            pass
 
                     node_list[n["uuid"]] = node
                     self.create_node(node, pos)
@@ -125,12 +130,15 @@ class Utils:
                     "x": pos.x(),
                     "y": pos.y(),
                     "uuid": str(item.uuid),
-                    "value": item.value,
-                    "index": item.index,
                 }
+                if item.value:
+                    node["value"] = item.value
+                if item.index:
+                    node["index"] = item.index
 
                 json_scene["nodes"].append(node)
 
+                # TODO: сделать нормальные предупреждения ::
                 if item.status == NodeStatus.ERROR:
                     print('NODE ERROR WAS FOUND')
                 if item.status == NodeStatus.WARNING:

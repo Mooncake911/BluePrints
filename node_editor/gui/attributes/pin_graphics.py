@@ -5,7 +5,7 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
     _radius = 5
     _margin = 3
 
-    def __init__(self, parent, name: str, is_output: bool, execution: bool, visible: bool = True):
+    def __init__(self, parent, name: str, pin_type: str, is_output: bool, execution: bool, visible: bool):
         super().__init__(parent)
 
         self.connection = None
@@ -14,6 +14,7 @@ class PinGraphics(QtWidgets.QGraphicsPathItem):
         self.is_output = is_output
         self.execution = execution
         self.visible = visible
+        self.pin_type = pin_type
 
         self.icon_pin_path = QtGui.QPainterPath()
         self.title_pin_path = QtGui.QPainterPath()

@@ -44,8 +44,9 @@ class Node(NodeGraphics):
             if not pin.is_output and pin.name == name:
                 return pin
 
-    def add_pin(self, pin_text: str = "PIN NAME", is_output: bool = False, execution: bool = False, visible: bool = True):
-        pin = Pin(self, name=pin_text, is_output=is_output, execution=execution, visible=visible)
+    def add_pin(self, pin_text: str = "PIN NAME", pin_type: str = "",
+                is_output: bool = False, execution: bool = False, visible: bool = True):
+        pin = Pin(self, name=pin_text, pin_type=pin_type, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
 
     @staticmethod
