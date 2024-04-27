@@ -1,6 +1,6 @@
 {
   "id": 92384792734,
-  "open_key": 923479823743,                          # пример - открытый ключ шифрования
+  "open_key": 923479823743,
   "name": "Телевизор",
   "description": "65\" Neo QLED 8K QN900C",
   "attributes": [
@@ -33,6 +33,6 @@
       "show_attribute": true,
       "writable": true,
       "readable": true
-    },
+    }
   ]
 }
