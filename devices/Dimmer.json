@@ -1,0 +1,108 @@
+{
+  "id": 1,
+  "name": "Dimmer",
+  "description": "Да, то самое \"наше\" устройство",
+  "attributes": [
+    {
+      "name": "mode_1",
+      "description": "Состояние первого канала",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": true,
+      "readable": true
+    },
+    {
+      "name": "mode_2",
+      "description": "Состояние второго канала",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": true,
+      "readable": true
+    },
+    {
+      "name": "brightness_1",
+      "description": "Яркость первого канала",
+      "show_attribute": true,
+      "var_type": "int",
+      "upper_limit": 100,
+      "lower_limit": 1,
+      "writable": true,
+      "readable": true
+    },
+    {
+      "name": "brightness_2",
+      "description": "Яркость второго канала",
+      "show_attribute": true,
+      "var_type": "int",
+      "upper_limit": 100,
+      "lower_limit": 1,
+      "writable": true,
+      "readable": true
+    },
+    {
+      "name": "button_single_1",
+      "description": "Одинарное нажатие первой кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    },
+    {
+      "name": "button_double_1",
+      "description": "Двойное нажатие первой кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    },
+    {
+      "name": "button_long_1",
+      "description": "Долгое нажатие первой кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    },
+
+    {
+      "name": "button_single_2",
+      "description": "Одинарное нажатие второй кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    },
+    {
+      "name": "button_double_2",
+      "description": "Двойное нажатие второй кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    },
+    {
+      "name": "button_long_2",
+      "description": "Долгое нажатие второй кнопки",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    }
+  ]
+}

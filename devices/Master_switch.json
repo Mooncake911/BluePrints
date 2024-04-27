@@ -1,0 +1,17 @@
+{
+  "id": 666,
+  "name": "Master switch",
+  "description": "Абстрактное другое устройство",
+  "attributes": [
+    {
+      "name": "button",
+      "description": "Просто какой-то выключатель, порождающий событие",
+      "show_attribute": true,
+      "var_type": "bool",
+      "upper_limit": true,
+      "lower_limit": false,
+      "writable": false,
+      "readable": true
+    }
+  ]
+}

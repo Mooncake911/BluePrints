@@ -1,0 +1,28 @@
+{
+  "id": 189475987435546,
+  "open_key": 123129301923,
+  "name": "Настольный светильник",
+  "description": "Светильник, находится в прихожей (допустим)",
+  "attributes": [
+    {
+      "description": "Напряжение в сети",
+    	  "name": "net_volt",
+    	  "var_type": "int",
+      "upper_limit": 400,
+      "lower_limit": 0,
+      "show_attribute": true,
+      "writable": true,
+      "readable": true
+  	},
+    {
+      "description": "Лампочка светильника",
+      "name": "lamp",
+      "var_type": "int",
+      "upper_limit": 255,
+      "lower_limit": 0,
+      "show_attribute": true,
+      "writable": true,
+      "readable": true
+    },
+  ]
+}

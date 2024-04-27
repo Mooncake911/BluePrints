@@ -10,8 +10,8 @@
       "var_type": "float",
       "upper_limit": 100,
       "lower_limit": 10,
-      "has_input": true,
-      "has_output": true
+      "writable": true,
+      "readable": true
     },
     {
       "name": "mode",
@@ -20,8 +20,8 @@
       "var_type": "int",
       "upper_limit": 5,
       "lower_limit": 0,
-      "has_input": true,
-      "has_output": false
+      "writable": true,
+      "readable": true
     }
   ]
 }
