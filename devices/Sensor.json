@@ -1,0 +1,17 @@
+{
+  "id": 1,
+  "name": "Brightness sensor",
+  "description": "Датчик определяющий уровень освещенности",
+  "attributes": [
+    {
+      "name": "sensor1",
+      "description": "It is brightness sensor",
+      "show_attribute": true,
+      "var_type": "float",
+      "upper_limit": 1,
+      "lower_limit": 0,
+      "writable": false,
+      "readable": true
+    }
+  ]
+}

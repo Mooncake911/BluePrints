@@ -1,0 +1,38 @@
+{
+  "id": 92384792734,
+  "open_key": 923479823743,
+  "name": "Телевизор",
+  "description": "65\" Neo QLED 8K QN900C",
+  "attributes": [
+    {
+      "description": "Состояние телевизора",
+      "name": "mode",
+      "var_type": "bool",
+      "upper_limit": 1,
+      "lower_limit": 0,
+      "show_attribute": true,
+      "writable": true,
+      "readable": true
+    },
+    {
+      "description": "Номер канала",
+    	  "name": "chanel_num",
+    	  "var_type": "int",
+      "upper_limit": 20,
+      "lower_limit": 0,
+      "show_attribute": true,
+      "writable": true,
+      "readable": true
+  	},
+    {
+      "description": "Громкость динамиков",
+      "name": "volume",
+      "var_type": "int",
+      "upper_limit": 100,
+      "lower_limit": 0,
+      "show_attribute": true,
+      "writable": true,
+      "readable": true
+    }
+  ]
+}
