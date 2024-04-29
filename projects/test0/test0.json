@@ -1,0 +1,32 @@
+{
+    "nodes": [
+        {
+            "type": "Dimmer",
+            "x": 4973,
+            "y": 5010,
+            "uuid": "77a3474c-a2a6-491b-b375-9c8f6a30482e",
+            "value": null
+        },
+        {
+            "type": "Dimmer",
+            "x": 4665,
+            "y": 4998,
+            "uuid": "8bb1169b-56d5-438d-b83f-f5f1c43633e9",
+            "value": null
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "8bb1169b-56d5-438d-b83f-f5f1c43633e9",
+            "end_uuid": "77a3474c-a2a6-491b-b375-9c8f6a30482e",
+            "start_pin": "button_single_1",
+            "end_pin": "mode_1"
+        },
+        {
+            "start_uuid": "8bb1169b-56d5-438d-b83f-f5f1c43633e9",
+            "end_uuid": "77a3474c-a2a6-491b-b375-9c8f6a30482e",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
+}

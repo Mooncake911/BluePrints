@@ -1,0 +1,32 @@
+{
+    "nodes": [
+        {
+            "type": "Master_switch",
+            "x": 4497,
+            "y": 4765,
+            "uuid": "d514884e-bdaa-4076-88c2-8482e193228f",
+            "value": null
+        },
+        {
+            "type": "Dimmer",
+            "x": 4761,
+            "y": 4851,
+            "uuid": "c02f9158-85d7-4867-afc5-c0fcf8d8b5b0",
+            "value": null
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "d514884e-bdaa-4076-88c2-8482e193228f",
+            "end_uuid": "c02f9158-85d7-4867-afc5-c0fcf8d8b5b0",
+            "start_pin": "button",
+            "end_pin": "mode_1"
+        },
+        {
+            "start_uuid": "d514884e-bdaa-4076-88c2-8482e193228f",
+            "end_uuid": "c02f9158-85d7-4867-afc5-c0fcf8d8b5b0",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
+}
