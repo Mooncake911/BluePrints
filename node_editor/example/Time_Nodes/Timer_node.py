@@ -3,9 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Timer_Node(Node):
-    timers_id = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
     _format = "hh:mm:ss:zzz"
+    timers_id = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
     def __init__(self, name, scene):
         super().__init__(name, scene)
@@ -13,30 +12,25 @@ class Timer_Node(Node):
         self.time_edit = QtWidgets.QTimeEdit()
 
         self.index = 1
+        self.title_text = f"Timer {self.index}"
         self.type_text = "Data Types"
         self.set_color(title_color=(255, 165, 0))
 
         self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
         self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
 
-    @property
-    def index(self):
-        return self._index
-
-    @index.setter
-    def index(self, value):
-        self._index = value
-        self.title_text = f"Timer {self._index}"
-
     def timer_user_input(self, text):
         self.value = text.toString(self._format)
 
     def combo_box_user_input(self, text):
         self.index = text + 1
+        self.title_text = f"Timer {self.index}"
         self.title_path.clear()
         self.build()
 
     def init_widget(self):
+        self.title_text = f"Timer {self.index}"
+
         # Combo Box
         self.combo_box.addItems(self.timers_id)
         self.combo_box.setCurrentIndex(self.timers_id.index(str(self.index)))

@@ -6,14 +6,14 @@
   "attributes": [
     {
       "description": "Напряжение в сети",
-    	  "name": "net_volt",
-    	  "var_type": "int",
+      "name": "net_volt",
+      "var_type": "int",
       "upper_limit": 400,
       "lower_limit": 0,
       "show_attribute": true,
       "writable": true,
       "readable": true
-  	},
+    },
     {
       "description": "Лампочка светильника",
       "name": "lamp",

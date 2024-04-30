@@ -13,6 +13,7 @@ class Node(NodeGraphics):
         self.scene = scene  # Global node editor scene
         self.name = name  # A name of widget from NodeList
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
+        self.id = None
         self.value = None  # An input value that has been set by the user
         self.index = None  # An index that has been set by the user
 

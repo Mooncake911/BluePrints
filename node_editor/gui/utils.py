@@ -87,7 +87,7 @@ class Utils:
                     node.uuid = uuid.uuid4()  # set new uuid
                     pos = QtCore.QPointF(n["x"], n["y"])
 
-                    for key in ["value", "index"]:
+                    for key in ["id", "value", "index"]:
                         try:
                             setattr(node, key, n[key])
                         except KeyError:
@@ -135,6 +135,8 @@ class Utils:
                     node["value"] = item.value
                 if item.index:
                     node["index"] = item.index
+                if item.id:
+                    node["id"] = item.id
 
                 json_scene["nodes"].append(node)
 

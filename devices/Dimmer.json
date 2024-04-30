@@ -73,7 +73,6 @@
       "writable": false,
       "readable": true
     },
-
     {
       "name": "button_single_2",
       "description": "Одинарное нажатие второй кнопки",

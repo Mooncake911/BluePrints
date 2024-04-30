@@ -10,6 +10,7 @@ class Device_Node(Node):
         super().__init__(name, scene)
         data = DEVICES_NAMES[name]
 
+        self.id = data["id"]
         self.title_text = data["name"]
         self.type_text = "Device Node"
         self.set_color(title_color=(170, 90, 10))
@@ -17,10 +18,10 @@ class Device_Node(Node):
         self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
         self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
 
-        self.attributes = data["attributes"]
-        self.description = data["description"]
+        attributes = data["attributes"]
+        description = data["description"]
 
-        for attribute in self.attributes:
+        for attribute in attributes:
             if attribute['show_attribute']:
                 if attribute['readable']:
                     self.add_pin(pin_text=attribute["name"], is_output=attribute['readable'],

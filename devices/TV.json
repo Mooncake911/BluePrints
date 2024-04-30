@@ -16,14 +16,14 @@
     },
     {
       "description": "Номер канала",
-    	  "name": "chanel_num",
-    	  "var_type": "int",
+      "name": "chanel_num",
+      "var_type": "int",
       "upper_limit": 20,
       "lower_limit": 0,
       "show_attribute": true,
       "writable": true,
       "readable": true
-  	},
+    },
     {
       "description": "Громкость динамиков",
       "name": "volume",
