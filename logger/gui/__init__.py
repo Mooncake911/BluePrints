@@ -1,2 +1,2 @@
-from .components import InputLogWidget
+from .components import ConsoleInput
 from .console import Console

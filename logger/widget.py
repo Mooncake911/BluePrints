@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QSplitter
 from PySide6.QtGui import Qt
 
-from .gui import InputLogWidget, Console
+from .gui import ConsoleInput, Console
 
 
 class Logger(QSplitter):
@@ -10,7 +10,7 @@ class Logger(QSplitter):
         self.setOrientation(Qt.Orientation.Vertical)
 
         self.console = Console()
-        self.input_log = InputLogWidget(self.console.logger)
+        self.input = ConsoleInput(self.console.text_edit)
 
-        self.addWidget(self.input_log)
+        self.addWidget(self.input)
         self.addWidget(self.console)

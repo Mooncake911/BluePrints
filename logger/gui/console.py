@@ -7,14 +7,14 @@ class Console(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        self.logger = QTextEdit()
-        self.logger.setFont(QFont("Arial", 10))
-        self.logger.setReadOnly(True)
-        self.logger.setPlaceholderText('Log Message')
-        self.layout.addWidget(self.logger)
+        self.text_edit = QTextEdit()
+        self.text_edit.setFont(QFont("Arial", 10))
+        self.text_edit.setReadOnly(True)
+        self.text_edit.setPlaceholderText('Log Message')
+        self.layout.addWidget(self.text_edit)
 
-        self.button = QPushButton('Clear')
-        self.button.clicked.connect(self.logger.clear)
+        self.button = QPushButton('Clear 🗑')
+        self.button.clicked.connect(self.text_edit.clear)
         self.layout.addWidget(self.button)
 
         self.setLayout(self.layout)
