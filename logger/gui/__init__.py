@@ -1,2 +1,2 @@
-from .components import ConsoleInput
+from .console_input import ConsoleInput
 from .console import Console
