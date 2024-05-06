@@ -11,11 +11,10 @@ class ConsoleInput(QWidget):
 
         self.layout = QVBoxLayout()
 
-        self.menu_layout = MenuLayout(self.execute)
+        self.menu_layout = MenuLayout(self.reload)
         self.port_layout = PortLayout(self.logger)
         self.topic_layout = TopicLayout(self.logger)
         self.message_layout = MassageLayout(self.logger, self.port_layout.serialPort)
-        self.execute()
 
         self.layout.addLayout(self.menu_layout)
         self.layout.addLayout(self.port_layout)
@@ -24,7 +23,7 @@ class ConsoleInput(QWidget):
 
         self.setLayout(self.layout)
 
-    def execute(self):
+    def reload(self):
         self.port_layout.newSession()
         self.message_layout.newSession()
         self.topic_layout.newSession()

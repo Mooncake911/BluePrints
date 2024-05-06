@@ -1,0 +1,51 @@
+{
+    "nodes": [
+        {
+            "name": "Print_Node",
+            "x": 5178,
+            "y": 4953,
+            "uuid": "ee0728e4-976f-4402-85ab-5c2c3bfdb2ca",
+            "metadata": {}
+        },
+        {
+            "name": "Event_Node",
+            "x": 4734,
+            "y": 4970,
+            "uuid": "37ed664d-fae2-4d10-8236-c86d597517ea",
+            "metadata": {}
+        },
+        {
+            "name": "Speed_Node",
+            "x": 4974,
+            "y": 5026,
+            "uuid": "cd773bd4-815e-42ca-a217-a573304dcbb1",
+            "metadata": {}
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "cd773bd4-815e-42ca-a217-a573304dcbb1",
+            "end_uuid": "ee0728e4-976f-4402-85ab-5c2c3bfdb2ca",
+            "start_pin": "Return",
+            "end_pin": "input"
+        },
+        {
+            "start_uuid": "cd773bd4-815e-42ca-a217-a573304dcbb1",
+            "end_uuid": "ee0728e4-976f-4402-85ab-5c2c3bfdb2ca",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "37ed664d-fae2-4d10-8236-c86d597517ea",
+            "end_uuid": "cd773bd4-815e-42ca-a217-a573304dcbb1",
+            "start_pin": "value",
+            "end_pin": "Get"
+        },
+        {
+            "start_uuid": "37ed664d-fae2-4d10-8236-c86d597517ea",
+            "end_uuid": "cd773bd4-815e-42ca-a217-a573304dcbb1",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
+}

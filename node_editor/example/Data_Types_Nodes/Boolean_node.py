@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Boolean_Node(Node):
-    def __init__(self, name, scene):
-        super().__init__(name, scene)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.title_text = "Boolean"
         self.type_text = "Data Types"
@@ -13,16 +13,16 @@ class Boolean_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="bool")
 
     def user_input(self, text):
-        self.value = text
+        self.metadata["value"] = text
 
     def init_widget(self):
+        value = self.metadata.get("value", 0)
+
         combo_box = QtWidgets.QComboBox()
         combo_box.addItems(["False", "True"])
+        combo_box.setCurrentIndex(value)
         combo_box.currentIndexChanged.connect(self.user_input)
         combo_box.setFixedWidth(100)
-
-        if self.value:
-            combo_box.setCurrentIndex(self.value)
 
         self.layout.addWidget(combo_box)
 

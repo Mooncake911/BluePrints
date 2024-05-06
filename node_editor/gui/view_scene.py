@@ -35,9 +35,10 @@ class ViewScene(QtWidgets.QGraphicsScene):
         item = mime_data.item
 
         if item.name and item.class_name:
-            node = item.class_name(name=item.name, scene=self)
-            pos = event.scenePos()
-            self.utils.create_node(node, pos)
+            node = item.class_name(name=item.name)
+            node.setPos(event.scenePos())
+            node.init_widget()
+            self.addItem(node)
         return super().dropEvent(event)
 
     def contextMenuEvent(self, event):

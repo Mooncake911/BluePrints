@@ -6,7 +6,7 @@ import serial
 
 
 class MassageLayout(QHBoxLayout):
-    _history = []
+    _history = ["dev1", "dev2"]
 
     _label_width = 70
     _button_width = 100

@@ -7,17 +7,9 @@ from .attributes import Node, Connection, NodeStatus
 from .node_list import NODE_IMPORTS
 
 
-_default_folder = "projects"
-
-
 class Utils:
     def __init__(self, scene):
         self.scene = scene
-
-    def create_node(self, node, pos):
-        node.init_widget()
-        node.setPos(pos)
-        self.scene.addItem(node)
 
     def extra_message(self):
         """
@@ -48,21 +40,26 @@ class Utils:
 
         :param mode: QFileDialog.AcceptMode.AcceptSave or QFileDialog.AcceptMode.AcceptOpen
         """
-        global _default_folder
+        import os
+        executable_path = os.path.dirname(os.path.abspath(__file__))
+        default_directory = os.path.join(executable_path, "projects")
+        if not os.path.exists(default_directory):
+            os.makedirs(default_directory)
 
         file_dialog = QtWidgets.QFileDialog()
         file_dialog.setDefaultSuffix("json")
         file_dialog.setNameFilter("JSON files (*.json)")
         file_dialog.setAcceptMode(mode)
+        file_dialog.setDirectory(default_directory)
 
         if mode == file_dialog.AcceptMode.AcceptSave:
-            project_path, _ = file_dialog.getSaveFileName(file_dialog, "Save json file", _default_folder,
+            project_path, _ = file_dialog.getSaveFileName(file_dialog, "Save json file", default_directory,
                                                           "Json Files (*.json)")
             if project_path:
                 self.save_scene(json_path=project_path)
 
         if mode == file_dialog.AcceptMode.AcceptOpen:
-            project_path, _ = file_dialog.getOpenFileName(file_dialog, "Open json file", _default_folder,
+            project_path, _ = file_dialog.getOpenFileName(file_dialog, "Open json file", default_directory,
                                                           "Json Files (*.json)")
             if project_path:
                 self.load_scene(json_path=project_path)
@@ -80,24 +77,17 @@ class Utils:
 
             # Add the nodes
             for n in data["nodes"]:
-                if n["type"] in NODE_IMPORTS.keys():
-                    class_name = NODE_IMPORTS[n["type"]]
-                    node = class_name["class"](name=n["type"], scene=self.scene)
-
-                    node.uuid = uuid.uuid4()  # set new uuid
-                    pos = QtCore.QPointF(n["x"], n["y"])
-
-                    for key in ["id", "value", "index"]:
-                        try:
-                            setattr(node, key, n[key])
-                        except KeyError:
-                            pass
+                if n["name"] in NODE_IMPORTS.keys():
+                    class_name = NODE_IMPORTS[n["name"]]
+                    node = class_name["class"](**n)
+                    node.setPos(QtCore.QPointF(n["x"], n["y"]))
+                    node.init_widget()
+                    self.scene.addItem(node)
 
                     node_list[n["uuid"]] = node
-                    self.create_node(node, pos)
 
                 else:
-                    print(f"{n['type']} module is not found.")
+                    print(f'{n["name"]} module is not found.')
                     return
 
             # Add the connections
@@ -126,17 +116,12 @@ class Utils:
                 pos = item.pos().toPoint()
 
                 node = {
-                    "type": item.name,
+                    "name": item.name,
                     "x": pos.x(),
                     "y": pos.y(),
                     "uuid": str(item.uuid),
+                    "metadata": item.metadata
                 }
-                if item.value:
-                    node["value"] = item.value
-                if item.index:
-                    node["index"] = item.index
-                if item.id:
-                    node["id"] = item.id
 
                 json_scene["nodes"].append(node)
 

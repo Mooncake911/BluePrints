@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Float_Node(Node):
-    def __init__(self, name, scene):
-        super().__init__(name, scene)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.title_text = "Float"
         self.type_text = "Data Types"
@@ -13,21 +13,21 @@ class Float_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="float")
 
     def user_input(self, text):
-        self.value = text
+        self.metadata["value"] = text
 
     def init_widget(self):
+        # Set float validator
+        validator = QtGui.QDoubleValidator()
+        validator.setDecimals(5)
+
         line_edit = QtWidgets.QLineEdit()
         line_edit.textChanged.connect(self.user_input)
+        line_edit.setValidator(validator)
         line_edit.setFixedWidth(100)
 
-        # Set float validator
-        double_validator = QtGui.QDoubleValidator()
-        line_edit.setValidator(double_validator)
-        double_validator.setDecimals(5)
-
-        # Set default text
-        if self.value:
-            line_edit.setText(self.value)
+        value = self.metadata.get("value")
+        if value:
+            line_edit.setText(value)
         else:
             line_edit.setPlaceholderText("Enter")
 

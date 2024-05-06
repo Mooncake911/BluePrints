@@ -6,11 +6,11 @@ class Device_Node(Node):
     """
     A node that describes any device.
     """
-    def __init__(self, name, scene):
-        super().__init__(name, scene)
-        data = DEVICES_NAMES[name]
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        data = DEVICES_NAMES[kwargs.get("name")]
 
-        self.id = data["id"]
+        self.metadata["id"] = data["id"]
         self.title_text = data["name"]
         self.type_text = "Device Node"
         self.set_color(title_color=(170, 90, 10))

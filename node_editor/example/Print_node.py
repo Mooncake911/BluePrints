@@ -2,8 +2,8 @@ from node_editor.gui.attributes import Node
 
 
 class Print_Node(Node):
-    def __init__(self, name, scene):
-        super().__init__(name, scene)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.title_text = "Print"
         self.type_text = "Debug Nodes"
