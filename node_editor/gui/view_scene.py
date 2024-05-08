@@ -7,8 +7,9 @@ from node_editor.gui.utils import Utils
 
 
 class ViewScene(QtWidgets.QGraphicsScene):
-    def __init__(self):
+    def __init__(self, description_tab_func):
         super().__init__()
+        self.description_tab_func = description_tab_func
         self.setSceneRect(0, 0, 9999, 9999)
 
         # Set the node connection event filter
@@ -49,7 +50,7 @@ class ViewScene(QtWidgets.QGraphicsScene):
                 menu = QtWidgets.QMenu()
 
                 info_action = QtGui.QAction("ℹ️ Info")
-                info_action.triggered.connect(item.get_description)
+                info_action.triggered.connect(lambda: self.description_tab_func(item))
                 menu.addAction(info_action)
 
                 delete_action = QtGui.QAction("❌ Delete")

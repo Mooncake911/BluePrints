@@ -79,19 +79,40 @@ class NodeList(QtWidgets.QTreeWidget):
     def mousePressEvent(self, event):
         item = self.itemAt(event.pos())
 
-        drag = QtGui.QDrag(self)
         mime_data = QtCore.QMimeData()
         mime_data.item = item
+        drag = QtGui.QDrag(self)
         drag.setMimeData(mime_data)
 
-        pixmap = QtGui.QPixmap(16, 16)
-        pixmap.fill(QtGui.QColor("darkgray"))
+        if item and item.class_name is not None:
+            pixmap = QtGui.QPixmap(16, 16)
+            pixmap.fill(QtGui.QColor("darkgray"))
+        else:
+            pixmap = QtGui.QPixmap(16, 16)
+            pixmap.fill(QtGui.QColor("red"))
 
         drag.setPixmap(pixmap)
-        drag.exec_()
+        drag.exec()
 
         super().mousePressEvent(event)
 
     def mouseDoubleClickEvent(self, event):
         self.mousePressEvent(event)
         super().mouseDoubleClickEvent(event)
+
+    def expandAllItems(self):
+        for item in self.findItems("", QtCore.Qt.MatchFlag.MatchContains | QtCore.Qt.MatchFlag.MatchRecursive):
+            item.setExpanded(True)
+
+    def collapseAllItems(self):
+        for item in self.findItems("", QtCore.Qt.MatchFlag.MatchContains | QtCore.Qt.MatchFlag.MatchRecursive):
+            item.setExpanded(False)
+
+    def keyPressEvent(self, event):
+        if event.modifiers() & QtCore.Qt.KeyboardModifier.ControlModifier:
+            if event.key() == QtCore.Qt.Key.Key_Down:
+                self.expandAllItems()
+            elif event.key() == QtCore.Qt.Key.Key_Up:
+                self.collapseAllItems()
+        else:
+            super().keyPressEvent(event)

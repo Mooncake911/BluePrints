@@ -4,7 +4,7 @@ from PySide6.QtGui import Qt
 from .gui import ConsoleInput, Console
 
 
-class Logger(QSplitter):
+class ProtocolClient(QSplitter):
     def __init__(self):
         super().__init__()
         self.setOrientation(Qt.Orientation.Vertical)

@@ -5,12 +5,12 @@ from .gui import NodeList, View, ViewScene
 
 
 class NodeEditor(QSplitter):
-    def __init__(self):
+    def __init__(self, description_tab_func):
         super().__init__()
         self.setOrientation(Qt.Orientation.Horizontal)
 
         # Create scene
-        self.scene = ViewScene()
+        self.scene = ViewScene(description_tab_func)
         # Create left widget
         self.node_list = NodeList()
         # Create right widget

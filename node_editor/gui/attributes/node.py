@@ -12,7 +12,8 @@ class Node(NodeGraphics):
     def __init__(self, **kwargs):
         super().__init__()
         self.name = kwargs.get("name")  # A name of widget from NodeList
-        self.metadata = kwargs.get("metadata", dict)
+        self.metadata = kwargs.get("metadata", dict())
+        self.description = "description"
 
         self.uuid = uuid.uuid4()  # An identifier that used to manage nodes (ex. saving and loading scene)
         while self.uuid in self.uuid_list:
@@ -51,7 +52,3 @@ class Node(NodeGraphics):
                 is_output: bool = False, execution: bool = False, visible: bool = True):
         pin = Pin(self, name=pin_text, pin_type=pin_type, is_output=is_output, execution=execution, visible=visible)
         self._pins.append(pin)
-
-    @staticmethod
-    def get_description():
-        print("description")

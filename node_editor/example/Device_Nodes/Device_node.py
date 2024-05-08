@@ -11,6 +11,8 @@ class Device_Node(Node):
         data = DEVICES_NAMES[kwargs.get("name")]
 
         self.metadata["id"] = data["id"]
+        self.description = data["description"]
+
         self.title_text = data["name"]
         self.type_text = "Device Node"
         self.set_color(title_color=(170, 90, 10))
@@ -19,8 +21,6 @@ class Device_Node(Node):
         self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
 
         attributes = data["attributes"]
-        description = data["description"]
-
         for attribute in attributes:
             if attribute['show_attribute']:
                 if attribute['readable']:
