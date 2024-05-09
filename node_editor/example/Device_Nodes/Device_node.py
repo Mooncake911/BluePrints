@@ -1,3 +1,4 @@
+import json
 from node_editor.gui.attributes import Node
 from devices import DEVICES_NAMES
 
@@ -11,7 +12,7 @@ class Device_Node(Node):
         data = DEVICES_NAMES[kwargs.get("name")]
 
         self.metadata["id"] = data["id"]
-        self.description = data["description"]
+        self.description = json.dumps(data, indent=4, ensure_ascii=False)
 
         self.title_text = data["name"]
         self.type_text = "Device Node"

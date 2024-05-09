@@ -13,7 +13,7 @@ class Integer_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="int")
 
     def user_input(self, text):
-        self.metadata["value"] = text
+        self.metadata["value"] = int(text)
 
     def init_widget(self):
         # Set integer validator
@@ -25,7 +25,7 @@ class Integer_Node(Node):
         line_edit.setValidator(validator)
         line_edit.setFixedWidth(100)
 
-        value = self.metadata.get("value")
+        value = str(self.metadata.get("value"))
         if value:
             line_edit.setText(value)
         else:

@@ -13,7 +13,7 @@ class Boolean_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="bool")
 
     def user_input(self, text):
-        self.metadata["value"] = text
+        self.metadata["value"] = bool(text)
 
     def init_widget(self):
         value = self.metadata.get("value", 0)

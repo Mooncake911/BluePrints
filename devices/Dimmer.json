@@ -1,7 +1,7 @@
 {
   "id": 1,
   "name": "Dimmer",
-  "description": "Да, то самое \"наше\" устройство",
+  "description": "Да, то самое наше устройство",
   "attributes": [
     {
       "name": "mode_1",
