@@ -1,10 +1,9 @@
 import json
-import uuid
 
 from PySide6 import QtCore, QtWidgets
 
 from .attributes import Node, Connection, NodeStatus
-from .node_list import NODE_IMPORTS
+from .node_list import get_node_imports
 
 
 class Utils:
@@ -41,8 +40,7 @@ class Utils:
         :param mode: QFileDialog.AcceptMode.AcceptSave or QFileDialog.AcceptMode.AcceptOpen
         """
         import os
-        executable_path = os.path.dirname(os.path.abspath(__file__))
-        default_directory = os.path.join(executable_path, "projects")
+        default_directory = "projects"
         if not os.path.exists(default_directory):
             os.makedirs(default_directory)
 
@@ -68,7 +66,7 @@ class Utils:
         """
         Load the scene from the .json file.
         """
-
+        NODE_IMPORTS = get_node_imports()
         with open(json_path) as f:
             data = json.load(f)
 
@@ -102,7 +100,7 @@ class Utils:
                     connection.update_start_and_end_pos()
                     self.scene.addItem(connection)
 
-    def save_scene(self, json_path: str) -> None:
+    def save_scene(self, json_path: str=None) -> dict:
         """
         Save the scene to the .json file.
         """
@@ -142,5 +140,8 @@ class Utils:
 
                 json_scene["connections"].append(connection)
 
-        with open(json_path, "w") as f:
-            json.dump(json_scene, f, indent=4)
+        if json_path:
+            with open(json_path, "w") as f:
+                json.dump(json_scene, f, indent=4)
+
+        return json_scene

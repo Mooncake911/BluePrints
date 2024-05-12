@@ -17,6 +17,7 @@ class Boolean_Node(Node):
 
     def init_widget(self):
         value = self.metadata.get("value", 0)
+        self.metadata["value"] = bool(value)
 
         combo_box = QtWidgets.QComboBox()
         combo_box.addItems(["False", "True"])

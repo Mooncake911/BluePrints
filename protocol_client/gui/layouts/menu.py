@@ -3,6 +3,7 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QSpacerItem, QS
 
 class MenuLayout(QHBoxLayout):
     _label_width = 70
+    _button_width = 30
     _layout_space = 20
 
     def __init__(self, button_func):
@@ -14,7 +15,7 @@ class MenuLayout(QHBoxLayout):
         self.label.setFixedWidth(self._label_width)
 
         self.button = QPushButton()
-        self.button.setFixedSize(30, 30)
+        self.button.setFixedSize(self._button_width, self._button_width)
         icon = self.button.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)
         self.button.setIcon(icon)
         self.button.setIconSize(self.button.size())

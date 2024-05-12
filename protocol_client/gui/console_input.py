@@ -5,16 +5,16 @@ from .layouts import PortLayout, MassageLayout, TopicLayout, MenuLayout
 
 
 class ConsoleInput(QWidget):
-    def __init__(self, logger):
+    def __init__(self, text_edit):
         super().__init__()
-        self.logger = logger
+        self.text_edit = text_edit
 
         self.layout = QVBoxLayout()
 
         self.menu_layout = MenuLayout(self.reload)
-        self.port_layout = PortLayout(self.logger)
-        self.topic_layout = TopicLayout(self.logger)
-        self.message_layout = MassageLayout(self.logger, self.port_layout.serialPort)
+        self.port_layout = PortLayout(self.text_edit)
+        self.topic_layout = TopicLayout(self.text_edit)
+        self.message_layout = MassageLayout(self.text_edit, self.port_layout.serialPort)
 
         self.layout.addLayout(self.menu_layout)
         self.layout.addLayout(self.port_layout)
@@ -28,6 +28,6 @@ class ConsoleInput(QWidget):
         self.message_layout.newSession()
         self.topic_layout.newSession()
 
-        self.logger.clear()
-        self.logger.setTextColor(QColor(255, 255, 255))
-        self.logger.append(f"~ --- New session --- ~")
+        self.text_edit.clear()
+        self.text_edit.setTextColor(QColor(255, 255, 255))
+        self.text_edit.append(f"~ --- New session --- ~")

@@ -2,7 +2,7 @@ import os
 import json
 
 
-def read_json_files(folder_path):
+def upload_devices(folder_path):
     json_data = {}
 
     for filename in os.listdir(folder_path):
@@ -13,7 +13,3 @@ def read_json_files(folder_path):
                 json_data[filename.split('.')[0]] = data
 
     return json_data
-
-
-if 'DEVICES_NAMES' not in globals():
-    DEVICES_NAMES = read_json_files("devices")

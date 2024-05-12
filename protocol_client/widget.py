@@ -10,7 +10,7 @@ class ProtocolClient(QSplitter):
         self.setOrientation(Qt.Orientation.Vertical)
 
         self.console = Console()
-        self.input = ConsoleInput(self.console.text_edit)
+        self.console_input = ConsoleInput(text_edit=self.console.text_edit)
 
-        self.addWidget(self.input)
+        self.addWidget(self.console_input)
         self.addWidget(self.console)

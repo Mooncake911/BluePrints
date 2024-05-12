@@ -25,7 +25,8 @@ class Integer_Node(Node):
         line_edit.setValidator(validator)
         line_edit.setFixedWidth(100)
 
-        value = str(self.metadata.get("value"))
+        value = str(self.metadata.get("value", 0))
+        self.metadata["value"] = int(value)
         if value:
             line_edit.setText(value)
         else:

@@ -1,6 +1,6 @@
 import json
 from node_editor.gui.attributes import Node
-from devices import DEVICES_NAMES
+from node_editor.constants import get_device_name
 
 
 class Device_Node(Node):
@@ -9,12 +9,17 @@ class Device_Node(Node):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        DEVICES_NAMES = get_device_name()
         data = DEVICES_NAMES[kwargs.get("name")]
 
-        self.metadata["id"] = data["id"]
+        if data.get("id"):
+            self.metadata["id"] = data["id"]
+        if data.get("open_key"):
+            self.metadata["open_key"] = data["open_key"]
+
         self.description = json.dumps(data, indent=4, ensure_ascii=False)
 
-        self.title_text = data["name"]
+        self.title_text = data.get("name")
         self.type_text = "Device Node"
         self.set_color(title_color=(170, 90, 10))
 
