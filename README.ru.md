@@ -11,7 +11,7 @@
 при помощи удобного интерфейса blue-prints.</strong>
   </p>
 
-[![release](https://img.shields.io/github/package-json/v/hydralauncher/hydra)](https://github.com/hydralauncher/hydra/releases)
+[![release](https://img.shields.io/github)](https://github.com)
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![ru](https://img.shields.io/badge/lang-ru-yellow.svg)](README.ru.md)
