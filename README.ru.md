@@ -87,4 +87,4 @@ pip install -r requirements.txt
 
 ## License
 
-IoT BluePrints лицензирована в соответствии с [MIT License](LICENSE).
+IoT BluePrints лицензирована в соответствии с [GNU General Public License v2.0](LICENSE).
