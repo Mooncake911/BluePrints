@@ -79,7 +79,7 @@ class Launcher(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication()
-    app.setWindowIcon(QtGui.QIcon("resources/img/app.ico"))
+    app.setWindowIcon(QtGui.QIcon("resources/icons/app.ico"))
     qdarktheme.setup_theme(theme='dark', corner_shape="rounded")  # default
 
     launcher = Launcher()
