@@ -56,9 +56,19 @@ def test(number):
         return
 
     uuid_id = {}
+
     for n in nodes:
         metadata = n['metadata']
-        uuid_id[n['uuid']] = metadata['id'] if 'id' in metadata else n['name']
+        if 'id' in metadata:
+            uuid_id[n['uuid']] = metadata['id']
+        elif 'value' in metadata:
+            if metadata['value']:
+                uuid_id[n['uuid']] = 'true'
+            else:
+                uuid_id[n['uuid']] = 'false'
+        else:
+            uuid_id[n['uuid']] = n['name']
+
     print('types', uuid_id.values())
 
     links, link_conn = get_links(connections)
@@ -77,8 +87,9 @@ def test(number):
     write_json_file(out, f'test_exit.json')
 
 
-# test(0)
-# test(1)
-# test(2)
-# test(3)
-# test(4)
+# def separate_json_file():
+#     json_data = read_json_file('test_exit.json')
+#     data_arr = []
+#     commands = json_data.get('commands')
+#     for c in commands:
+#         c['id'] ='

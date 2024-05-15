@@ -26,12 +26,15 @@ class TreeNode:
                 print(now_node)
 
                 # добавляем айди перед всеми кнопками
-                if (now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button'):
+                if now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button':
                     strg = str(types[now_node['start_uuid']]) + '.' + now_node['start_pin']
                     if now_node['start_pin'][:6] == 'button':
                         on_event.append(strg)
                 else:
-                    strg = now_node['start_pin']
+                    if now_node['start_pin'] == 'Value':
+                        strg = str(types[now_node['start_uuid']])
+                    else:
+                        strg = now_node['start_pin']
 
                 if (now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button') \
                         and now_node['end_pin'][-2] == '_':
@@ -56,7 +59,7 @@ class TreeNode:
                 elif now_node['end_pin'] == 'Condition' and now_node['start_pin'][:8] == '::Ex Out':
                     strg = self.string
 
-                elif (now_node['end_pin'][-2] == '_' or now_node['end_pin'] == 'button'):
+                elif now_node['end_pin'][-2] == '_' or now_node['end_pin'] == 'button':
                     strg = now_node['end_pin'] + '(' + self.string + ');'
 
                     if now_node['start_pin'][:8] == '::Ex Out':

@@ -1,8 +1,6 @@
 from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QLineEdit, QCompleter)
-from PySide6.QtGui import Qt, QColor
+from PySide6.QtGui import Qt
 from PySide6.QtCore import QStringListModel
-
-import serial
 
 
 class MassageLayout(QHBoxLayout):
@@ -53,6 +51,7 @@ class MassageLayout(QHBoxLayout):
 
     def execute(self):
         user_input = self.line_edit.text()
+
         # Remember user input
         if user_input not in self._history:
             self._history.append(user_input)
@@ -61,33 +60,5 @@ class MassageLayout(QHBoxLayout):
         self.messageRequest(user_input)
 
     def messageRequest(self, message: str) -> None:
-        try:
-            if self.serialPort.is_open:
-                self.serialPort.write(message.encode('utf-8'))
-                self.logger.setTextColor(QColor(0, 255, 0))
-                self.logger.append(f"Send: {message}")
-
-                response = self.serialPort.readline()
-                data = response.decode(encoding='utf-8', errors='ignore').strip()
-                if message[:3] == "dev":
-                    separator = '{"'
-                    data = separator + data.split(separator, 1)[-1]
-                    self.messageResponse(data)
-                else:
-                    self.messageResponse(data)
-            else:
-                self.logger.setTextColor(QColor(255, 0, 0))
-                self.logger.append(f"{self.serialPort.port} port hasn't been connected yet.")
-
-        except serial.SerialException as e:
-            self.logger.setTextColor(QColor(255, 0, 0))
-            self.logger.append(f"Failed to open serial port: {e}")
-
-    def messageResponse(self, data):
-        self.logger.setTextColor(QColor(0, 255, 0))
-        self.logger.append(f"Response from ESP8266MOD: {data}")
-
-        # # Записываем словарь в файл JSON
-        # json_data = json.loads(cleaned_data)
-        # with open('data.json', 'w') as json_file:
-        #     json.dump(json_data, json_file)
+        self.serialPort.write(message)
+        self.serialPort.read()
