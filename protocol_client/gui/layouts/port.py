@@ -1,3 +1,6 @@
+from threading import Lock
+from queue import Queue, Empty
+
 from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QComboBox)
 from PySide6.QtGui import QColor
 from PySide6.QtCore import QThread, Signal
@@ -7,9 +10,11 @@ from serial.tools import list_ports
 from serial.tools.list_ports_common import ListPortInfo
 
 
+from constants import add_device_config
+
+
 class SerialThread(QThread):
     stop_flag = False
-    exit_func = None
 
     new_data = Signal(str)
     encoding = 'utf-8'
@@ -18,40 +23,47 @@ class SerialThread(QThread):
         super().__init__()
         self.serial = serial.Serial()
         self.initSerial(port, baud_rate, timeout)
+        self.queue = Queue()
+        self.lock = Lock()
 
-    def initSerial(self, port, baud_rate=115200, timeout=1, exit_func=None):
+    def initSerial(self, port, baud_rate=115200, timeout=1):
         self.stop_flag = False
-        self.exit_func = exit_func
         self.serial.port = port
         self.serial.baudrate = baud_rate
         self.serial.timeout = timeout
 
     def run(self):
-        self.serial.open()
         while not self.stop_flag:
-            try:
-                if self.serial.in_waiting:
-                    self.read()
-            except serial.serialutil.SerialException:
-                self.close()
-        if not self.serial.is_open:
-            self.exit_func()
+            if self.serial.is_open:
+                try:
+                    data = self.queue.get(timeout=0.1)
+                    with self.lock:
+                        self.serial.write(data.encode(self.encoding))
+                        self.read()
+                    self.queue.task_done()
+                except Empty:
+                    pass
+            else:
+                self.serial.open()
 
     def close(self):
-        if self.serial.is_open:
-            self.stop_flag = True
-            self.serial.close()
+        self.stop_flag = True
+        self.serial.close()
 
     def write(self, data):
-        if self.serial.is_open:
-            self.serial.write(data.encode(self.encoding))
-            self.new_data.emit(data)
+        self.queue.put(data)
+        # print(f'Write: {data}')
 
     def read(self):
-        if self.serial.is_open:
-            data = self.serial.readline().decode(self.encoding)
+        while not self.serial.in_waiting:
+            # TODO: Danger zone!!!
+            pass
+        while self.serial.in_waiting:
+            data = self.serial.readline().decode(self.encoding).strip()
             if data:
                 self.new_data.emit(data)
+                add_device_config(data)
+                # print(f'Read: {data}')
 
 
 class PortLayout(QHBoxLayout):
@@ -120,7 +132,7 @@ class PortLayout(QHBoxLayout):
     def portConnect(self) -> None:
         port = self.combo_box.currentText()
         try:
-            self.serialPort.initSerial(port=port, exit_func=self.newSession)
+            self.serialPort.initSerial(port=port)
             self.serialPort.start()
             self.text_edit.setTextColor(QColor(0, 255, 0))
             self.text_edit.append(f"Connected to port: {self.serialPort.serial.port}")

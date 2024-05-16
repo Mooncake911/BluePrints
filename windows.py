@@ -12,16 +12,15 @@ class Windows(QTabWidget):
         super().__init__()
         self.setTabsClosable(True)
         self.tabCloseRequested.connect(self.closeTab)
-
-        # Create node editor
-        self.node_editor = NodeEditor(self.descriptionTab)
-        self.addTab(self.node_editor, "Node Editor")
-        self.tabBar().setTabButton(self.indexOf(self.node_editor), QTabBar.ButtonPosition.RightSide, None)
-
         # Create console window
         self.protocol_client = ProtocolClient()
         self.addTab(self.protocol_client, "Logger")
         self.tabBar().setTabButton(self.indexOf(self.protocol_client), QTabBar.ButtonPosition.RightSide, None)
+
+        # Create node editor
+        self.node_editor = NodeEditor(self.descriptionTab, self.protocol_client.console_input.port_layout.serialPort)
+        self.addTab(self.node_editor, "Node Editor")
+        self.tabBar().setTabButton(self.indexOf(self.node_editor), QTabBar.ButtonPosition.RightSide, None)
 
     def descriptionTab(self, item):
         if isinstance(item, Node):

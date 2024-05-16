@@ -50,15 +50,11 @@ class MassageLayout(QHBoxLayout):
         self.addWidget(self.button)
 
     def execute(self):
-        user_input = self.line_edit.text()
+        message = self.line_edit.text()
 
         # Remember user input
-        if user_input not in self._history:
-            self._history.append(user_input)
+        if message not in self._history:
+            self._history.append(message)
             self.completer.setModel(QStringListModel(self._history))
 
-        self.messageRequest(user_input)
-
-    def messageRequest(self, message: str) -> None:
         self.serialPort.write(message)
-        self.serialPort.read()

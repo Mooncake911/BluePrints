@@ -6,7 +6,7 @@ from PySide6 import QtCore, QtGui, QtWidgets
 
 
 from node_editor.example.Device_Nodes.Device_node import Device_Node
-from node_editor.constants import get_node_imports, get_device_name, write_node_imports
+from constants import get_devices_names, get_node_imports, write_node_imports
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -56,7 +56,7 @@ class NodeList(QtWidgets.QTreeWidget):
 
     def update_project(self):
         NODE_IMPORTS = get_node_imports()
-        DEVICES_NAMES = get_device_name()
+        DEVICES_NAMES = get_devices_names()
         self.clear()
 
         for f in self.nodes_path.rglob("*.py"):

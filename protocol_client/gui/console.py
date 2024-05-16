@@ -18,3 +18,6 @@ class Console(QWidget):
         self.layout.addWidget(self.button)
 
         self.setLayout(self.layout)
+
+    def closeEvent(self, event):
+        super().closeEvent(event)

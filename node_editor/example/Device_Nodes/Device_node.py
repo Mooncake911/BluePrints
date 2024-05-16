@@ -1,6 +1,6 @@
 import json
 from node_editor.gui.attributes import Node
-from node_editor.constants import get_device_name
+from constants import get_devices_names
 
 
 class Device_Node(Node):
@@ -9,7 +9,7 @@ class Device_Node(Node):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        DEVICES_NAMES = get_device_name()
+        DEVICES_NAMES = get_devices_names()
         data = DEVICES_NAMES[kwargs.get("name")]
 
         if data.get("id"):

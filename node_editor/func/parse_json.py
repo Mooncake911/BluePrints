@@ -87,9 +87,25 @@ def test(number):
     write_json_file(out, f'test_exit.json')
 
 
-# def separate_json_file():
-#     json_data = read_json_file('test_exit.json')
-#     data_arr = []
-#     commands = json_data.get('commands')
-#     for c in commands:
-#         c['id'] ='
+def get_config(ids):
+    """ 1 этап, запрос конфигураций у устройств. Тут мы формируем запросы для разных устройств (id)"""
+    que = []
+    for i in ids:
+        a = '{"type": "request", "message": {"id": ' + str(i) + '}}'
+        que.append(a)
+
+    return que
+
+
+def separate_json(number):
+    """Машин выход разделяем на отдельные команды (1 сообщение - один топик(заголовок))"""
+    json_data = number
+
+    data_arr = []
+    commands = json_data['commands']
+
+    for c in commands:
+        c['id'] = json_data['id']
+        data_arr.append(c)
+
+    return data_arr

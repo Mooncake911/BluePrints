@@ -3,14 +3,13 @@ from PySide6.QtWidgets import (QSplitter, QFileDialog, QWidget, QVBoxLayout, QHB
 from PySide6.QtGui import Qt
 
 from .gui import NodeList, View, ViewScene
-from .func import test, upload_devices
-from .constants import write_devices_names
+from .func import test, get_config
 
 
 class MenuLayout(QHBoxLayout):
     _layout_space = 18
 
-    def __init__(self, view_scene: ViewScene, node_list: NodeList, view: View):
+    def __init__(self, view_scene: ViewScene, node_list: NodeList, view: View, serialPort):
         super().__init__()
         self.setSpacing(self._layout_space)
         self.setContentsMargins(7, 7, 7, 0)
@@ -18,6 +17,7 @@ class MenuLayout(QHBoxLayout):
         self.view_scene = view_scene
         self.node_list = node_list
         self.view = view
+        self.serialPort = serialPort
 
         self.button1 = QPushButton("Fast search")
         self.button1.clicked.connect(self.fast_search)
@@ -35,8 +35,12 @@ class MenuLayout(QHBoxLayout):
         self.addWidget(self.button3)
 
     def fast_search(self):
-        devices_dict = upload_devices("devices")
-        write_devices_names(devices_dict)
+        for message in get_config([1]):
+            self.serialPort.write(message)
+
+        import time
+        time.sleep(2)
+
         self.node_list.update_project()
 
     def execute(self):
@@ -45,9 +49,10 @@ class MenuLayout(QHBoxLayout):
 
 
 class NodeEditor(QWidget):
-    def __init__(self, description_tab_func):
+    def __init__(self, description_tab_func, serialPort):
         super().__init__()
         self.description_tab_func = description_tab_func
+        self.serialPort = serialPort
 
         # Create scene
         self.view_scene = ViewScene(self.description_tab_func)
@@ -57,7 +62,7 @@ class NodeEditor(QWidget):
         self.view = View(self.view_scene)
 
         # Create menu
-        self.menu = MenuLayout(self.view_scene, self.node_list, self.view)
+        self.menu = MenuLayout(self.view_scene, self.node_list, self.view, self.serialPort)
 
         self.initUI()
 

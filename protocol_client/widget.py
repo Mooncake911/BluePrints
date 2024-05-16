@@ -14,3 +14,8 @@ class ProtocolClient(QSplitter):
 
         self.addWidget(self.console_input)
         self.addWidget(self.console)
+
+    def closeEvent(self, event):
+        self.console_input.closeEvent(event)
+        self.console.closeEvent(event)
+        super().closeEvent(event)
