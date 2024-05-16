@@ -85,7 +85,7 @@ if __name__ == "__main__":
     key = 1
     add_json_to_redis(key, json_data, db)
 
-    delete_from_redis(key, db)
+    #delete_from_redis(key, db)
 
 
 
