@@ -13,7 +13,7 @@ class Float_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="float")
 
     def user_input(self, text):
-        self.metadata["value"] = float(text)
+        self.metadata["value"] = float(text) if text else 0.0
 
     def init_widget(self):
         # Set float validator

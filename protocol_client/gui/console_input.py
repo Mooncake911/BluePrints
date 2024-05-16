@@ -31,3 +31,7 @@ class ConsoleInput(QWidget):
         self.text_edit.clear()
         self.text_edit.setTextColor(QColor(255, 255, 255))
         self.text_edit.append(f"~ --- New session --- ~")
+
+    def closeEvent(self, event):
+        self.port_layout.portDisconnect()
+        super().closeEvent(event)
