@@ -14,7 +14,7 @@ class ConsoleInput(QWidget):
         self.menu_layout = MenuLayout(self.reload)
         self.port_layout = PortLayout(self.text_edit)
         self.topic_layout = TopicLayout(self.text_edit)
-        self.message_layout = MassageLayout(self.text_edit, self.port_layout.serialPort)
+        self.message_layout = MassageLayout()
 
         self.layout.addLayout(self.menu_layout)
         self.layout.addLayout(self.port_layout)

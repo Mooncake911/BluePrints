@@ -1,13 +1,14 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QPushButton, QTextEdit)
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QPushButton)
 from PySide6.QtGui import QFont
 
 
 class Console(QWidget):
-    def __init__(self):
+    def __init__(self, text_edit):
         super().__init__()
+        self.text_edit = text_edit
+
         self.layout = QVBoxLayout()
 
-        self.text_edit = QTextEdit()
         self.text_edit.setFont(QFont("Arial", 10))
         self.text_edit.setReadOnly(True)
         self.text_edit.setPlaceholderText('Log Message')

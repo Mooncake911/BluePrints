@@ -2,6 +2,8 @@ from PySide6.QtWidgets import (QHBoxLayout, QLabel, QPushButton, QLineEdit, QCom
 from PySide6.QtGui import Qt
 from PySide6.QtCore import QStringListModel
 
+from serial_port import serial_port
+
 
 class MassageLayout(QHBoxLayout):
     _history = ["dev1", "dev2"]
@@ -10,12 +12,9 @@ class MassageLayout(QHBoxLayout):
     _button_width = 100
     _layout_space = 20
 
-    def __init__(self, logger, serial_port):
+    def __init__(self):
         super().__init__()
         self.setSpacing(self._layout_space)
-
-        self.logger = logger
-        self.serialPort = serial_port
 
         self.label_text = "Message:"
         self.button_labels = ["Send"]
@@ -51,10 +50,9 @@ class MassageLayout(QHBoxLayout):
 
     def execute(self):
         message = self.line_edit.text()
+        serial_port.put(message)
 
         # Remember user input
         if message not in self._history:
             self._history.append(message)
             self.completer.setModel(QStringListModel(self._history))
-
-        self.serialPort.write(message)
