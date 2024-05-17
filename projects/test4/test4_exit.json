@@ -1,6 +1,6 @@
 {
   "id": 1, 					# кому пришлём
-  "comands": [
+  "commands": [
     {
       "on_event":"666.button",			# на что реагировать
       "exe": "mode_1(666.button);"		# как реагировать

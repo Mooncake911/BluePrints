@@ -46,5 +46,5 @@ class NodeEditor(QWidget):
     def closeEvent(self, event):
         if self.view_scene.items():
             self.view_scene.utils.extra_message()
-        self.closeEvent(event)
+        self.menu.closeEvent(event)
         super().closeEvent(event)

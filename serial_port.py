@@ -98,4 +98,4 @@ class SerialPort(QThread):
         return ports_list
 
 
-serial_port = SerialPort()
+serial_port = SerialPort()  # Serial Port is common for all widgets

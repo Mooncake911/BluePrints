@@ -79,33 +79,8 @@ def test(number):
     out = {'id': 1, 'commands': []}
 
     for i in range(len(exe)):
-        out['commands'].append({
-            'on_event': on_event[i],
-            'exe': exe[i]
-        })
+        d = {'on_event': on_event[i], 'exe': exe[i], 'id': out['id']}
+        out['commands'].append(d)
 
     write_json_file(out, f'test_exit.json')
-
-
-def get_config(ids):
-    """ 1 этап, запрос конфигураций у устройств. Тут мы формируем запросы для разных устройств (id)"""
-    que = []
-    for i in ids:
-        a = '{"type": "request", "message": {"id": ' + str(i) + '}}'
-        que.append(a)
-
-    return que
-
-
-def separate_json(number):
-    """Машин выход разделяем на отдельные команды (1 сообщение - один топик(заголовок))"""
-    json_data = number
-
-    data_arr = []
-    commands = json_data['commands']
-
-    for c in commands:
-        c['id'] = json_data['id']
-        data_arr.append(c)
-
-    return data_arr
+    return out["commands"]
