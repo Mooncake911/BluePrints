@@ -1,6 +1,6 @@
 import json
 from node_editor.gui.attributes import Node
-from constants import get_devices_names
+from db.redis_db import redis_manager
 
 
 class Device_Node(Node):
@@ -9,8 +9,8 @@ class Device_Node(Node):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        DEVICES_NAMES = get_devices_names()
-        data = DEVICES_NAMES[kwargs.get("name")]
+        redis_data = redis_manager.get(key=kwargs.get("name"))
+        data = json.loads(redis_data)
 
         if data.get("id"):
             self.metadata["id"] = data["id"]

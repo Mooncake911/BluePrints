@@ -5,8 +5,11 @@ import inspect
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
+from db.redis_db import redis_manager
 from node_editor.example.Device_Nodes.Device_node import Device_Node
-from constants import get_devices_names, get_node_imports, write_node_imports
+
+
+NODE_IMPORTS = {}
 
 
 class NodeList(QtWidgets.QTreeWidget):
@@ -21,7 +24,7 @@ class NodeList(QtWidgets.QTreeWidget):
         self.update_project()
 
     @staticmethod
-    def load_module(file, NODE_IMPORTS, DEVICES_NAMES):
+    def load_module(file):
         try:
             spec = importlib.util.spec_from_file_location(file.stem, file)
             module = importlib.util.module_from_spec(spec)
@@ -31,7 +34,7 @@ class NodeList(QtWidgets.QTreeWidget):
                 if inspect.isclass(obj) and name != 'Node':  # ignore parent Node class from node.py
                     if file.parent.name == "Device_Nodes":
                         NODE_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
-                                             for i in DEVICES_NAMES.keys()})
+                                             for i in redis_manager.keys()})
                     else:
                         # print(spec.name, obj.__name__)
                         NODE_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
@@ -55,12 +58,10 @@ class NodeList(QtWidgets.QTreeWidget):
         return item
 
     def update_project(self):
-        NODE_IMPORTS = get_node_imports()
-        DEVICES_NAMES = get_devices_names()
         self.clear()
 
-        for f in self.nodes_path.rglob("*.py"):
-            self.load_module(f, NODE_IMPORTS, DEVICES_NAMES)
+        for file in self.nodes_path.rglob("*.py"):
+            self.load_module(file)
 
         for name, data in NODE_IMPORTS.items():
 

@@ -3,7 +3,7 @@ import json
 from PySide6 import QtCore, QtWidgets
 
 from .attributes import Node, Connection, NodeStatus
-from .node_list import get_node_imports
+from .node_list import NODE_IMPORTS
 
 
 class Utils:
@@ -66,7 +66,6 @@ class Utils:
         """
         Load the scene from the .json file.
         """
-        NODE_IMPORTS = get_node_imports()
         with open(json_path) as f:
             data = json.load(f)
 
@@ -100,7 +99,7 @@ class Utils:
                     connection.update_start_and_end_pos()
                     self.scene.addItem(connection)
 
-    def save_scene(self, json_path: str=None) -> dict:
+    def save_scene(self, json_path: str = None) -> dict:
         """
         Save the scene to the .json file.
         """

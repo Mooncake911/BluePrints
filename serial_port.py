@@ -8,7 +8,32 @@ from queue import Queue, Empty
 from PySide6.QtCore import QThread, Signal
 
 
-from constants import add_device_config
+from db.redis_db import redis_manager
+
+
+def string_to_dict(line: str):
+    # TODO: этой функции быть не должно, всё из-за пустых пакетов без доп-информации
+    import json
+    start_index = line.find('{')
+    end_index = line.rfind('}')
+
+    # Check if { and } were found
+    if start_index != -1 and end_index != -1:
+        json_str = line[start_index:end_index + 1]
+
+        try:
+            json_dict = json.loads(json_str)
+            if json_dict.get('id') and json_dict.get('name'):
+                return json_str
+            else:
+                return None
+
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON {e}")
+            return None
+
+    else:
+        return None
 
 
 class SerialPort(QThread):
@@ -86,7 +111,10 @@ class SerialPort(QThread):
             data = self.serial.readline().decode(self.encoding).strip()
             if data:
                 self.new_data.emit(data)
-                add_device_config(data)
+                data = string_to_dict(data)
+                if data:
+                    redis_manager.add(key='1', data=data)
+                # add_device_config(data)
                 # print(f'Read: {data}')
 
     @staticmethod

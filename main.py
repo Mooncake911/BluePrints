@@ -6,6 +6,7 @@ from PySide6 import QtGui, QtCore
 from PySide6.QtWidgets import (QMainWindow, QMenu, QApplication)
 
 from windows import Windows
+from db.redis_db import redis_manager
 
 
 class Launcher(QMainWindow):
@@ -74,6 +75,7 @@ class Launcher(QMainWindow):
 
     def closeEvent(self, event):
         self.windows.closeEvent(event)
+        redis_manager.close()
         super().closeEvent(event)
 
 
