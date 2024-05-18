@@ -1,7 +1,10 @@
-import redis
+import os
 import logging
 from threading import Lock
 from typing import Any, Optional
+
+from redis import Redis
+from redis.commands.json.path import Path
 
 # logging settings
 logging.basicConfig(level=logging.INFO)
@@ -30,16 +33,26 @@ class RedisManager:
         - db: номер базы данных Redis (по умолчанию 0)
         """
         try:
-            self.db = redis.StrictRedis(host=host, port=port, db=db, decode_responses=True)
+            redis_host = os.environ.get('REDIS_HOST')
+            redis_password = os.environ.get('REDIS_PASSWORD')
+            if redis_host and redis_password:
+                # if env variable is present
+                self.db = Redis(host=redis_host, password=redis_password, port=13930, db=db, decode_responses=True)
+                logger.info("Redis is in cloud.")
+            else:
+                # if env variable is absent
+                self.db = Redis(host=host, port=port, db=db, decode_responses=True)
+                logger.info("Redis is local.")
             logger.info("Успешное подключение к Redis.")
         except Exception as e:
             self.db = None
             logger.error(f"Ошибка подключения к Redis: {e}")
 
     def keys(self):
+        # keys_str = [key.decode('utf-8') for key in self.db.keys('*')]
         return self.db.keys('*')
 
-    def add(self, key: str, data: str) -> bool:
+    def set(self, key: str, data: dict) -> bool:
         """
         Метод для добавления содержимого JSON в Redis по ключу.
 
@@ -52,7 +65,7 @@ class RedisManager:
 
         if self.db:
             try:
-                self.db.set(key, data)
+                self.db.json().set(key, Path.root_path(), data)
                 logger.info(f"Данные успешно добавлены в Redis по ключу {key}.")
                 return True
             except Exception as e:
@@ -73,7 +86,7 @@ class RedisManager:
         """
         if self.db:
             try:
-                data = self.db.get(key)
+                data = self.db.json().get(key)
                 if data:
                     return data
                 else:
@@ -115,6 +128,7 @@ class RedisManager:
         self.db.flushdb()
         self.db.flushall()
         self.db.close()
+        logger.info(f"Redis быз закрыт.")
 
 
 redis_manager = RedisManager(host='localhost', port=6379, db=0)  # Redis Manager is common for all program

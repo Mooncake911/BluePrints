@@ -1,6 +1,6 @@
 {
   "id": 1,
-  "comands": [
+  "commands": [
     {
       "on_event":"id1.button_single_1",
       "exe": "function t1(){ mode_2(!1.mode_2); timer(t1, 500); } if (1.button_single_1){ timer(t1, 500); }"

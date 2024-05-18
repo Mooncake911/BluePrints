@@ -24,16 +24,16 @@ def string_to_dict(line: str):
         try:
             json_dict = json.loads(json_str)
             if json_dict.get('id') and json_dict.get('name'):
-                return json_str
+                return json_dict.get('name'), json_dict
             else:
-                return None
+                return None, None
 
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON {e}")
-            return None
+            return None, None
 
     else:
-        return None
+        return None, None
 
 
 class SerialPort(QThread):
@@ -111,9 +111,9 @@ class SerialPort(QThread):
             data = self.serial.readline().decode(self.encoding).strip()
             if data:
                 self.new_data.emit(data)
-                data = string_to_dict(data)
+                key, data = string_to_dict(data)
                 if data:
-                    redis_manager.add(key='1', data=data)
+                    redis_manager.set(key=key, data=data)
                 # add_device_config(data)
                 # print(f'Read: {data}')
 

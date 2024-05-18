@@ -9,8 +9,7 @@ class Device_Node(Node):
     """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        redis_data = redis_manager.get(key=kwargs.get("name"))
-        data = json.loads(redis_data)
+        data = redis_manager.get(key=kwargs.get("name"))
 
         if data.get("id"):
             self.metadata["id"] = data["id"]

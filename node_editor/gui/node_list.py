@@ -24,7 +24,7 @@ class NodeList(QtWidgets.QTreeWidget):
         self.update_project()
 
     @staticmethod
-    def load_module(file):
+    def load_module(file, devices_names):
         try:
             spec = importlib.util.spec_from_file_location(file.stem, file)
             module = importlib.util.module_from_spec(spec)
@@ -34,7 +34,7 @@ class NodeList(QtWidgets.QTreeWidget):
                 if inspect.isclass(obj) and name != 'Node':  # ignore parent Node class from node.py
                     if file.parent.name == "Device_Nodes":
                         NODE_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
-                                             for i in redis_manager.keys()})
+                                             for i in devices_names})
                     else:
                         # print(spec.name, obj.__name__)
                         NODE_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
@@ -60,8 +60,9 @@ class NodeList(QtWidgets.QTreeWidget):
     def update_project(self):
         self.clear()
 
+        devices_names = list(redis_manager.keys())
         for file in self.nodes_path.rglob("*.py"):
-            self.load_module(file)
+            self.load_module(file, devices_names)
 
         for name, data in NODE_IMPORTS.items():
 
