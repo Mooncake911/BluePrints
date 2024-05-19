@@ -7,7 +7,7 @@ from .Speed_node import Speed_Node
 
 from .Arithmetic_nodes import Arithmetic_Nodes
 from .Data_Types_nodes import Data_Types_Nodes
-from .Device_nodes import Device_Nodes
+from .Device_nodes import Device_Node
 from .Logic_nodes import Logic_Nodes
 from .Time_nodes import Time_Nodes
 

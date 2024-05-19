@@ -1,8 +1,7 @@
 from PySide6 import QtCore, QtGui, QtWidgets
 
-
 from db.redis_db import redis_manager
-from node_editor.example import NODES_LIST
+from node_editor.example import NODES_LIST, Device_Node
 
 NODE_IMPORTS = {}
 
@@ -16,19 +15,20 @@ class NodeList(QtWidgets.QTreeWidget):
         self.setHeaderHidden(True)
         self.setDragEnabled(True)
 
+        self.load_nodes()
         self.update_project()
 
     @staticmethod
-    def load_module(devices_names):
-        try:
+    def load_nodes():
+        for parent, nodes in NODES_LIST.items():
+            for node in nodes:
+                NODE_IMPORTS[node.__name__] = {"parent": parent, "class": node}
 
-            for parent, nodes in NODES_LIST.items():
-                for node in nodes:
-                    print(node.__name__)
-                    NODE_IMPORTS[node.__name__] = {"parent": parent, "class": node}
-
-        except ModuleNotFoundError as e:
-            print(e)
+    @staticmethod
+    def load_devices():
+        devices_names = list(redis_manager.keys())
+        NODE_IMPORTS.update({name: {"parent": "Device Nodes", "class": Device_Node}
+                             for name in devices_names})
 
     def find_item_by_text(self, name):
         # Searching for an item by name in the tree
@@ -45,9 +45,7 @@ class NodeList(QtWidgets.QTreeWidget):
 
     def update_project(self):
         self.clear()
-
-        devices_names = list(redis_manager.keys())
-        self.load_module(devices_names)
+        self.load_devices()
 
         for name, data in NODE_IMPORTS.items():
 
