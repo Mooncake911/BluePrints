@@ -11,7 +11,7 @@ class Timer_Node(Node):
         self.combo_box = QtWidgets.QComboBox()
         self.time_edit = QtWidgets.QTimeEdit()
 
-        self.title_text = "Timer"
+        self.title_text = "Timer 1"
         self.type_text = "Data Types"
         self.set_color(title_color=(255, 165, 0))
 
@@ -29,10 +29,9 @@ class Timer_Node(Node):
         self.build()
 
     def init_widget(self):
-        index = self.metadata.get("index", 1)
-        self.title_text = f"Timer {index}"
 
         # Combo Box
+        index = self.metadata.get("index", 1)
         self.combo_box.addItems(self.timers_id)
         self.combo_box.setCurrentIndex(self.timers_id.index(str(index)))
         self.combo_box.currentIndexChanged.connect(self.combo_box_user_input)

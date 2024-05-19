@@ -1,19 +1,14 @@
-from pathlib import Path
-import importlib.util
-import inspect
-
 from PySide6 import QtCore, QtGui, QtWidgets
 
 
 from db.redis_db import redis_manager
-from node_editor.example.Device_Nodes.Device_node import Device_Node
-
+from node_editor.example import NODES_LIST
 
 NODE_IMPORTS = {}
 
 
 class NodeList(QtWidgets.QTreeWidget):
-    nodes_path = Path('node_editor/example')
+    root_path = 'root'
 
     def __init__(self):
         super().__init__()
@@ -24,22 +19,13 @@ class NodeList(QtWidgets.QTreeWidget):
         self.update_project()
 
     @staticmethod
-    def load_module(file, devices_names):
+    def load_module(devices_names):
         try:
-            spec = importlib.util.spec_from_file_location(file.stem, file)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
 
-            for name, obj in inspect.getmembers(module):
-                if inspect.isclass(obj) and name != 'Node':  # ignore parent Node class from node.py
-                    if file.parent.name == "Device_Nodes":
-                        NODE_IMPORTS.update({i: {"parent": file.parent.name, "class": Device_Node}
-                                             for i in devices_names})
-                    else:
-                        # print(spec.name, obj.__name__)
-                        NODE_IMPORTS[obj.__name__] = {"parent": file.parent.name, "class": obj}
-
-            # write_node_imports(NODE_IMPORTS) don't necessary because it's list
+            for parent, nodes in NODES_LIST.items():
+                for node in nodes:
+                    print(node.__name__)
+                    NODE_IMPORTS[node.__name__] = {"parent": parent, "class": node}
 
         except ModuleNotFoundError as e:
             print(e)
@@ -53,7 +39,7 @@ class NodeList(QtWidgets.QTreeWidget):
         # Create, if it's absent
         item = QtWidgets.QTreeWidgetItem([name])
         item.name = name
-        item.parent_name = self.nodes_path.name
+        item.parent_name = self.root_path
         item.class_name = None
         return item
 
@@ -61,12 +47,11 @@ class NodeList(QtWidgets.QTreeWidget):
         self.clear()
 
         devices_names = list(redis_manager.keys())
-        for file in self.nodes_path.rglob("*.py"):
-            self.load_module(file, devices_names)
+        self.load_module(devices_names)
 
         for name, data in NODE_IMPORTS.items():
 
-            if data["parent"] == self.nodes_path.name:
+            if data["parent"] == self.root_path:
                 item = QtWidgets.QTreeWidgetItem([name])
                 self.addTopLevelItem(item)
 
