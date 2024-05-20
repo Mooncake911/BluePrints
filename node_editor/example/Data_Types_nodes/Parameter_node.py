@@ -3,8 +3,8 @@ from node_editor.gui.attributes import Node
 
 
 class Parameter_Node(Node):
-    type_list = ['int', 'float', 'bool']
-    color_list = [(0, 255, 255), (75, 0, 130), (255, 69, 0)]
+    type_list = ['integer', 'float', 'boolean', 'string']
+    color_list = [(0, 255, 255), (75, 0, 130), (255, 69, 0), (0, 128, 0)]
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
