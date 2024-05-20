@@ -36,13 +36,14 @@ class MenuLayout(QHBoxLayout):
         self.addWidget(self.button3)
 
     def fast_search(self):
+        import time
         id_list = [1, 2]
         requests = [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
             serial_port.put(message)
+            time.sleep(2)
 
-        import time
-        time.sleep(2)
+#        time.sleep(2)
 
         self.node_list.update_project()
 

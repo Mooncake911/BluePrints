@@ -1,0 +1,66 @@
+{
+    "nodes": [
+        {
+            "name": "Lamp",
+            "x": 4658,
+            "y": 5338,
+            "uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
+            "metadata": {
+                "id": 189475987435546
+            }
+        },
+        {
+            "name": "TV",
+            "x": 4933,
+            "y": 5348,
+            "uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
+            "metadata": {
+                "id": 92384792734
+            }
+        },
+        {
+            "name": "Lamp",
+            "x": 4919,
+            "y": 5108,
+            "uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
+            "metadata": {
+                "id": 189475987435546
+            }
+        },
+        {
+            "name": "Master_switch",
+            "x": 4670,
+            "y": 5087,
+            "uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
+            "metadata": {
+                "id": 666
+            }
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
+            "end_uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
+            "start_pin": "button",
+            "end_pin": "lamp"
+        },
+        {
+            "start_uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
+            "end_uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
+            "end_uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
+            "start_pin": "lamp",
+            "end_pin": "mode"
+        },
+        {
+            "start_uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
+            "end_uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
+}
