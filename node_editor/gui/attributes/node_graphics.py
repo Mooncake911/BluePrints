@@ -112,6 +112,7 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
         """
         Builds the node interface by constructing its graphical representation.
         """
+        self.clear()
         # Configure the widget side of things.
         # self.widget.setStyleSheet("background-color: " + self.main_bg_color.name() + ";")
 
@@ -192,3 +193,10 @@ class NodeGraphics(QtWidgets.QGraphicsItem):
 
         # move the widget to the bottom
         self.widget.move(-self.widget.width() // 2, total_height // 2 - self.widget.height() - self._vertical_margin)
+
+    def clear(self):
+        self.main_bg_path.clear()
+        self.title_bg_path.clear()
+        self.title_path.clear()
+        self.type_path.clear()
+        self.status_path.clear()

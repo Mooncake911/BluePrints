@@ -5,6 +5,7 @@ from node_editor.gui.attributes import Node
 class Float_Node(Node):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.line_edit = QtWidgets.QLineEdit()
 
         self.title_text = "Float"
         self.type_text = "Data Types"
@@ -12,26 +13,24 @@ class Float_Node(Node):
 
         self.add_pin(pin_text="Value", is_output=True, pin_type="float")
 
-    def user_input(self, text):
-        self.metadata["value"] = float(text) if text else 0.0
+    def line_edit_user_input(self, value):
+        self.metadata["value"] = float(value) if value else 0.0
 
     def init_widget(self):
         # Set float validator
         validator = QtGui.QDoubleValidator()
         validator.setDecimals(5)
+        self.line_edit.setValidator(validator)
 
-        line_edit = QtWidgets.QLineEdit()
-        line_edit.textChanged.connect(self.user_input)
-        line_edit.setValidator(validator)
-        line_edit.setFixedWidth(100)
-
-        value = str(self.metadata.get("value", 0.0))
-        self.metadata["value"] = float(value)
+        # Line Edit
+        value = self.metadata.get("value", 0.0)
+        self.line_edit_user_input(value)
         if value:
-            line_edit.setText(value)
+            self.line_edit.setText(str(value))
         else:
-            line_edit.setPlaceholderText("Enter")
-
-        self.layout.addWidget(line_edit)
+            self.line_edit.setPlaceholderText(str(value))
+        self.line_edit.textChanged.connect(self.line_edit_user_input)
+        self.line_edit.setFixedWidth(100)
+        self.layout.addWidget(self.line_edit)
 
         super().init_widget()

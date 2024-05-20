@@ -15,26 +15,27 @@ class Parameter_Node(Node):
         self.type_text = "Data Types"
         self.set_color(title_color=(255, 255, 255))
 
+        self.add_pin(pin_text="::Ex In", is_output=False, execution=True, visible=False)
+        self.add_pin(pin_text="::Ex Out", is_output=True, execution=True, visible=False)
         self.add_pin(pin_text="value", is_output=False)
         self.add_pin(pin_text="value", is_output=True)
 
     def line_edit_user_input(self, text):
         self.metadata["value"] = text
-        self.title_path.clear()
         self.title_text = text
         self.build()
 
     def combo_box_user_input(self, index):
-        self.metadata["index"] = index
         if index > -1:
             self.set_color(title_color=self.color_list[index])
-        self.type_path.clear()
+        self.metadata["index"] = index
         self.type_text = f"{self.type_list[index].capitalize()} Types"
         self.build()
 
     def init_widget(self):
         # Line Edit
         value = self.metadata.get("value", "Parameter")
+        self.line_edit_user_input(value)
         self.line_edit.setText(value)
         self.line_edit.textChanged.connect(self.line_edit_user_input)
         self.line_edit.setFixedWidth(100)
@@ -42,6 +43,7 @@ class Parameter_Node(Node):
 
         # Combo Box
         index = self.metadata.get("index", -1)
+        self.combo_box_user_input(index)
         self.combo_box.addItems(self.type_list)
         self.combo_box.setCurrentIndex(index)
         self.combo_box.currentIndexChanged.connect(self.combo_box_user_input)

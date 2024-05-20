@@ -5,6 +5,7 @@ from node_editor.gui.attributes import Node
 class Boolean_Node(Node):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        self.combo_box = QtWidgets.QComboBox()
 
         self.title_text = "Boolean"
         self.type_text = "Data Types"
@@ -12,19 +13,18 @@ class Boolean_Node(Node):
 
         self.add_pin(pin_text="Value", is_output=True, pin_type="bool")
 
-    def user_input(self, text):
-        self.metadata["value"] = bool(text)
-
-    def init_widget(self):
-        value = self.metadata.get("value", 0)
+    def combo_box_user_input(self, value):
         self.metadata["value"] = bool(value)
 
-        combo_box = QtWidgets.QComboBox()
-        combo_box.addItems(["False", "True"])
-        combo_box.setCurrentIndex(value)
-        combo_box.currentIndexChanged.connect(self.user_input)
-        combo_box.setFixedWidth(100)
+    def init_widget(self):
 
-        self.layout.addWidget(combo_box)
+        # Combo Box
+        value = self.metadata.get("value", 0)
+        self.combo_box_user_input(value)
+        self.combo_box.addItems(["False", "True"])
+        self.combo_box.setCurrentIndex(value)
+        self.combo_box.currentIndexChanged.connect(self.combo_box_user_input)
+        self.combo_box.setFixedWidth(100)
+        self.layout.addWidget(self.combo_box)
 
         super().init_widget()
