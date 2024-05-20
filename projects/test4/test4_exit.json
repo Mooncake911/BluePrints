@@ -1,9 +1,20 @@
 {
   "id": 1, 					# кому пришлём
-  "commands": [
+  "comands": [
     {
-      "on_event":"666.button",			# на что реагировать
-      "exe": "mode_1(666.button);"		# как реагировать
+      "on_event":"id666.button",			# на что реагировать
+      "exe": "mode_1(id666.button);"		# как реагировать
     }
   ]
+}
+
+
+{
+    "type": "config",
+    "message":
+    {
+      "id":1,
+      "event":"id666.button",
+      "text":"mode_1(id666.button);"
+    }
 }
