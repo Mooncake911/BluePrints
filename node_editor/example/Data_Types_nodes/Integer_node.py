@@ -14,7 +14,10 @@ class Integer_Node(Node):
         self.add_pin(pin_text="Value", is_output=True, pin_type="int")
 
     def line_edit_user_input(self, value):
-        self.metadata["value"] = int(value) if value else 0
+        if value == '-':
+            pass
+        else:
+            self.metadata["value"] = int(value) if value else 0
 
     def init_widget(self):
         # Set integer validator
