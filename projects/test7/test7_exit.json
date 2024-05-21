@@ -14,3 +14,34 @@
 
 "if (id2.button_long_1 && id2.mode_2){ id2.Route=1; timer(t1, 250); dimm_2(0); }"
 # При работе с таймерами вместо того чтобы идти вправо, мы идем влево и просто собираем функцию
+
+
+
+
+
+
+
+
+{"type":"config","message":{"id":2,"event":"setup","text":""}}
+
+{"type":"event","message":{"event":"setup","text":"function t2(){ if (id2.dimm_2 >= 100){ id2.Route=-25; } else { if (id2.dimm_2 <= 30){ id2.Route=25; }}} function t1() { if (id2.button_long_1 == true && id2.mode_2 == true){ dimm_2(id2.dimm_2 + id2.Route); timer(t2, 0); timer(t1, 250);}}"}}
+
+{"type":"config","message":{"id":2,"event":"id2.button_long_1","text":"function t2(){ if (id2.dimm_2 >= 100){ id2.Route=-25; } else { if (id2.dimm_2 <= 30){ id2.Route=25; }}} function t1() { if (id2.button_long_1 == true && id2.mode_2 == true){ dimm_2(id2.dimm_2 + id2.Route); timer(t2, 0); timer(t1, 250);}} if (id2.button_long_1 == true && id2.mode_2 == true){ id2.Route=25; dimm_2(50); timer(t1, 250); }"}}
+
+
+{"type":"config","message":{"id":2,"event":"id2.button_single_1","text":"mode_2(!id2.mode_2); led_2(!id2.led_2);"}}
+
+
+
+
+
+
+
+
+
+
+
+{"type":"event","message":{"event":"id2.button_double_1","text":"dimm_2(50);"}}
+{"type":"event","message":{"event":"id2.button_double_1","text":"dimm_2(30);"}}
+{"type":"event","message":{"event":"id2.button_double_1","text":"dimm_2(5);"}}
+{"type":"config","message":{"id":2,"event":"id2.button_double_1","text":""}}
