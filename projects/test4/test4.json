@@ -1,36 +1,36 @@
 {
     "nodes": [
         {
-            "name": "Master_switch",
-            "x": 4497,
-            "y": 4765,
-            "uuid": "19e6920d-91fc-4486-b600-ae9087e4e798",
+            "name": "Dimmer_1",
+            "x": 4761,
+            "y": 4851,
+            "uuid": "4c12f15d-5e9b-4fe1-9817-f1b82a305ce0",
             "metadata": {
-                "id": 666
+                "id": 1
             }
         },
         {
-            "name": "Dimmer",
-            "x": 4761,
-            "y": 4851,
-            "uuid": "ef84ae9b-36b9-431c-9281-7e2ae27a6cb7",
+            "name": "Master switch_666",
+            "x": 4497,
+            "y": 4765,
+            "uuid": "e420093b-2bf6-4cba-a5fa-75900f88bd83",
             "metadata": {
-                "id": 1
+                "id": 666
             }
         }
     ],
     "connections": [
         {
-            "start_uuid": "19e6920d-91fc-4486-b600-ae9087e4e798",
-            "end_uuid": "ef84ae9b-36b9-431c-9281-7e2ae27a6cb7",
-            "start_pin": "button",
-            "end_pin": "mode_1"
-        },
-        {
-            "start_uuid": "19e6920d-91fc-4486-b600-ae9087e4e798",
-            "end_uuid": "ef84ae9b-36b9-431c-9281-7e2ae27a6cb7",
+            "start_uuid": "e420093b-2bf6-4cba-a5fa-75900f88bd83",
+            "end_uuid": "4c12f15d-5e9b-4fe1-9817-f1b82a305ce0",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "e420093b-2bf6-4cba-a5fa-75900f88bd83",
+            "end_uuid": "4c12f15d-5e9b-4fe1-9817-f1b82a305ce0",
+            "start_pin": "button",
+            "end_pin": "mode_1"
         }
     ]
 }

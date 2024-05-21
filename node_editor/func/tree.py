@@ -17,67 +17,90 @@ class TreeNode:
         for child in self.children:
             child.printTreeIdented(indent + "   |")
 
-    def getReq(self, types, link_conn, nodes, s, on_event, strg, intend):
-        if len(self.children) == 0:  # дошли до низа дерева
-            if self.parent is not None:
-                now_link = self.parent.c + ' ' + self.c
-                now_node = link_conn[now_link]
+    def getReq(self, types, link_conn, nodes, s, on_event, strg, intend, iters):
+        iters += 1
 
-                print(now_node)
-
-                # добавляем айди перед всеми кнопками
-                if now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button':
-                    strg = str(types[now_node['start_uuid']]) + '.' + now_node['start_pin']
-                    if now_node['start_pin'][:6] == 'button':
-                        on_event.append(strg)
-                else:
-                    if now_node['start_pin'] == 'Value':
-                        strg = str(types[now_node['start_uuid']])
-                    else:
-                        strg = now_node['start_pin']
-
-                if (now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button') \
-                        and now_node['end_pin'][-2] == '_':
-                    strg = now_node['end_pin'] + '(' + strg + ');'
-                    s.append(strg)
-                    return
-
-                if now_node['end_pin'][:7] == '::Ex In':
-                    cond = types[now_node['end_uuid']]
-                    if cond == 'Not_Node':
-                        strg = '!' + strg
-                    elif cond == 'Equal_Node':
-                        if self.parent.string == '':
-                            strg = strg + ' == '
-                        else:
-                            strg = self.parent.string + strg
-                    else:
-                        if now_node['start_pin'] == 'True':
-                            strg = 'if( ' + self.string + ' ){ ' + self.parent.string + ' }'
-                            intend = -1
-
-                elif now_node['end_pin'] == 'Condition' and now_node['start_pin'][:8] == '::Ex Out':
-                    strg = self.string
-
-                elif now_node['end_pin'][-2] == '_' or now_node['end_pin'] == 'button':
-                    strg = now_node['end_pin'] + '(' + self.string + ');'
-
-                    if now_node['start_pin'][:8] == '::Ex Out':
-                        strg = self.parent.string[:intend] + strg + self.parent.string[intend:]
-
-                self.parent.string = strg
-                self.parent.children.remove(nodes[self.c])
-                print(strg)
-                print()
-
-                self.parent.getReq(types, link_conn, nodes, s, on_event, strg, intend)
-
-            else:  # если уже все дерево обошли, то возвращаем ответ
-                s.append(self.string)
+        # случай единичной связи
+        if len(self.children) == 0 and iters == 2:
+            now_link = self.parent.c + ' ' + self.c
+            now_node = link_conn[now_link]
+            strg = 'id' + str(types[now_node['start_uuid']]) + '.' + now_node['start_pin']
+            on_event.append(strg)
+            strg = now_node['end_pin'] + '(' + strg + ');'
+            s.append(strg)
 
         else:
-            for child in self.children:
-                child.getReq(types, link_conn, nodes, s, on_event, strg, intend)
+            if len(self.children) == 0:  # дошли до низа дерева
+                if self.parent != None:
+                    now_link = self.parent.c + ' ' + self.c
+                    now_node = link_conn[now_link]
+
+                    print(now_node)
+
+                    # добавляем айди перед всеми кнопками
+                    if (now_node['start_pin'][-2] == '_' or now_node['start_pin'] == 'button'):
+                        strg = 'id' + str(types[now_node['start_uuid']]) + '.' + now_node['start_pin']
+                        if now_node['start_pin'][:6] == 'button':
+                            on_event.append(strg)
+                    else:
+                        if now_node['start_pin'] == 'Value':
+                            strg = str(types[now_node['start_uuid']])
+                        else:
+                            strg = now_node['start_pin']
+
+                    if now_node['end_pin'][:7] == '::Ex In':
+                        cond = types[now_node['end_uuid']]
+                        # print(cond)
+                        if cond == 'Not_Node':
+                            strg = '!' + strg
+                        elif cond == 'Equal_Node':
+                            if self.parent.string == '':
+                                strg = strg + ' == '
+                            else:
+                                strg = self.parent.string + strg
+                        elif not isinstance(cond, int) and cond[2] == ':' and cond[5] == ':':
+                            h, m, sec, ms = map(int, cond.split(':'))
+                            t = h * 3600 + m * 60 + sec + ms
+                            strg = 'timer(t1, ' + str(t) + ');'
+
+                            if now_node['start_pin'] == 'True':
+                                strg = 'if( ' + self.string + ' ){ ' + strg + ' }'
+
+                        else:
+                            intend = -1
+                            if now_node['start_pin'] == 'True':
+                                strg = 'if( ' + self.string + ' ){ ' + self.parent.string + ' }'
+                            elif types[now_node['start_uuid']] == 'Timer_Event_Node':
+                                strg = 'function t1(){' + '}'
+
+                    elif now_node['end_pin'] == 'Condition' and now_node['start_pin'][:8] == '::Ex Out':
+                        strg = self.string
+
+                    elif (now_node['end_pin'][-2] == '_' or now_node['end_pin'] == 'button'):
+                        strg = now_node['end_pin'] + '(' + self.string + ');'
+
+                        if now_node['start_pin'][:8] == '::Ex Out':
+                            strg = self.parent.string[:intend] + strg + self.parent.string[intend:]
+
+                    if now_node['end_pin'][:7] == '::Ex In' and intend != 0 and now_node['start_pin'] != 'True':
+                        if self.parent.string == '':
+                            strg = self.string[:intend] + strg + self.string[intend:]
+                        else:
+                            strg = self.parent.string[:intend] + strg + self.parent.string[intend:]
+
+                    self.parent.string = strg
+                    self.parent.children.remove(nodes[self.c])
+                    print(strg)
+                    print()
+
+                    self.parent.getReq(types, link_conn, nodes, s, on_event, strg, intend, iters)
+
+                else:  # если уже все дерево обошли, то возвращаем ответ
+                    s.append(self.string)
+
+            else:
+                for child in self.children:
+                    child.getReq(types, link_conn, nodes, s, on_event, strg, intend, iters)
 
 
 class Tree:
@@ -122,6 +145,17 @@ class Tree:
         # строим дерево
         t, nodes = Tree(TreeNode('\0')).buildFromLinks(links)
         for t1 in t.values():  # перебираем все корни
-            t1.root.getReq(types, link_conn, nodes, exe, on_event, '', 0)
+            t1.root.getReq(types, link_conn, nodes, exe, on_event, '', 0, 0)
+
+        if len(exe) != len(on_event):
+            command = ''
+            if exe[0][:8] == 'function':
+                command = exe[0] + exe[1]
+            else:
+                command = exe[1] + exe[0]
+            exe = [command]
+
+        print(exe)
+        print(on_event)
 
         return exe, on_event

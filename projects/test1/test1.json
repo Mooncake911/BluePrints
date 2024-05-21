@@ -1,77 +1,77 @@
 {
     "nodes": [
         {
-            "name": "Dimmer",
-            "x": 5137,
-            "y": 3442,
-            "uuid": "9b1b8597-ec43-4acd-991b-5763138d3618",
-            "metadata": {
-                "id": 1
-            }
-        },
-        {
-            "name": "Dimmer",
-            "x": 5480,
-            "y": 3583,
-            "uuid": "d1ebcf15-34a5-4bd1-a81d-32c482b8e535",
-            "metadata": {
-                "id": 1
-            }
-        },
-        {
-            "name": "Dimmer",
-            "x": 5768,
-            "y": 3450,
-            "uuid": "3ea7acd4-85fb-4ca3-94c0-9784486f34f2",
-            "metadata": {
-                "id": 1
-            }
+            "name": "Branch_Node",
+            "x": 5391,
+            "y": 3381,
+            "uuid": "7c4934ae-b6fd-43fa-bbbe-0680acc125dc",
+            "metadata": {}
         },
         {
             "name": "Not_Node",
             "x": 5623,
             "y": 3459,
-            "uuid": "31faafbf-79dd-4683-9cb7-365b9132acc6",
+            "uuid": "a7dd8031-1613-484e-b35d-a3db99ef4f55",
             "metadata": {}
         },
         {
-            "name": "Branch_Node",
-            "x": 5391,
-            "y": 3381,
-            "uuid": "03edd252-7547-4747-8200-6a966169808d",
-            "metadata": {}
+            "name": "Dimmer_1",
+            "x": 5768,
+            "y": 3450,
+            "uuid": "29a1bd77-85cb-40e2-8690-61042e566fc8",
+            "metadata": {
+                "id": 1
+            }
+        },
+        {
+            "name": "Dimmer_1",
+            "x": 5480,
+            "y": 3583,
+            "uuid": "f6ec005c-aa94-43de-baf3-1079eda601cc",
+            "metadata": {
+                "id": 1
+            }
+        },
+        {
+            "name": "Dimmer_1",
+            "x": 5137,
+            "y": 3442,
+            "uuid": "c79e1d25-0bbf-481a-ac51-b7437ce8c350",
+            "metadata": {
+                "id": 1
+            }
         }
     ],
     "connections": [
         {
-            "start_uuid": "d1ebcf15-34a5-4bd1-a81d-32c482b8e535",
-            "end_uuid": "31faafbf-79dd-4683-9cb7-365b9132acc6",
-            "start_pin": "mode_1",
-            "end_pin": "::Ex In"
+            "start_uuid": "c79e1d25-0bbf-481a-ac51-b7437ce8c350",
+            "end_uuid": "7c4934ae-b6fd-43fa-bbbe-0680acc125dc",
+            "start_pin": "button_single_1",
+            "end_pin": "Condition"
         },
         {
-            "start_uuid": "31faafbf-79dd-4683-9cb7-365b9132acc6",
-            "end_uuid": "3ea7acd4-85fb-4ca3-94c0-9784486f34f2",
-            "start_pin": "::Ex Out",
-            "end_pin": "mode_1"
-        },
-        {
-            "start_uuid": "9b1b8597-ec43-4acd-991b-5763138d3618",
-            "end_uuid": "03edd252-7547-4747-8200-6a966169808d",
-            "start_pin": "::Ex Out",
-            "end_pin": "::Ex In"
-        },
-        {
-            "start_uuid": "03edd252-7547-4747-8200-6a966169808d",
-            "end_uuid": "3ea7acd4-85fb-4ca3-94c0-9784486f34f2",
+            "start_uuid": "7c4934ae-b6fd-43fa-bbbe-0680acc125dc",
+            "end_uuid": "29a1bd77-85cb-40e2-8690-61042e566fc8",
             "start_pin": "True",
             "end_pin": "::Ex In"
         },
         {
-            "start_uuid": "9b1b8597-ec43-4acd-991b-5763138d3618",
-            "end_uuid": "03edd252-7547-4747-8200-6a966169808d",
-            "start_pin": "button_single_1",
-            "end_pin": "Condition"
+            "start_uuid": "c79e1d25-0bbf-481a-ac51-b7437ce8c350",
+            "end_uuid": "7c4934ae-b6fd-43fa-bbbe-0680acc125dc",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "a7dd8031-1613-484e-b35d-a3db99ef4f55",
+            "end_uuid": "29a1bd77-85cb-40e2-8690-61042e566fc8",
+            "start_pin": "::Ex Out",
+            "end_pin": "mode_1"
+        },
+        {
+            "start_uuid": "f6ec005c-aa94-43de-baf3-1079eda601cc",
+            "end_uuid": "a7dd8031-1613-484e-b35d-a3db99ef4f55",
+            "start_pin": "mode_1",
+            "end_pin": "::Ex In"
         }
     ]
 }

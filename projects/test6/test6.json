@@ -1,66 +1,69 @@
 {
     "nodes": [
         {
-            "name": "Lamp",
-            "x": 4658,
-            "y": 5338,
-            "uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
-            "metadata": {
-                "id": 189475987435546
-            }
-        },
-        {
-            "name": "TV",
-            "x": 4933,
-            "y": 5348,
-            "uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
-            "metadata": {
-                "id": 92384792734
-            }
-        },
-        {
-            "name": "Lamp",
-            "x": 4919,
-            "y": 5108,
-            "uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
-            "metadata": {
-                "id": 189475987435546
-            }
-        },
-        {
-            "name": "Master_switch",
+            "name": "Master switch_666",
             "x": 4670,
             "y": 5087,
-            "uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
+            "uuid": "109394b7-3255-46ec-a0d9-c7a4157df06f",
             "metadata": {
                 "id": 666
+            }
+        },
+        {
+            "name": "Lamp_189475987435546",
+            "x": 4919,
+            "y": 5108,
+            "uuid": "88a9720b-4388-417e-ab9d-6727fb1a261d",
+            "metadata": {
+                "id": 189475987435546,
+                "open_key": 123129301923
+            }
+        },
+        {
+            "name": "TV_92384792734",
+            "x": 4933,
+            "y": 5348,
+            "uuid": "38fbb791-03b6-4f44-b14a-a3a4a91b8004",
+            "metadata": {
+                "id": 92384792734,
+                "open_key": 923479823743
+            }
+        },
+        {
+            "name": "Lamp_189475987435546",
+            "x": 4658,
+            "y": 5338,
+            "uuid": "28e15630-0999-499d-b710-e7240947d5b5",
+            "metadata": {
+                "id": 189475987435546,
+                "open_key": 123129301923
             }
         }
     ],
     "connections": [
         {
-            "start_uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
-            "end_uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
-            "start_pin": "button",
-            "end_pin": "lamp"
-        },
-        {
-            "start_uuid": "7504a1c7-97e0-48e5-aaeb-8e67bc297053",
-            "end_uuid": "cf1ad279-deb3-4db5-8613-b846704f7786",
+            "start_uuid": "28e15630-0999-499d-b710-e7240947d5b5",
+            "end_uuid": "38fbb791-03b6-4f44-b14a-a3a4a91b8004",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
         },
         {
-            "start_uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
-            "end_uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
+            "start_uuid": "28e15630-0999-499d-b710-e7240947d5b5",
+            "end_uuid": "38fbb791-03b6-4f44-b14a-a3a4a91b8004",
             "start_pin": "lamp",
             "end_pin": "mode"
         },
         {
-            "start_uuid": "8d8df83b-f39b-4fe3-a015-756f06e5ee6a",
-            "end_uuid": "4cdd944d-8ca7-41ad-ad4e-c8ddb26953f2",
+            "start_uuid": "109394b7-3255-46ec-a0d9-c7a4157df06f",
+            "end_uuid": "88a9720b-4388-417e-ab9d-6727fb1a261d",
             "start_pin": "::Ex Out",
             "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "109394b7-3255-46ec-a0d9-c7a4157df06f",
+            "end_uuid": "88a9720b-4388-417e-ab9d-6727fb1a261d",
+            "start_pin": "button",
+            "end_pin": "lamp"
         }
     ]
 }

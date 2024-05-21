@@ -24,7 +24,8 @@ def string_to_dict(line: str):
         try:
             json_dict = json.loads(json_str)
             if json_dict.get('id') and json_dict.get('name'):
-                return json_dict.get('name'), json_dict
+                name = str(json_dict.get('name')) + '_' + str(json_dict.get('id'))
+                return name, json_dict
             else:
                 return None, None
 
@@ -100,7 +101,7 @@ class SerialPort(QThread):
 
     def write(self):
         try:
-            data = self.queue.get(timeout=2)
+            data = self.queue.get(timeout=0.1)
             import time
             time.sleep(1)
             for i in range(0, len(data), 100):

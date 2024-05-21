@@ -4,7 +4,7 @@ import json
 from PySide6.QtWidgets import (QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy)
 
 from .gui import NodeList, View, ViewScene
-from .func import test2
+from .func import test
 
 from serial_port import serial_port
 
@@ -37,19 +37,23 @@ class MenuLayout(QHBoxLayout):
         self.addWidget(self.button3)
 
     def fast_search(self):
+        # If you have devices
         id_list = [1, 2]
         requests = [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
             serial_port.put(message)
-            time.sleep(2)
 
-#        time.sleep(2)
+        time.sleep(2)
+
+        # If you haven't devices
+        from .func import upload_devices
+        upload_devices('devices')
 
         self.node_list.update_project()
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()
-        data = test2(scene_data)
+        data = test(scene_data)
         serial_port.put(data)
 
     def closeEvent(self, event):
