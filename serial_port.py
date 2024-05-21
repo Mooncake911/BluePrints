@@ -54,6 +54,7 @@ class SerialPort(QThread):
         self.serial.port = port
         self.serial.baudrate = baud_rate
         self.serial.timeout = timeout
+        self.serial.set_buffer_size(rx_size=5000, tx_size=5000)
 
     def run(self):
         while not self.stop_flag:
@@ -99,8 +100,14 @@ class SerialPort(QThread):
 
     def write(self):
         try:
-            data = self.queue.get(timeout=0.1)
-            self.serial.write(data.encode(self.encoding))
+            data = self.queue.get(timeout=2)
+            import time
+            time.sleep(1)
+            for i in range(0, len(data), 100):
+                part = data[i:i + 100]
+                self.serial.write(part.encode(self.encoding))
+                import time
+                time.sleep(0.1)
             self.queue.task_done()
             # print(f'Write: {data}')
         except Empty:

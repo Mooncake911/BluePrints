@@ -1,9 +1,10 @@
+import time
 import json
 
 from PySide6.QtWidgets import (QHBoxLayout, QPushButton, QSpacerItem, QSizePolicy)
 
 from .gui import NodeList, View, ViewScene
-from .func import test
+from .func import test2
 
 from serial_port import serial_port
 
@@ -36,7 +37,6 @@ class MenuLayout(QHBoxLayout):
         self.addWidget(self.button3)
 
     def fast_search(self):
-        import time
         id_list = [1, 2]
         requests = [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
@@ -49,8 +49,8 @@ class MenuLayout(QHBoxLayout):
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()
-        data = test(scene_data)
-        print(data)
+        data = test2(scene_data)
+        serial_port.put(data)
 
     def closeEvent(self, event):
         if serial_port.is_open:
