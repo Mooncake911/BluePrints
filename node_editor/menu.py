@@ -26,7 +26,7 @@ class MenuLayout(QHBoxLayout):
         self.addWidget(self.button1)
 
         self.button2 = QPushButton("Deep search")
-        self.button2.clicked.connect(self.fast_search)
+        self.button2.clicked.connect(self.deep_search)
         self.addWidget(self.button2)
 
         self.spacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -39,19 +39,20 @@ class MenuLayout(QHBoxLayout):
     def fast_search(self):
         # If you have devices
         id_list = [1, 2]
-        r = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}', 
-        '{"type":"event","message":{"event":"setup","text": ""}}']
-        requests = r | [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
+        r = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}',
+             '{"type":"event","message":{"event":"setup","text": ""}}']
+        requests = r + [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
             serial_port.put(message)
 
         time.sleep(2)
 
+        self.node_list.update_project()
+
+    def deep_search(self):
         # If you haven't devices
         from .func import upload_devices
         upload_devices('devices')
-
-        self.node_list.update_project()
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()

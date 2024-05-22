@@ -10,6 +10,8 @@ from redis.commands.json.path import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+REDIS_PASSWORD='RifXd8leDCGZR1MBsUStFpYWe0fLFU5k'
+REDIS_HOST='redis-13930.c327.europe-west1-2.gce.redns.redis-cloud.com'
 
 class RedisManager:
     _instance = None
@@ -33,8 +35,8 @@ class RedisManager:
         - db: номер базы данных Redis (по умолчанию 0)
         """
         try:
-            redis_host = os.environ.get('REDIS_HOST')
-            redis_password = os.environ.get('REDIS_PASSWORD')
+            redis_host = REDIS_HOST
+            redis_password = REDIS_PASSWORD
             if redis_host and redis_password:
                 # if env variable is present
                 self.db = Redis(host=redis_host, password=redis_password, port=13930, db=db, decode_responses=True)
