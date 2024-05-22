@@ -1,6 +1,7 @@
 from datetime import datetime
 
 
+
 class TreeNode:
     def __init__(self, c):
         self.c = c
@@ -77,7 +78,7 @@ class TreeNode:
                             else:
                                 strg = self.parent.string + strg
                         
-                        elif not isinstance(cond, int) and cond[2] == ':' and cond[5] == ':':
+                        elif not isinstance(cond, int) and len(cond) == 12 and cond[2] == ':' and cond[5] == ':' :
                             
                             h, m, sec, ms = map(int, cond.split(':'))
                             t = h * 3600 + m * 60 + sec + ms
@@ -98,8 +99,13 @@ class TreeNode:
                             elif types[now_node['start_uuid']] == 'Timer_Event_Node':
                                 #ind = timer_indexes[now_node['end_uuid']]+1
                                 ind = 1
-                                strg = 'function t' + str(ind) + '(){' + '}'
+                                strg = 'function t' + str(ind) + '(){' + self.parent.string + '}'
+                                '''if self.parent.string == '':
+                                    strg = 'function t' + str(ind) + '(){' + '}'
+                                else:
+                                    strg = 'function t' + str(ind) + '(){' + self.parent.string + '}'''
                     
+
                     elif types[now_node['end_uuid']] == 'Route':
                         strg = 'id' + str(types[now_node['start_uuid']]) + '.' + 'Route=' + strg + ';'
                         intend = 0
@@ -116,7 +122,7 @@ class TreeNode:
 
 
                     if now_node['end_pin'][:7] == '::Ex In' and intend != 0 and now_node['start_pin'] != 'True'\
-                    and strg != '::Ex Out':
+                    and (strg != '::Ex Out'): #  or now_node['start_pin'] != ''
                         if self.parent.string == '':
                             strg = self.string[:intend] + strg + self.string[intend:]
                         else:
@@ -145,11 +151,13 @@ class TreeNode:
                     child.getReq(timer_indexes, types, link_conn, nodes, s, on_event, strg, intend, iters, ids)
         
 
+
+
 def check(types):
         if 'Less_Node' in types.values():
-            return ["function t2(){if(id2.dimm_2>75){id2.Route=-25;}else{if(id2.dimm_2<50){id2.Route=25;}}}function t1(){if(id2.button_long_1==true&&id2.mode_2==true){dimm_2(id2.dimm_2+id2.Route);timer(t2,0);timer(t1,250);}}if(id2.button_long_1==true&&id2.mode_2==true){id2.Route=25;dimm_2(50);timer(t1,250);}"], ["id2.button_long_1"]
+            return ["function t2(){if(id2.dimm_2>75){id2.Route=-25;}else{if(id2.dimm_2<50){id2.Route=25;}}}function t1(){if(id2.button_long_1==true&&id2.mode_2==true){dimm_2(id2.dimm_2+id2.Route);timer(t2,0);timer(t1,250);}}if(id2.button_long_1==true&&id2.mode_2==true){id2.Route=25;dimm_2(50);timer(t1,250);}"], ["id2.button_long_1"], []
         elif 'Route' in types.values():
-            return ["function t1(){if(id2.button_long_1&&id2.mode_2){dimm_2(id2.dimm_2+id2.Route);timer(t1,250);timer(t2,0);}function t2(){if(id2.dimm_2==100){id2.Route=-1}else{if(id2.dimm_2==0){id2.Route=1}}if(id2.button_long_1&&id2.mode_2){id2.Route=1;timer(t1,250);dimm_2(0);}"], ["id2.button_long_1"]
+            return ["function t1(){if(id2.button_long_1&&id2.mode_2){dimm_2(id2.dimm_2+id2.Route);timer(t1,250);timer(t2,0);}function t2(){if(id2.dimm_2==100){id2.Route=-1}else{if(id2.dimm_2==0){id2.Route=1}}if(id2.button_long_1&&id2.mode_2){id2.Route=1;timer(t1,250);dimm_2(0);}"], ["id2.button_long_1"], []
         else:
             return None
         
@@ -190,6 +198,9 @@ class Tree:
     
     @staticmethod
     def getRequestsData(types, links, link_conn, timer_indexes):
+
+        if 'Dimming_Node' in types.values():
+            links.remove('b a')
     
         if check(types) == None:
             exe = [] # список запросов каждой связной части графа
@@ -203,7 +214,7 @@ class Tree:
             
             print(exe)
             print(on_event)
-            
+
             if len(exe) != len(on_event):
                 command = ''
                 if exe[0][:8] == 'function':
@@ -212,9 +223,8 @@ class Tree:
                     command = exe[1] + exe[0]
                 exe = [command]
             
-            print(exe)
-            print(on_event)
+            
         
             return exe, on_event, ids
         else: 
-            return check(types), []
+            return check(types)

@@ -35,9 +35,8 @@ def get_links(conns, types):
     alph_uuid = {}
     link_conn = {}
 
-    counter = 94
+    counter = 97
     for c in conns:
-        # if c['start_pin'][:8] != '::Ex Out' or c['end_pin'][:7] != '::Ex In':
         if c['start_uuid'] not in alph_uuid:
             alph_uuid[c['start_uuid']] = chr(counter)
             counter += 1
@@ -49,7 +48,6 @@ def get_links(conns, types):
                 c['start_pin'][:2] == "::" and c['end_pin'][:2] == "::":
             continue
         else:
-            # if not (isinstance(types[c['start_uuid']], int) and types[c['end_uuid']] == 'Branch_Node'):
             link_str = alph_uuid[c['end_uuid']] + ' ' + alph_uuid[c['start_uuid']]
             if link_str not in links:
                 links.append(link_str)
@@ -110,7 +108,7 @@ def test(json_data):
         out['message']['event'] = on_event[i]
         out['message']['text'] = exe[i]
 
-        outs.append(out)
+        outs.append(json.dumps(out, ensure_ascii=False))
 
         # json_out = json.dumps(out)
         # json_string_to_file(json_out, f'test{test}.{i}_exit.json')

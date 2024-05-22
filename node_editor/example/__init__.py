@@ -3,7 +3,7 @@ from .Branch_node import Branch_Node
 from .Event_node import Event_Node
 from .Print_node import Print_Node
 from .Speed_node import Speed_Node
-from .Domming_node import Dimming_Node
+from .Dimming_node import Dimming_Node
 
 from .Arithmetic_nodes import Arithmetic_Nodes
 from .Data_Types_nodes import Data_Types_Nodes

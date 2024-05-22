@@ -51,6 +51,7 @@ class MenuLayout(QHBoxLayout):
         # If you haven't devices
         from .func import upload_devices
         upload_devices('devices')
+        self.node_list.update_project()
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()
@@ -60,8 +61,9 @@ class MenuLayout(QHBoxLayout):
         for p in ping:
             serial_port.put(p)
 
-        for data in test(scene_data):
-            serial_port.put(data)
+        data = test(scene_data)
+        for d in data:
+            serial_port.put(d)
 
     def closeEvent(self, event):
         if serial_port.is_open:
