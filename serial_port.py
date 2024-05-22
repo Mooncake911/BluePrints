@@ -55,7 +55,6 @@ class SerialPort(QThread):
         self.serial.port = port
         self.serial.baudrate = baud_rate
         self.serial.timeout = timeout
-        self.serial.set_buffer_size(rx_size=5000, tx_size=5000)
 
     def run(self):
         while not self.stop_flag:
