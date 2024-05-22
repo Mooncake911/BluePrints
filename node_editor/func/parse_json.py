@@ -1,6 +1,6 @@
 import json
 import os
-from tree import *
+from .tree import *
 
 
 def json_string_to_file(json_string, file_path):
