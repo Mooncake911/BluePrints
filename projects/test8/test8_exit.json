@@ -1,0 +1,4 @@
+{"type":"config","message":{"id":2,
+"event":"id2.button_long_1",
+"text":"function t2(){ if (id2.dimm_2 > 75){ id2.Route=-25; } else { if (id2.dimm_2 < 50){ id2.Route=25; }}} function t1() { if (id2.button_long_1 == true && id2.mode_2 == true){ dimm_2(id2.dimm_2 + id2.Route); timer(t2, 0); timer(t1, 250);}} if (id2.button_long_1 == true && id2.mode_2 == true){ id2.Route=25; dimm_2(50); timer(t1, 250); }"}}
+

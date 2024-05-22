@@ -1,0 +1,469 @@
+{
+    "nodes": [
+        {
+            "name": "Less_Node",
+            "x": 4941,
+            "y": 5925,
+            "uuid": "6f4e6090-7236-4295-81a2-82c7532f5973",
+            "metadata": {}
+        },
+        {
+            "name": "Greater_Node",
+            "x": 4941,
+            "y": 5569,
+            "uuid": "d8bc8cc1-c001-432c-8904-127e533188b8",
+            "metadata": {}
+        },
+        {
+            "name": "Integer_Node",
+            "x": 5357,
+            "y": 5699,
+            "uuid": "da22f51b-cb94-45b2-881b-6581c6a0d4eb",
+            "metadata": {
+                "value": 25
+            }
+        },
+        {
+            "name": "Parameter_Node",
+            "x": 5490,
+            "y": 5668,
+            "uuid": "9fb884f1-b38a-4a0d-a7cd-028e0bda57aa",
+            "metadata": {
+                "value": "Route",
+                "index": 0
+            }
+        },
+        {
+            "name": "Branch_Node",
+            "x": 5165,
+            "y": 5625,
+            "uuid": "d5a67006-4cb0-4fbb-bd72-336e05503cd0",
+            "metadata": {}
+        },
+        {
+            "name": "Integer_Node",
+            "x": 5305,
+            "y": 5469,
+            "uuid": "b3d75440-6883-4aac-a80e-e69689408069",
+            "metadata": {
+                "value": -25
+            }
+        },
+        {
+            "name": "Integer_Node",
+            "x": 5306,
+            "y": 5180,
+            "uuid": "b88edc84-617d-4ca9-a785-a714b36085e4",
+            "metadata": {
+                "value": 50
+            }
+        },
+        {
+            "name": "Integer_Node",
+            "x": 4950,
+            "y": 5136,
+            "uuid": "a9b6491d-515c-40e8-9afd-641f7d053a78",
+            "metadata": {
+                "value": 25
+            }
+        },
+        {
+            "name": "Parameter_Node",
+            "x": 5107,
+            "y": 4990,
+            "uuid": "6d949435-a364-427d-98da-8a77975e4cfc",
+            "metadata": {
+                "value": "Route",
+                "index": 0
+            }
+        },
+        {
+            "name": "Parameter_Node",
+            "x": 5483,
+            "y": 5432,
+            "uuid": "c7ca4303-cedc-4837-978d-f83c38f1c2bd",
+            "metadata": {
+                "value": "Route",
+                "index": 0
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 4644,
+            "y": 4995,
+            "uuid": "800a7cca-610f-4d44-8604-715ca9ac8028",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Branch_Node",
+            "x": 4972,
+            "y": 4948,
+            "uuid": "2169107c-6697-43c7-8bb3-a08c0af57ad0",
+            "metadata": {}
+        },
+        {
+            "name": "Timer_Event_Node",
+            "x": 5679,
+            "y": 4928,
+            "uuid": "ab49a5b0-8158-4578-b00e-fa06a9d412d3",
+            "metadata": {
+                "index": 0
+            }
+        },
+        {
+            "name": "Timer_Node",
+            "x": 5288,
+            "y": 4979,
+            "uuid": "ebef8ee4-3d27-4f01-92f5-d1e55cc21778",
+            "metadata": {
+                "value": "00:00:00:250",
+                "index": 0
+            }
+        },
+        {
+            "name": "Timer_Node",
+            "x": 6443,
+            "y": 4979,
+            "uuid": "f6e1ea28-f926-4d89-b86e-34b6e1466e6e",
+            "metadata": {
+                "value": "00:00:00:250",
+                "index": 0
+            }
+        },
+        {
+            "name": "Branch_Node",
+            "x": 6053,
+            "y": 4929,
+            "uuid": "3c17bd61-301c-461b-a5e8-f22cf58d577e",
+            "metadata": {}
+        },
+        {
+            "name": "Dimmer",
+            "x": 5689,
+            "y": 5108,
+            "uuid": "97ff46fd-4b97-4dda-ba55-6a2c6ffd417b",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "And_Node",
+            "x": 4847,
+            "y": 5005,
+            "uuid": "f466b639-b4ab-4c3a-89f8-a4798846b0ae",
+            "metadata": {}
+        },
+        {
+            "name": "And_Node",
+            "x": 5877,
+            "y": 5036,
+            "uuid": "c007f62b-c81a-4760-b69d-6d0e08dec66f",
+            "metadata": {}
+        },
+        {
+            "name": "Plus_Node",
+            "x": 6065,
+            "y": 5139,
+            "uuid": "e0cd9044-d325-4908-99e5-848d2177e810",
+            "metadata": {}
+        },
+        {
+            "name": "Parameter_Node",
+            "x": 5861,
+            "y": 5385,
+            "uuid": "63aa156b-d965-4d9e-a2ae-23917677f38b",
+            "metadata": {
+                "index": 0,
+                "value": "Route"
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 5866,
+            "y": 5194,
+            "uuid": "a504791f-2c7b-4721-926d-91739c137588",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 6274,
+            "y": 5002,
+            "uuid": "9c364fe2-1c8f-4cfa-ab25-06b1beab79ed",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Timer_Node",
+            "x": 6665,
+            "y": 4992,
+            "uuid": "e3ac6c49-0541-4687-b2a8-7aa382c17efa",
+            "metadata": {
+                "index": 1,
+                "value": ""
+            }
+        },
+        {
+            "name": "Timer_Event_Node",
+            "x": 4631,
+            "y": 5387,
+            "uuid": "2818f650-4479-4b0b-8dbe-b703e3f65328",
+            "metadata": {
+                "index": 1
+            }
+        },
+        {
+            "name": "Branch_Node",
+            "x": 5043,
+            "y": 5393,
+            "uuid": "c5e95354-d021-4c6a-a907-58bc1c5034b5",
+            "metadata": {}
+        },
+        {
+            "name": "Dimmer",
+            "x": 4790,
+            "y": 5510,
+            "uuid": "8b3de16c-7563-4792-9088-9d1dcd181326",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Integer_Node",
+            "x": 4782,
+            "y": 5995,
+            "uuid": "1e70292f-c492-4380-af6b-eaad49f07122",
+            "metadata": {
+                "value": 50
+            }
+        },
+        {
+            "name": "Integer_Node",
+            "x": 4788,
+            "y": 5672,
+            "uuid": "9af298c8-b453-46bf-830a-6d7f03ed568e",
+            "metadata": {
+                "value": 75
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 4788,
+            "y": 5835,
+            "uuid": "be9cecbb-f4ae-4552-a5c4-70073402aead",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 5503,
+            "y": 5032,
+            "uuid": "dde0e3ab-fc5d-4956-89fe-8458a931e439",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Dimmer",
+            "x": 4638,
+            "y": 5206,
+            "uuid": "233fdc43-feec-405a-b5f9-4e25bbe04d54",
+            "metadata": {
+                "id": 2
+            }
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "6f4e6090-7236-4295-81a2-82c7532f5973",
+            "end_uuid": "d5a67006-4cb0-4fbb-bd72-336e05503cd0",
+            "start_pin": "::Ex Out",
+            "end_pin": "Condition"
+        },
+        {
+            "start_uuid": "1e70292f-c492-4380-af6b-eaad49f07122",
+            "end_uuid": "6f4e6090-7236-4295-81a2-82c7532f5973",
+            "start_pin": "Value",
+            "end_pin": "::Ex In 2"
+        },
+        {
+            "start_uuid": "be9cecbb-f4ae-4552-a5c4-70073402aead",
+            "end_uuid": "6f4e6090-7236-4295-81a2-82c7532f5973",
+            "start_pin": "dimm_2",
+            "end_pin": "::Ex In 1"
+        },
+        {
+            "start_uuid": "d8bc8cc1-c001-432c-8904-127e533188b8",
+            "end_uuid": "c5e95354-d021-4c6a-a907-58bc1c5034b5",
+            "start_pin": "::Ex Out",
+            "end_pin": "Condition"
+        },
+        {
+            "start_uuid": "8b3de16c-7563-4792-9088-9d1dcd181326",
+            "end_uuid": "d8bc8cc1-c001-432c-8904-127e533188b8",
+            "start_pin": "dimm_2",
+            "end_pin": "::Ex In 1"
+        },
+        {
+            "start_uuid": "9af298c8-b453-46bf-830a-6d7f03ed568e",
+            "end_uuid": "d8bc8cc1-c001-432c-8904-127e533188b8",
+            "start_pin": "Value",
+            "end_pin": "::Ex In 2"
+        },
+        {
+            "start_uuid": "d5a67006-4cb0-4fbb-bd72-336e05503cd0",
+            "end_uuid": "9fb884f1-b38a-4a0d-a7cd-028e0bda57aa",
+            "start_pin": "True",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "da22f51b-cb94-45b2-881b-6581c6a0d4eb",
+            "end_uuid": "9fb884f1-b38a-4a0d-a7cd-028e0bda57aa",
+            "start_pin": "Value",
+            "end_pin": "value"
+        },
+        {
+            "start_uuid": "c5e95354-d021-4c6a-a907-58bc1c5034b5",
+            "end_uuid": "d5a67006-4cb0-4fbb-bd72-336e05503cd0",
+            "start_pin": "False",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "b3d75440-6883-4aac-a80e-e69689408069",
+            "end_uuid": "c7ca4303-cedc-4837-978d-f83c38f1c2bd",
+            "start_pin": "Value",
+            "end_pin": "value"
+        },
+        {
+            "start_uuid": "9c364fe2-1c8f-4cfa-ab25-06b1beab79ed",
+            "end_uuid": "f6e1ea28-f926-4d89-b86e-34b6e1466e6e",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "3c17bd61-301c-461b-a5e8-f22cf58d577e",
+            "end_uuid": "9c364fe2-1c8f-4cfa-ab25-06b1beab79ed",
+            "start_pin": "True",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "c5e95354-d021-4c6a-a907-58bc1c5034b5",
+            "end_uuid": "c7ca4303-cedc-4837-978d-f83c38f1c2bd",
+            "start_pin": "True",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "b88edc84-617d-4ca9-a785-a714b36085e4",
+            "end_uuid": "dde0e3ab-fc5d-4956-89fe-8458a931e439",
+            "start_pin": "Value",
+            "end_pin": "dimm_2"
+        },
+        {
+            "start_uuid": "a9b6491d-515c-40e8-9afd-641f7d053a78",
+            "end_uuid": "6d949435-a364-427d-98da-8a77975e4cfc",
+            "start_pin": "Value",
+            "end_pin": "value"
+        },
+        {
+            "start_uuid": "6d949435-a364-427d-98da-8a77975e4cfc",
+            "end_uuid": "ebef8ee4-3d27-4f01-92f5-d1e55cc21778",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "2169107c-6697-43c7-8bb3-a08c0af57ad0",
+            "end_uuid": "6d949435-a364-427d-98da-8a77975e4cfc",
+            "start_pin": "True",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "800a7cca-610f-4d44-8604-715ca9ac8028",
+            "end_uuid": "2169107c-6697-43c7-8bb3-a08c0af57ad0",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "f466b639-b4ab-4c3a-89f8-a4798846b0ae",
+            "end_uuid": "2169107c-6697-43c7-8bb3-a08c0af57ad0",
+            "start_pin": "::Ex Out",
+            "end_pin": "Condition"
+        },
+        {
+            "start_uuid": "97ff46fd-4b97-4dda-ba55-6a2c6ffd417b",
+            "end_uuid": "c007f62b-c81a-4760-b69d-6d0e08dec66f",
+            "start_pin": "mode_2",
+            "end_pin": "::Ex In 1"
+        },
+        {
+            "start_uuid": "97ff46fd-4b97-4dda-ba55-6a2c6ffd417b",
+            "end_uuid": "c007f62b-c81a-4760-b69d-6d0e08dec66f",
+            "start_pin": "button_long_1",
+            "end_pin": "::Ex In 2"
+        },
+        {
+            "start_uuid": "c007f62b-c81a-4760-b69d-6d0e08dec66f",
+            "end_uuid": "3c17bd61-301c-461b-a5e8-f22cf58d577e",
+            "start_pin": "::Ex Out",
+            "end_pin": "Condition"
+        },
+        {
+            "start_uuid": "63aa156b-d965-4d9e-a2ae-23917677f38b",
+            "end_uuid": "e0cd9044-d325-4908-99e5-848d2177e810",
+            "start_pin": "value",
+            "end_pin": "::Ex In 2"
+        },
+        {
+            "start_uuid": "a504791f-2c7b-4721-926d-91739c137588",
+            "end_uuid": "e0cd9044-d325-4908-99e5-848d2177e810",
+            "start_pin": "dimm_2",
+            "end_pin": "::Ex In 1"
+        },
+        {
+            "start_uuid": "e0cd9044-d325-4908-99e5-848d2177e810",
+            "end_uuid": "9c364fe2-1c8f-4cfa-ab25-06b1beab79ed",
+            "start_pin": "::Ex Out",
+            "end_pin": "dimm_2"
+        },
+        {
+            "start_uuid": "ab49a5b0-8158-4578-b00e-fa06a9d412d3",
+            "end_uuid": "3c17bd61-301c-461b-a5e8-f22cf58d577e",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "f6e1ea28-f926-4d89-b86e-34b6e1466e6e",
+            "end_uuid": "e3ac6c49-0541-4687-b2a8-7aa382c17efa",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "2818f650-4479-4b0b-8dbe-b703e3f65328",
+            "end_uuid": "c5e95354-d021-4c6a-a907-58bc1c5034b5",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "ebef8ee4-3d27-4f01-92f5-d1e55cc21778",
+            "end_uuid": "dde0e3ab-fc5d-4956-89fe-8458a931e439",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "800a7cca-610f-4d44-8604-715ca9ac8028",
+            "end_uuid": "f466b639-b4ab-4c3a-89f8-a4798846b0ae",
+            "start_pin": "button_long_1",
+            "end_pin": "::Ex In 1"
+        },
+        {
+            "start_uuid": "233fdc43-feec-405a-b5f9-4e25bbe04d54",
+            "end_uuid": "f466b639-b4ab-4c3a-89f8-a4798846b0ae",
+            "start_pin": "mode_2",
+            "end_pin": "::Ex In 2"
+        }
+    ]
+}
