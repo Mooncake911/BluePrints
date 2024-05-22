@@ -39,9 +39,7 @@ class MenuLayout(QHBoxLayout):
     def fast_search(self):
         # If you have devices
         id_list = [1, 2]
-        r = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}',
-             '{"type":"event","message":{"event":"setup","text": ""}}']
-        requests = r + [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
+        requests = [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
             serial_port.put(message)
 
@@ -56,8 +54,10 @@ class MenuLayout(QHBoxLayout):
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()
+        ping = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}',
+                '{"type":"event","message":{"event":"setup","text": ""}}']
         data = test(scene_data)
-        serial_port.put(data)
+        serial_port.put(ping + data)
 
     def closeEvent(self, event):
         if serial_port.is_open:
