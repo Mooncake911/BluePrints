@@ -54,12 +54,14 @@ class MenuLayout(QHBoxLayout):
 
     def execute(self):
         scene_data = self.view_scene.utils.save_scene()
+
         ping = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}',
                 '{"type":"event","message":{"event":"setup","text": ""}}']
         for p in ping:
             serial_port.put(p)
-        data = test(scene_data)
-        serial_port.put(data)
+
+        for data in test(scene_data):
+            serial_port.put(data)
 
     def closeEvent(self, event):
         if serial_port.is_open:

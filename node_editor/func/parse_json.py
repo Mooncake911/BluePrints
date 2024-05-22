@@ -1,5 +1,6 @@
 import json
-from .tree import *
+import os
+from tree import *
 
 
 def json_string_to_file(json_string, file_path):
@@ -60,18 +61,21 @@ def get_links(conns, types):
 
 
 def test(json_data):
-
     nodes = json_data['nodes']
     conns = json_data['connections']
 
     uuid_id = {}
+    timer_indexes = {}
     for n in nodes:
+        if n['name'][:5] == 'Timer':
+            timer_indexes[n['uuid']] = n['metadata']['index']
+
         if 'id' in n['metadata']:
             uuid_id[n['uuid']] = n['metadata']['id']
         elif 'value' in n['metadata']:
-            if n['metadata']['value'] == True:
+            if n['metadata']['value'] == 'True':
                 uuid_id[n['uuid']] = 'true'
-            elif n['metadata']['value'] == False:
+            elif n['metadata']['value'] == 'False':
                 uuid_id[n['uuid']] = 'false'
             else:
                 uuid_id[n['uuid']] = n['metadata']['value']
@@ -83,7 +87,7 @@ def test(json_data):
     links, link_conn = get_links(conns, uuid_id)
 
     Tree.printForest(links)
-    exe, on_event = Tree.getRequestsData(uuid_id, links, link_conn)
+    exe, on_event, ids = Tree.getRequestsData(uuid_id, links, link_conn, timer_indexes)
 
     outs = []
     for i in range(len(exe)):
@@ -96,12 +100,19 @@ def test(json_data):
                    }
                }
 
-        id, _ = map(str, on_event[i].split('.'))
-        out['message']['id'] = id[2:]
+        if len(ids) == 0:
+            id, _ = map(str, on_event[i].split('.'))
+            id = int(id[2:])
+        else:
+            id = ids[i]
+
+        out['message']['id'] = id
         out['message']['event'] = on_event[i]
         out['message']['text'] = exe[i]
 
         outs.append(out)
 
-        json_out = json.dumps(out)
-        return json_out
+        # json_out = json.dumps(out)
+        # json_string_to_file(json_out, f'test{test}.{i}_exit.json')
+
+    return outs
