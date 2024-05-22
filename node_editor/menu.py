@@ -39,7 +39,9 @@ class MenuLayout(QHBoxLayout):
     def fast_search(self):
         # If you have devices
         id_list = [1, 2]
-        requests = [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
+        r = ['{"type": "config", "message": {"id":2, "event": "setup", "text": "id1 = new Object();"}}', 
+        '{"type":"event","message":{"event":"setup","text": ""}}']
+        requests = r | [json.dumps({"type": "request", "message": {"id": i}}) for i in id_list]
         for message in requests:
             serial_port.put(message)
 
