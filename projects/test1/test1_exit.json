@@ -1,9 +1,0 @@
-{
-  "id": 1, 							// кому реагировать
-  "commands": [
-    {
-      "on_event":"1.button_single_1",				# на что реагировать
-      "exe": "if (1.button_single_1){ mode_1(!1.mode_1); }"	# как реагировать
-    }
-  ]
-}

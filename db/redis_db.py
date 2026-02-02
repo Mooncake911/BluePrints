@@ -10,8 +10,9 @@ from redis.commands.json.path import Path
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-REDIS_PASSWORD='RifXd8leDCGZR1MBsUStFpYWe0fLFU5k'
-REDIS_HOST='redis-13930.c327.europe-west1-2.gce.redns.redis-cloud.com'
+REDIS_PASSWORD = None
+REDIS_HOST = None
+
 
 class RedisManager:
     _instance = None

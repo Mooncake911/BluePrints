@@ -1,0 +1,77 @@
+{
+    "nodes": [
+        {
+            "name": "Dimmer_2",
+            "x": 4770,
+            "y": 4950,
+            "uuid": "6cc57b43-39d1-4f68-a853-7ce3b51a1770",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Dimmer_2",
+            "x": 5241,
+            "y": 4966,
+            "uuid": "ac569212-daff-4cb4-87a0-ae47c254ab56",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Branch_Node",
+            "x": 4957,
+            "y": 4891,
+            "uuid": "b6311a52-d310-461c-ba22-1eb09c1b00a7",
+            "metadata": {}
+        },
+        {
+            "name": "Dimmer_2",
+            "x": 4945,
+            "y": 5159,
+            "uuid": "e7dbc8a0-d669-4e78-a05e-3b47092ae384",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Not_Node",
+            "x": 5097,
+            "y": 5065,
+            "uuid": "0b2f1fda-d955-4da4-9ab0-22202da96ed5",
+            "metadata": {}
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "6cc57b43-39d1-4f68-a853-7ce3b51a1770",
+            "end_uuid": "b6311a52-d310-461c-ba22-1eb09c1b00a7",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "b6311a52-d310-461c-ba22-1eb09c1b00a7",
+            "end_uuid": "ac569212-daff-4cb4-87a0-ae47c254ab56",
+            "start_pin": "True",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "e7dbc8a0-d669-4e78-a05e-3b47092ae384",
+            "end_uuid": "0b2f1fda-d955-4da4-9ab0-22202da96ed5",
+            "start_pin": "mode_2",
+            "end_pin": "::Ex In"
+        },
+        {
+            "start_uuid": "0b2f1fda-d955-4da4-9ab0-22202da96ed5",
+            "end_uuid": "ac569212-daff-4cb4-87a0-ae47c254ab56",
+            "start_pin": "::Ex Out",
+            "end_pin": "mode_2"
+        },
+        {
+            "start_uuid": "6cc57b43-39d1-4f68-a853-7ce3b51a1770",
+            "end_uuid": "b6311a52-d310-461c-ba22-1eb09c1b00a7",
+            "start_pin": "button_long_1",
+            "end_pin": "Condition"
+        }
+    ]
+}

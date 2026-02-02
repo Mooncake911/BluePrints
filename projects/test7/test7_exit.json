@@ -1,0 +1,17 @@
+{
+    "type": "config",
+    "message":
+    {
+      "id":2,
+      "event":"id2.button_long_1",
+      "text":"function t1(){ if (id2.button_long_1 && id2.mode_2){ dimm_2(id2.dimm_2 + id2.Route); timer(t1, 250); timer(t2, 0);} function t2(){ if (id2.dimm_2 == 100){ id2.Route = -1} else { if (id2.dimm_2 == 0){ id2.Route = 1} } if (id2.button_long_1 && id2.mode_2){ id2.Route=1; timer(t1, 250); dimm_2(0); }"
+    }
+}
+
+# по отдельности для лучшего понимания
+"function t1(){ if (id2.button_long_1 && id2.mode_2){ dimm_2(id2.dimm_2 + id2.Route); timer(t1, 250); timer(t2, 0);}"
+
+"function t2(){ if (id2.dimm_2 == 100){ id2.Route = -1} else { if (id2.dimm_2 == 0){ id2.Route = 1} }"
+
+"if (id2.button_long_1 && id2.mode_2){ id2.Route=1; timer(t1, 250); dimm_2(0); }"
+# При работе с таймерами вместо того чтобы идти вправо, мы идем влево и просто собираем функцию

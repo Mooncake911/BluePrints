@@ -43,7 +43,7 @@ class MenuLayout(QHBoxLayout):
         for message in requests:
             serial_port.put(message)
 
-        time.sleep(2)
+        time.sleep(4)
 
         self.node_list.update_project()
 
@@ -63,6 +63,8 @@ class MenuLayout(QHBoxLayout):
 
         data = test(scene_data)
         for d in data:
+            d = d.replace('F', 'f').replace('T', 't')
+            print(d)
             serial_port.put(d)
 
     def closeEvent(self, event):

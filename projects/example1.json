@@ -1,0 +1,36 @@
+{
+    "nodes": [
+        {
+            "name": "Dimmer_2",
+            "x": 5157,
+            "y": 4953,
+            "uuid": "30c65037-f8a5-4fdf-840c-f5e9140be15b",
+            "metadata": {
+                "id": 2
+            }
+        },
+        {
+            "name": "Dimmer_2",
+            "x": 4854,
+            "y": 4964,
+            "uuid": "37f4f69e-dd9c-4c15-97f4-14674596db2d",
+            "metadata": {
+                "id": 2
+            }
+        }
+    ],
+    "connections": [
+        {
+            "start_uuid": "37f4f69e-dd9c-4c15-97f4-14674596db2d",
+            "end_uuid": "30c65037-f8a5-4fdf-840c-f5e9140be15b",
+            "start_pin": "button_long_1",
+            "end_pin": "mode_2"
+        },
+        {
+            "start_uuid": "37f4f69e-dd9c-4c15-97f4-14674596db2d",
+            "end_uuid": "30c65037-f8a5-4fdf-840c-f5e9140be15b",
+            "start_pin": "::Ex Out",
+            "end_pin": "::Ex In"
+        }
+    ]
+}
